@@ -3,7 +3,12 @@ import 'package:flutter/material.dart';
 
 import 'package:pfe_app/consts/consts.dart';
 
-Widget ourButton() {
+Widget ourButton({onPress, color, textColor, String? title}) {
   return ElevatedButton(
-      onPressed: () {}, child: login.text.white.fontFamily(bold).make());
+      style: ElevatedButton.styleFrom(
+        primary: color,
+        padding: const EdgeInsets.all(12),
+      ),
+      onPressed: onPress,
+      child: title!.text.color(textColor).fontFamily(bold).make());
 }
