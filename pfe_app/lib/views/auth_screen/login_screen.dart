@@ -24,7 +24,11 @@ class LoginScreen extends StatelessWidget {
             children: [
               customTextField(hint: emailHint, title: email),
               customTextField(hint: passwordHint, title: password),
-              TextButton(onPressed: () {}, child: forgetPass.text.make())
+              Align(
+                alignment: Alignment.centerRight,
+                child:
+                    TextButton(onPressed: () {}, child: forgetPass.text.make()),
+              ),
             ],
           )
               .box
