@@ -88,7 +88,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ),
               5.heightBox,
               ourButton(
-                      color: redColor,
+                      color: isCheck == true ? redColor : lightGrey,
                       title: signup,
                       textColor: whiteColor,
                       onPress: () {})
