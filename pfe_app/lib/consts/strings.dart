@@ -28,4 +28,23 @@ const searchanything = "Search anything...",
     topSellers = "Top Sellers",
     brand = "Brand",
     topCategories = "Top Categories",
+    womenDress = "Women Dress",
+    girlsWatches = "Girls Watches",
+    mobilePhone = "Mobile Phone",
+    boysGlasses = "Boys Glasses",
+    tShirts = "TShirts",
+    girlsDress = "Girls Dresses",
+    featuredProduct = "Featured Product",
     featuredCategories = "Featured Categories";
+
+//category strings
+
+const womenClothing = "Women Clothing",
+    menClothingFashion = "Men Clothing Fashion",
+    compAccess = "Computer & Accesories",
+    automobile = "Auto mobile",
+    kidtoys = "Kids & Toys",
+    sports = "Sports",
+    jewelery = "Jewelery",
+    cellphone = "Cellphone & Tab",
+    furniture = "Furniture";
