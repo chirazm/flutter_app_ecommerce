@@ -10,9 +10,15 @@ import '../../consts/colors.dart';
 import '../../consts/strings.dart';
 import '../../widget_common/our_button.dart';
 
-class SignUpScreen extends StatelessWidget {
+class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
 
+  @override
+  State<SignUpScreen> createState() => _SignUpScreenState();
+}
+
+class _SignUpScreenState extends State<SignUpScreen> {
+  bool? isCheck = false;
   @override
   Widget build(BuildContext context) {
     return bgWidget(
@@ -41,8 +47,12 @@ class SignUpScreen extends StatelessWidget {
                 children: [
                   Checkbox(
                     checkColor: redColor,
-                    value: false,
-                    onChanged: (newValue) {},
+                    value: isCheck,
+                    onChanged: (newValue) {
+                      setState(() {
+                        isCheck = newValue;
+                      });
+                    },
                   ),
                   10.widthBox,
                   Expanded(
@@ -51,25 +61,25 @@ class SignUpScreen extends StatelessWidget {
                       TextSpan(
                           text: "I agree to the ",
                           style: TextStyle(
-                            fontFamily: bold,
+                            fontFamily: regular,
                             color: fontGrey,
                           )),
                       TextSpan(
                           text: termAndCond,
                           style: TextStyle(
-                            fontFamily: bold,
+                            fontFamily: regular,
                             color: redColor,
                           )),
                       TextSpan(
                           text: " & ",
                           style: TextStyle(
-                            fontFamily: bold,
+                            fontFamily: regular,
                             color: fontGrey,
                           )),
                       TextSpan(
                           text: privacyPolicy,
                           style: TextStyle(
-                            fontFamily: bold,
+                            fontFamily: regular,
                             color: redColor,
                           )),
                     ])),

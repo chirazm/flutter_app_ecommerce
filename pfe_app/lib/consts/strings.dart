@@ -1,6 +1,6 @@
-const appname = "eMart";
+const appname = "Marque blanche";
 const appversion = "Version 1.0.0";
-const credits = "@Chiraz Meddeb";
+//const credits = "@Chiraz Meddeb";
 const email = "Email";
 const emailHint = "example@example.com";
 const password = "Password";

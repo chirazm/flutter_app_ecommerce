@@ -47,7 +47,25 @@ class _SplashScreenState extends State<SplashScreen> {
             5.heightBox,
             appversion.text.white.make(),
             Spacer(),
-            credits.text.white.fontFamily(semibold).make(),
+            30.widthBox,
+            RichText(
+                text: const TextSpan(
+              children: [
+                TextSpan(
+                    text: "Soyez au coeur de votre ",
+                    style: TextStyle(
+                      fontFamily: semibold,
+                      color: whiteColor,
+                      fontSize: 25,
+                    )),
+                    
+                TextSpan(
+                    text: "magasin",
+                    style: TextStyle(
+                        fontFamily: semibold, color: whiteColor, fontSize: 25)),
+              ],
+            )),
+            //credits.text.white.fontFamily(semibold).size(25).make(),
             30.heightBox,
           ],
         ),
