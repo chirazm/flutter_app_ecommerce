@@ -16,12 +16,13 @@ const loginWith = "Log in with";
 const privacyPolicy = "Privacy Policy";
 const termAndCond = "Terms and Conditions";
 const alreadyHaveAccount = "Already have account ?";
-
+const logout = "Log out";
 const home = "Home",
     categories = "Categories",
     cart = "Cart",
     account = "Account";
 
+//search and home page
 const searchanything = "Search anything...",
     todayDeal = "Today's Deal",
     flashsale = "Flash Sale",
@@ -38,7 +39,6 @@ const searchanything = "Search anything...",
     featuredCategories = "Featured Categories";
 
 //category strings
-
 const womenClothing = "Women Clothing",
     menClothingFashion = "Men Clothing Fashion",
     compAccess = "Computer & Accesories",
@@ -49,9 +49,13 @@ const womenClothing = "Women Clothing",
     cellphone = "Cellphone & Tab",
     furniture = "Furniture";
 
+//item details strings
 const video = "Video",
     reviews = "Reviews",
     sellerpolicy = "Seller Policy",
     returnpolicy = "Return Policy",
     supportPolicy = "Support Policy",
     productsyoumaylike = "Products you may like";
+
+//profile strings
+const wishlist = "My Wishlist", orders = "My Orders", message = "Messages";
