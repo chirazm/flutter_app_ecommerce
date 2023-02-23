@@ -187,7 +187,7 @@ class HomeScreen extends StatelessWidget {
                                             .color(darkFontGrey)
                                             .make(),
                                         10.heightBox,
-                                        "1200 DT"
+                                        "1200 TND"
                                             .text
                                             .color(redColor)
                                             .fontFamily(semibold)
@@ -204,7 +204,7 @@ class HomeScreen extends StatelessWidget {
                                         .padding(const EdgeInsets.all(8))
                                         .make()),
                           ),
-                        )
+                        ),
                       ],
                     ),
                   ),
@@ -258,7 +258,7 @@ class HomeScreen extends StatelessWidget {
                                 .color(darkFontGrey)
                                 .make(),
                             10.heightBox,
-                            "1200 DT"
+                            "1200 TND"
                                 .text
                                 .color(redColor)
                                 .fontFamily(semibold)

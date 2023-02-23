@@ -37,3 +37,11 @@ const categoryImages = [
   imgFc8,
   imgFc9
 ];
+
+const itemDetailButtonList = [
+  video,
+  reviews,
+  sellerpolicy,
+  returnpolicy,
+  supportPolicy,
+];

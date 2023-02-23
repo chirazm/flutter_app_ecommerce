@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:pfe_app/consts/consts.dart';
 import 'package:pfe_app/consts/lists.dart';
+import 'package:pfe_app/views/category_screen/category_details.dart';
 import 'package:pfe_app/widget_common/bg_widget.dart';
 
 class CategoryScreen extends StatelessWidget {
@@ -39,7 +41,16 @@ class CategoryScreen extends StatelessWidget {
                     .align(TextAlign.center)
                     .make(),
               ],
-            ).box.white.rounded.clip(Clip.antiAlias).outerShadowSm.make();
+            )
+                .box
+                .white
+                .rounded
+                .clip(Clip.antiAlias)
+                .outerShadowSm
+                .make()
+                .onTap(() {
+              Get.to(() => CategoryDetails(title: categoriesList[index]));
+            });
           },
         ),
       ),
