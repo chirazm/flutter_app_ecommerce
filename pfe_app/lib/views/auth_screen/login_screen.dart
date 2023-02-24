@@ -1,8 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pfe_app/consts/consts.dart';
 import 'package:pfe_app/consts/lists.dart';
+import 'package:pfe_app/controllers/auth_controller.dart';
 import 'package:pfe_app/views/auth_screen/signup_screen.dart';
 import 'package:pfe_app/views/home_screen/home.dart';
 import 'package:pfe_app/widget_common/applogo_widget.dart';
@@ -15,6 +15,7 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var controller = Get.put(AuthController());
     return bgWidget(
         child: Scaffold(
       resizeToAvoidBottomInset: false,
@@ -28,8 +29,16 @@ class LoginScreen extends StatelessWidget {
           15.heightBox,
           Column(
             children: [
-              customTextField(hint: emailHint, title: email),
-              customTextField(hint: passwordHint, title: password),
+              customTextField(
+                  hint: emailHint,
+                  title: email,
+                  isPass: false,
+                  controller: controller.emailController),
+              customTextField(
+                  hint: passwordHint,
+                  title: password,
+                  isPass: true,
+                  controller: controller.passwordController),
               Align(
                 alignment: Alignment.centerRight,
                 child:
@@ -40,8 +49,15 @@ class LoginScreen extends StatelessWidget {
                   color: redColor,
                   title: login,
                   textColor: whiteColor,
-                  onPress: () {
-                    Get.to(() => const Home());
+                  onPress: () async {
+                    await controller
+                        .loginMethod(context: context)
+                        .then((value) {
+                      if (value != null) {
+                        VxToast.show(context, msg: loggedin);
+                        Get.offAll(() => const Home());
+                      }
+                    });
                   }).box.width(context.screenWidth - 50).make(),
               5.heightBox,
               createNewAccount.text.color(fontGrey).make(),
@@ -78,7 +94,7 @@ class LoginScreen extends StatelessWidget {
               .white
               .rounded
               .padding(const EdgeInsets.all(16))
-              .width(context.screenWidth - 70)
+              .width(context.screenWidth - 60)
               .shadowSm
               .make()
         ],

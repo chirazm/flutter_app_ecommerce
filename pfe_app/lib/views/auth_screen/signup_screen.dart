@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pfe_app/consts/consts.dart';
 import 'package:pfe_app/consts/lists.dart';
+import 'package:pfe_app/controllers/auth_controller.dart';
+import 'package:pfe_app/views/home_screen/home.dart';
 import 'package:pfe_app/widget_common/applogo_widget.dart';
 import 'package:pfe_app/widget_common/bg_widget.dart';
 import 'package:pfe_app/widget_common/custom_textfield.dart';
@@ -19,6 +21,14 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> {
   bool? isCheck = false;
+  var controller = Get.put(AuthController());
+
+  //text controllers
+  var nameController = TextEditingController();
+  var emailController = TextEditingController();
+  var passwordController = TextEditingController();
+  var passwordRetypeController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return bgWidget(
@@ -34,15 +44,27 @@ class _SignUpScreenState extends State<SignUpScreen> {
           15.heightBox,
           Column(
             children: [
-              customTextField(hint: emailHint, title: name),
-              customTextField(hint: emailHint, title: email),
-              customTextField(hint: passwordHint, title: password),
-              customTextField(hint: emailHint, title: retypePassword),
-              Align(
-                alignment: Alignment.centerRight,
-                child:
-                    TextButton(onPressed: () {}, child: forgetPass.text.make()),
-              ),
+              customTextField(
+                  hint: nameHint,
+                  title: name,
+                  controller: nameController,
+                  isPass: false),
+              customTextField(
+                  hint: emailHint,
+                  title: email,
+                  controller: emailController,
+                  isPass: false),
+              customTextField(
+                  hint: passwordHint,
+                  title: password,
+                  controller: passwordController,
+                  isPass: true),
+              customTextField(
+                  hint: passwordHint,
+                  title: retypePassword,
+                  controller: passwordRetypeController,
+                  isPass: true),
+                  
               Row(
                 children: [
                   Checkbox(
@@ -88,13 +110,34 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ),
               5.heightBox,
               ourButton(
-                      color: isCheck == true ? redColor : lightGrey,
-                      title: signup,
-                      textColor: whiteColor,
-                      onPress: () {})
-                  .box
-                  .width(context.screenWidth - 50)
-                  .make(),
+                  color: isCheck == true ? redColor : lightGrey,
+                  title: signup,
+                  textColor: whiteColor,
+                  onPress: () async {
+                    if (isCheck != false) {
+                      try {
+                        await controller
+                            .signupMethod(
+                          context: context,
+                          email: emailController.text,
+                          password: passwordController.text,
+                        )
+                            .then((value) {
+                          return controller.storeUserData(
+                            email: emailController.text,
+                            password: passwordController.text,
+                            name: nameController.text,
+                          );
+                        }).then((value) {
+                          VxToast.show(context, msg: loggedin);
+                          Get.offAll(() => Home());
+                        });
+                      } catch (e) {
+                        auth.signOut();
+                        VxToast.show(context, msg: e.toString());
+                      }
+                    }
+                  }).box.width(context.screenWidth - 50).make(),
               10.heightBox,
               RichText(
                   text: const TextSpan(children: [

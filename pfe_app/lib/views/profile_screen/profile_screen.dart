@@ -1,8 +1,12 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/get_core.dart';
 import 'package:pfe_app/consts/consts.dart';
 import 'package:pfe_app/consts/lists.dart';
+import 'package:pfe_app/controllers/auth_controller.dart';
+import 'package:pfe_app/views/auth_screen/login_screen.dart';
 import 'package:pfe_app/views/profile_screen/components/details_card.dart';
 import 'package:pfe_app/widget_common/bg_widget.dart';
 
@@ -51,7 +55,10 @@ class ProfileScreen extends StatelessWidget {
                         side: const BorderSide(
                       color: whiteColor,
                     )),
-                    onPressed: () {},
+                    onPressed: () async {
+                      await Get.put(AuthController()).signoutMethod(context);
+                      Get.offAll(() => const LoginScreen());
+                    },
                     child: logout.text.fontFamily(semibold).white.make(),
                   ),
                 ],
