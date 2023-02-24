@@ -1,9 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pfe_app/consts/colors.dart';
 import 'package:pfe_app/consts/consts.dart';
 import 'package:pfe_app/views/auth_screen/login_screen.dart';
+import 'package:pfe_app/views/home_screen/home.dart';
 import 'package:pfe_app/widget_common/applogo_widget.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -16,7 +18,15 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   changeScreen() {
     Future.delayed(Duration(seconds: 3), () {
-      Get.to(() => const LoginScreen());
+      //Get.to(() => const LoginScreen());
+
+      auth.authStateChanges().listen((User? user) {
+        if (user == null && mounted) {
+          Get.to(() => const LoginScreen());
+        } else {
+          Get.to(() => const Home());
+        }
+      });
     });
   }
 
