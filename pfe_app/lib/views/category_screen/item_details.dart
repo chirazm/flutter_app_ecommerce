@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:pfe_app/consts/colors.dart';
 import 'package:pfe_app/consts/consts.dart';
@@ -6,9 +7,10 @@ import 'package:pfe_app/widget_common/our_button.dart';
 
 class ItemDetails extends StatelessWidget {
   final String? title;
-  const ItemDetails({Key? key, required this.title}) : super(key: key);
+  const ItemDetails({Key? key, required this.title, required QueryDocumentSnapshot<Object?> data}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    print(Colors.yellow.value);
     return Scaffold(
       backgroundColor: lightGrey,
       appBar: AppBar(
@@ -43,7 +45,7 @@ class ItemDetails extends StatelessWidget {
                       itemBuilder: (context, index) {
                         //image
                         return Image.asset(
-                          imgFc5,
+                          imgP5,
                           width: double.infinity,
                           fit: BoxFit.cover,
                         );
