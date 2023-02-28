@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pfe_app/consts/consts.dart';
 import 'package:pfe_app/consts/lists.dart';
+import 'package:pfe_app/controllers/product_controller.dart';
 import 'package:pfe_app/views/category_screen/category_details.dart';
 import 'package:pfe_app/widget_common/bg_widget.dart';
 
@@ -10,13 +11,14 @@ class CategoryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var controller = Get.put(ProductController());
     return bgWidget(
         child: Scaffold(
       appBar: AppBar(
         title: categories.text.fontFamily(bold).white.make(),
       ),
       body: Container(
-        padding: EdgeInsets.all(12),
+        padding: const EdgeInsets.all(12),
         child: GridView.builder(
           shrinkWrap: true,
           itemCount: 9,
@@ -49,6 +51,7 @@ class CategoryScreen extends StatelessWidget {
                 .outerShadowSm
                 .make()
                 .onTap(() {
+              controller.getSubCategories(categoriesList[index]);
               Get.to(() => CategoryDetails(title: categoriesList[index]));
             });
           },

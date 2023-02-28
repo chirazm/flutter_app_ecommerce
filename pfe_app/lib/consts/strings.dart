@@ -43,9 +43,9 @@ const searchanything = "Search anything...",
 
 //category strings
 const womenClothing = "Women Clothing",
-    menClothingFashion = "Men Clothing Fashion",
-    compAccess = "Computer & Accesories",
-    automobile = "Auto mobile",
+    menClothingFashion = "Men Clothing & Fashion",
+    compAccess = "Computer & Accessories",
+    automobile = "Automobile",
     kidtoys = "Kids & Toys",
     sports = "Sports",
     jewelery = "Jewelery",
