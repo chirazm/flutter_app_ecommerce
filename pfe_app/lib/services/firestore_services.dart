@@ -16,4 +16,27 @@ class FirestoreServices {
         .where('p_category', isEqualTo: category)
         .snapshots();
   }
+
+  //get cart
+  static getCart(uid) {
+    return firestore
+        .collection(cartCollection)
+        .where("added by", isEqualTo: uid)
+        .snapshots();
+  }
+
+  //delete document
+  static deleteDocument(docId) {
+    return firestore.collection(cartCollection).doc(docId).delete();
+  }
+
+  //get all chat messages
+  static getChatMessages(docId) {
+    return firestore
+        .collection(chatCollection)
+        .doc(docId)
+        .collection(messageCollection)
+        .orderBy('created_on', descending: false)
+        .snapshots();
+  }
 }

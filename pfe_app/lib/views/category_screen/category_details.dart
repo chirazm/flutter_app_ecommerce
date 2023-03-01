@@ -87,13 +87,15 @@ class CategoryDetails extends StatelessWidget {
                                       width: 200,
                                       fit: BoxFit.cover,
                                     ),
+                                    15.heightBox,
                                     "${data[index]['p_name']}"
                                         .text
                                         .fontFamily(semibold)
                                         .color(darkFontGrey)
                                         .make(),
                                     10.heightBox,
-                                    "${data[index]['p_price']} TND"
+                                    "${data[index]['p_price']}"
+                                        .numCurrency
                                         .text
                                         .color(redColor)
                                         .fontFamily(semibold)
@@ -112,7 +114,8 @@ class CategoryDetails extends StatelessWidget {
                                     .make()
                                     .onTap(() {
                                   Get.to(() => ItemDetails(
-                                      title: "${data[index]['p_name']}", data: data[index]));
+                                      title: "${data[index]['p_name']}",
+                                      data: data[index]));
                                 });
                               }),
                         )
