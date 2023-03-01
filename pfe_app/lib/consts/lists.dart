@@ -57,3 +57,6 @@ const profileButtonsIcon = [
   icOrder,
   icMessages,
 ];
+
+const paymentMethodImg = [imgPaypal, imgStripe, imgCod];
+const paymentMethods = [paypal, stripe, cod];

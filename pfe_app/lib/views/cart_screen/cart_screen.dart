@@ -1,13 +1,13 @@
-import 'dart:ui';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pfe_app/consts/consts.dart';
 import 'package:pfe_app/controllers/cart_controller.dart';
 import 'package:pfe_app/services/firestore_services.dart';
+import 'package:pfe_app/views/cart_screen/shipping_screen.dart';
 import 'package:pfe_app/widget_common/loading_indicator.dart';
-import 'package:pfe_app/widget_common/our_button.dart';
+
+import '../../widget_common/our_button.dart';
 
 class CartScreen extends StatelessWidget {
   const CartScreen({super.key});
@@ -16,7 +16,18 @@ class CartScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var controller = Get.put(CartController());
     return Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: whiteColor,
+        bottomNavigationBar: SizedBox(
+          height: 60,
+          child: ourButton(
+            color: redColor,
+            onPress: () {
+              Get.to(() => const ShippingDetails());
+            },
+            textColor: whiteColor,
+            title: "Proceed to shipping",
+          ),
+        ),
         appBar: AppBar(
           automaticallyImplyLeading: false,
           title: "Shopping cart"
@@ -40,6 +51,7 @@ class CartScreen extends StatelessWidget {
             } else {
               var data = snapshot.data!.docs;
               controller.calculate(data);
+              controller.productSnapshot = data;
               return Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
@@ -95,15 +107,15 @@ class CartScreen extends StatelessWidget {
                         .width(context.screenWidth - 60)
                         .roundedSM
                         .make(),
-                    SizedBox(
-                      width: context.screenWidth - 60,
-                      child: ourButton(
-                        color: redColor,
-                        onPress: () {},
-                        textColor: whiteColor,
-                        title: "Proceed to shipping",
-                      ),
-                    )
+                    // SizedBox(
+                    //   width: context.screenWidth - 60,
+                    //   child: ourButton(
+                    //     color: redColor,
+                    //     onPress: () {},
+                    //     textColor: whiteColor,
+                    //     title: "Proceed to shipping",
+                    //   ),
+                    // )
                   ],
                 ),
               );
