@@ -154,10 +154,10 @@ class ItemDetails extends StatelessWidget {
                         .make(),
 
                     //color section
-                    Column(
-                      children: [
-                        Obx(
-                          () => Row(
+                    Obx(
+                      () => Column(
+                        children: [
+                          Row(
                             children: [
                               SizedBox(
                                 width: 100,
@@ -194,68 +194,71 @@ class ItemDetails extends StatelessWidget {
                               ),
                             ],
                           ).box.padding(const EdgeInsets.all(8)).make(),
-                        ),
 
-                        //quantity row
-                        Row(
-                          children: [
-                            SizedBox(
-                              width: 100,
-                              child:
-                                  "Quantity: ".text.color(textfieldGrey).make(),
-                            ),
-                            Obx(
-                              () => Row(
-                                children: [
-                                  IconButton(
-                                      onPressed: () {
-                                        controller.decreaseQuantity();
-                                        controller.calculateTotalPrice(
-                                            int.parse(data['p_price']));
-                                      },
-                                      icon: const Icon(Icons.remove)),
-                                  controller.quantity.value.text
-                                      .size(16)
-                                      .color(darkFontGrey)
-                                      .fontFamily(bold)
-                                      .make(),
-                                  IconButton(
-                                      onPressed: () {
-                                        controller.increaseQuantity(
-                                            int.parse(data['p_quantity']));
-                                        controller.calculateTotalPrice(
-                                            int.parse(data['p_price']));
-                                      },
-                                      icon: const Icon(Icons.add)),
-                                  10.widthBox,
-                                  "(${data["p_quantity"]}) available)"
-                                      .text
-                                      .color(textfieldGrey)
-                                      .make(),
-                                ],
+                          //quantity row
+                          Row(
+                            children: [
+                              SizedBox(
+                                width: 100,
+                                child: "Quantity: "
+                                    .text
+                                    .color(textfieldGrey)
+                                    .make(),
                               ),
-                            ),
-                          ],
-                        ).box.padding(const EdgeInsets.all(8)).make(),
+                              Obx(
+                                () => Row(
+                                  children: [
+                                    IconButton(
+                                        onPressed: () {
+                                          controller.decreaseQuantity();
+                                          controller.calculateTotalPrice(
+                                              int.parse(data['p_price']));
+                                        },
+                                        icon: const Icon(Icons.remove)),
+                                    controller.quantity.value.text
+                                        .size(16)
+                                        .color(darkFontGrey)
+                                        .fontFamily(bold)
+                                        .make(),
+                                    IconButton(
+                                        onPressed: () {
+                                          controller.increaseQuantity(
+                                              int.parse(data['p_quantity']));
+                                          controller.calculateTotalPrice(
+                                              int.parse(data['p_price']));
+                                        },
+                                        icon: const Icon(Icons.add)),
+                                    10.widthBox,
+                                    "(${data["p_quantity"]} available)"
+                                        .text
+                                        .color(textfieldGrey)
+                                        .make(),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ).box.padding(const EdgeInsets.all(8)).make(),
 
-                        //total row
-                        Row(
-                          children: [
-                            SizedBox(
-                              width: 100,
-                              child: "Total:".text.color(textfieldGrey).make(),
-                            ),
-                            "${controller.totalPrice.value}"
-                                .numCurrency
-                                .text
-                                .color(redColor)
-                                .size(16)
-                                .fontFamily(bold)
-                                .make(),
-                          ],
-                        ).box.padding(const EdgeInsets.all(8)).make(),
-                      ],
-                    ).box.white.shadowSm.make(),
+                          //total row
+                          Row(
+                            children: [
+                              SizedBox(
+                                width: 100,
+                                child:
+                                    "Total:".text.color(textfieldGrey).make(),
+                              ),
+                              "${controller.totalPrice.value}"
+                                  .numCurrency
+                                  .text
+                                  .color(redColor)
+                                  .size(16)
+                                  .fontFamily(bold)
+                                  .make(),
+                            ],
+                          ).box.padding(const EdgeInsets.all(8)).make(),
+                        ],
+                      ).box.white.shadowSm.make(),
+                    ),
 
                     //description section
                     10.heightBox,
@@ -339,16 +342,21 @@ class ItemDetails extends StatelessWidget {
               child: ourButton(
                 color: redColor,
                 onPress: () {
-                  controller.addToCart(
-                    color: data['p_colors'][controller.colorIndex.value],
-                    context: context,
-                    img: data['p_imgs'][0],
-                    title: data['p_name'],
-                    sellername: data['p_seller'],
-                    qty: controller.quantity.value,
-                    tprice: controller.totalPrice.value,
-                  );
-                  VxToast.show(context, msg: "Added to cart");
+                  if (controller.quantity.value > 0) {
+                    controller.addToCart(
+                      color: data['p_colors'][controller.colorIndex.value],
+                      context: context,
+                      vendorID: data['vendor_id'],
+                      img: data['p_imgs'][0],
+                      title: data['p_name'],
+                      sellername: data['p_seller'],
+                      qty: controller.quantity.value,
+                      tprice: controller.totalPrice.value,
+                    );
+                    VxToast.show(context, msg: "Added to cart");
+                  } else {
+                    VxToast.show(context, msg: "Minimum 1 product is required");
+                  }
                 },
                 textColor: whiteColor,
                 title: "Add to cart",

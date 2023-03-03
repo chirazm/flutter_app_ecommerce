@@ -7,8 +7,11 @@ import 'package:pfe_app/controllers/auth_controller.dart';
 import 'package:pfe_app/controllers/profile_controller.dart';
 import 'package:pfe_app/services/firestore_services.dart';
 import 'package:pfe_app/views/auth_screen/login_screen.dart';
+import 'package:pfe_app/views/chat_screen/messaging_screen.dart';
+import 'package:pfe_app/views/orders_screen/orders_screen.dart';
 import 'package:pfe_app/views/profile_screen/components/details_card.dart';
 import 'package:pfe_app/views/profile_screen/edit_profile.dart';
+import 'package:pfe_app/views/wishlist_screen/wishlist_screen.dart';
 import 'package:pfe_app/widget_common/bg_widget.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -118,6 +121,19 @@ class ProfileScreen extends StatelessWidget {
                             },
                             itemBuilder: (BuildContext context, int index) {
                               return ListTile(
+                                onTap: () {
+                                  switch (index) {
+                                    case 0:
+                                      Get.to(() => OrdersScreen());
+                                      break;
+                                    case 1:
+                                      Get.to(() => WishlistScreen());
+                                      break;
+                                    case 2:
+                                      Get.to(() => MessagesScreen());
+                                      break;
+                                  }
+                                },
                                 leading: Image.asset(
                                   profileButtonsIcon[index],
                                   width: 22,

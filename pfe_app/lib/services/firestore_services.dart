@@ -21,7 +21,7 @@ class FirestoreServices {
   static getCart(uid) {
     return firestore
         .collection(cartCollection)
-        .where("added by", isEqualTo: uid)
+        .where("added_by", isEqualTo: uid)
         .snapshots();
   }
 
@@ -37,6 +37,27 @@ class FirestoreServices {
         .doc(docId)
         .collection(messageCollection)
         .orderBy('created_on', descending: false)
+        .snapshots();
+  }
+
+  static getAllOrders() {
+    return firestore
+        .collection(ordersCollection)
+        .where('order_by', isEqualTo: currentUser!.uid)
+        .snapshots();
+  }
+
+  static getWishlists() {
+    return firestore
+        .collection(productsCollection)
+        .where('p_wishlist', arrayContains: currentUser!.uid)
+        .snapshots();
+  }
+
+  static getAllMessages () {
+    return firestore
+        .collection(chatCollection)
+        .where('fromId', isEqualTo: currentUser!.uid)
         .snapshots();
   }
 }

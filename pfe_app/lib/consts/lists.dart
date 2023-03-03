@@ -53,8 +53,8 @@ const profileButtonList = [
 ];
 
 const profileButtonsIcon = [
-  icOrder,
-  icOrder,
+  icOrders,
+  icHeart,
   icMessages,
 ];
 

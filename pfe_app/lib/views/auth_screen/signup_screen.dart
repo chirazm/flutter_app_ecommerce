@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pfe_app/consts/consts.dart';
-import 'package:pfe_app/consts/lists.dart';
 import 'package:pfe_app/controllers/auth_controller.dart';
 import 'package:pfe_app/views/home_screen/home.dart';
 import 'package:pfe_app/widget_common/applogo_widget.dart';
 import 'package:pfe_app/widget_common/bg_widget.dart';
 import 'package:pfe_app/widget_common/custom_textfield.dart';
 
-import '../../consts/colors.dart';
-import '../../consts/strings.dart';
 import '../../widget_common/our_button.dart';
 
 class SignUpScreen extends StatefulWidget {
