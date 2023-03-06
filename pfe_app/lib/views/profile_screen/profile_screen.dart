@@ -13,6 +13,7 @@ import 'package:pfe_app/views/profile_screen/components/details_card.dart';
 import 'package:pfe_app/views/profile_screen/edit_profile.dart';
 import 'package:pfe_app/views/wishlist_screen/wishlist_screen.dart';
 import 'package:pfe_app/widget_common/bg_widget.dart';
+import 'package:pfe_app/widget_common/loading_indicator.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -98,17 +99,41 @@ class ProfileScreen extends StatelessWidget {
                       ),
                     ),
                     20.heightBox,
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        detailsCard(context.screenWidth / 3.3,
-                            data['cart_count'], "in your cart"),
-                        detailsCard(context.screenWidth / 3.3,
-                            data['wishlist_count'], "in your wishlist"),
-                        detailsCard(context.screenWidth / 3.3,
-                            data['order_count'], "your orders"),
-                      ],
+
+                    FutureBuilder(
+                      future: FirestoreServices.getCounts(),
+                      builder: (BuildContext context, AsyncSnapshot snapshot) {
+                        if (!snapshot.hasData) {
+                          return Center(
+                            child: loadingIndicator(),
+                          );
+                        } else {
+                          var countData = snapshot.data;
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              detailsCard(context.screenWidth / 3.3,
+                                  countData[0].toString(), "in your cart"),
+                              detailsCard(context.screenWidth / 3.3,
+                                  countData[1].toString(), "in your wishlist"),
+                              detailsCard(context.screenWidth / 3.3,
+                                  countData[2].toString(), "your orders"),
+                            ],
+                          );
+                        }
+                      },
                     ),
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    //   children: [
+                    //     detailsCard(context.screenWidth / 3.3,
+                    //         data['cart_count'], "in your cart"),
+                    //     detailsCard(context.screenWidth / 3.3,
+                    //         data['wishlist_count'], "in your wishlist"),
+                    //     detailsCard(context.screenWidth / 3.3,
+                    //         data['order_count'], "your orders"),
+                    //   ],
+                    // ),
 
                     //buttons section
                     ListView.separated(

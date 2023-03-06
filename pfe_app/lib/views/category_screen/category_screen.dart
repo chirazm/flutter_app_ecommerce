@@ -40,7 +40,7 @@ class CategoryScreen extends StatelessWidget {
                 10.heightBox,
                 categoriesList[index]
                     .text
-                    .color(darkFontGrey)
+                    .color(Colors.black)
                     .align(TextAlign.center)
                     .make(),
               ],

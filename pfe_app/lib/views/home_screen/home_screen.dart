@@ -1,7 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:pfe_app/consts/consts.dart';
+import 'package:pfe_app/controllers/home_controller.dart';
+import 'package:pfe_app/services/firestore_services.dart';
+import 'package:pfe_app/views/category_screen/item_details.dart';
 import 'package:pfe_app/views/home_screen/components/featured_button.dart';
 import 'package:pfe_app/widget_common/home_buttons.dart';
+import 'package:pfe_app/widget_common/loading_indicator.dart';
 
 import '../../consts/lists.dart';
 
@@ -10,6 +16,8 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+        var controller = Get.find<HomeController>();
+
     return Container(
       color: lightGrey,
       width: context.screenWidth,
@@ -23,9 +31,12 @@ class HomeScreen extends StatelessWidget {
             alignment: Alignment.center,
             color: lightGrey,
             child: TextFormField(
-              decoration: const InputDecoration(
+              controller: controller.searchController,
+              decoration:  InputDecoration(
                 border: InputBorder.none,
-                suffixIcon: Icon(Icons.search),
+                suffixIcon: Icon(Icons.search).onTap(() {
+                  
+                }),
                 filled: true,
                 fillColor: whiteColor,
                 hintText: searchanything,
@@ -123,7 +134,7 @@ class HomeScreen extends StatelessWidget {
                   Align(
                     alignment: Alignment.centerLeft,
                     child: featuredCategories.text
-                        .color(darkFontGrey)
+                        .color(Colors.black)
                         .size(18)
                         .fontFamily(semibold)
                         .make(),
@@ -168,42 +179,69 @@ class HomeScreen extends StatelessWidget {
                         10.heightBox,
                         SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
-                          child: Row(
-                            children: List.generate(
-                                6,
-                                (index) => Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Image.asset(
-                                          imgP1,
-                                          width: 130,
-                                          fit: BoxFit.cover,
-                                        ),
-                                        10.heightBox,
-                                        "Laptop 4GB/64GB"
-                                            .text
-                                            .fontFamily(semibold)
-                                            .color(darkFontGrey)
-                                            .make(),
-                                        10.heightBox,
-                                        "1200 TND"
-                                            .text
-                                            .color(redColor)
-                                            .fontFamily(semibold)
-                                            .size(16)
-                                            .make(),
-                                        10.heightBox,
-                                      ],
-                                    )
-                                        .box
-                                        .white
-                                        .margin(const EdgeInsets.symmetric(
-                                            horizontal: 4))
-                                        .roundedSM
-                                        .padding(const EdgeInsets.all(8))
-                                        .make()),
-                          ),
+                          child: FutureBuilder(
+                              future: FirestoreServices.getfeaturedProducts(),
+                              builder: (BuildContext context,
+                                  AsyncSnapshot<QuerySnapshot> snapshot) {
+                                if (!snapshot.hasData) {
+                                  return loadingIndicator();
+                                } else if (snapshot.data!.docs.isEmpty) {
+                                  return "No fearured products"
+                                      .text
+                                      .white
+                                      .makeCentered();
+                                } else {
+                                  var featuredData = snapshot.data!.docs;
+                                  return Row(
+                                    children: List.generate(
+                                        featuredData.length,
+                                        (index) => Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Image.network(
+                                                  featuredData[index]['p_imgs']
+                                                      [0],
+                                                  width: 130,
+                                                  height: 120,
+                                                  fit: BoxFit.cover,
+                                                ),
+                                                10.heightBox,
+                                                "${featuredData[index]['p_name']}"
+                                                    .text
+                                                    .fontFamily(semibold)
+                                                    .color(darkFontGrey)
+                                                    .make(),
+                                                10.heightBox,
+                                                "${featuredData[index]['p_price']}"
+                                                    .numCurrency
+                                                    .text
+                                                    .color(redColor)
+                                                    .fontFamily(semibold)
+                                                    .size(16)
+                                                    .make(),
+                                                10.heightBox,
+                                              ],
+                                            )
+                                                .box
+                                                .white
+                                                .margin(
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 4))
+                                                .roundedSM
+                                                .padding(
+                                                    const EdgeInsets.all(8))
+                                                .make()
+                                                .onTap(() {
+                                              Get.to(() => ItemDetails(
+                                                    title:
+                                                        "${featuredData[index]['p_name']}",
+                                                    data: featuredData[index],
+                                                  ));
+                                            })),
+                                  );
+                                }
+                              }),
                         ),
                       ],
                     ),
@@ -231,49 +269,77 @@ class HomeScreen extends StatelessWidget {
 
                   //all products section
                   20.heightBox,
-                  GridView.builder(
-                      physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: 6,
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              mainAxisSpacing: 8,
-                              crossAxisSpacing: 8,
-                              mainAxisExtent: 300),
-                      itemBuilder: ((context, index) {
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Image.asset(
-                              imgP5,
-                              height: 200,
-                              width: 200,
-                              fit: BoxFit.cover,
-                            ),
-                            const Spacer(),
-                            "Laptop 4GB/64GB"
-                                .text
-                                .fontFamily(semibold)
-                                .color(darkFontGrey)
-                                .make(),
-                            10.heightBox,
-                            "1200 TND"
-                                .text
-                                .color(redColor)
-                                .fontFamily(semibold)
-                                .size(16)
-                                .make(),
-                            10.heightBox,
-                          ],
-                        )
-                            .box
-                            .white
-                            .margin(const EdgeInsets.symmetric(horizontal: 4))
-                            .roundedSM
-                            .padding(const EdgeInsets.all(12))
-                            .make();
-                      }))
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: allproducts.text
+                        .fontFamily(bold)
+                        .color(Colors.black)
+                        .size(18)
+                        .make(),
+                  ),
+                  20.heightBox,
+                  StreamBuilder(
+                    stream: FirestoreServices.allProducts(),
+                    builder: (BuildContext context,
+                        AsyncSnapshot<QuerySnapshot> snapshot) {
+                      if (!snapshot.hasData) {
+                        return loadingIndicator();
+                      } else {
+                        var allproductsData = snapshot.data!.docs;
+                        return GridView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: allproductsData.length,
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2,
+                                    mainAxisSpacing: 8,
+                                    crossAxisSpacing: 8,
+                                    mainAxisExtent: 300),
+                            itemBuilder: ((context, index) {
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Image.network(
+                                    allproductsData[index]['p_imgs'][0],
+                                    height: 200,
+                                    width: 200,
+                                    fit: BoxFit.cover,
+                                  ),
+                                  const Spacer(),
+                                  "${allproductsData[index]['p_name']}"
+                                      .text
+                                      .fontFamily(semibold)
+                                      .color(darkFontGrey)
+                                      .make(),
+                                  10.heightBox,
+                                  "${allproductsData[index]['p_price']}"
+                                      .text
+                                      .color(redColor)
+                                      .fontFamily(semibold)
+                                      .size(16)
+                                      .make(),
+                                  10.heightBox,
+                                ],
+                              )
+                                  .box
+                                  .white
+                                  .margin(
+                                      const EdgeInsets.symmetric(horizontal: 4))
+                                  .roundedSM
+                                  .padding(const EdgeInsets.all(12))
+                                  .make()
+                                  .onTap(() {
+                                Get.to(() => ItemDetails(
+                                      title:
+                                          "${allproductsData[index]['p_name']}",
+                                      data: allproductsData[index],
+                                    ));
+                              });
+                            }));
+                      }
+                    },
+                  ),
                 ],
               ),
             ),

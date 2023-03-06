@@ -19,7 +19,6 @@ const alreadyHaveAccount = "Already have account ?";
 const logout = "Log out";
 const loggedin = "Logged in successfully";
 const loggedout = "Logged out successfully";
-
 const home = "Home",
     categories = "Categories",
     cart = "Cart",
@@ -39,7 +38,8 @@ const searchanything = "Search anything...",
     tShirts = "TShirts",
     girlsDress = "Girls Dresses",
     featuredProduct = "Featured Product",
-    featuredCategories = "Featured Categories";
+    featuredCategories = "Featured Categories",
+    allproducts = "All Products";
 
 //category strings
 const womenClothing = "Women Clothing",

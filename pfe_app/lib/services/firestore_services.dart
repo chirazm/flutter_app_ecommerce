@@ -54,10 +54,50 @@ class FirestoreServices {
         .snapshots();
   }
 
-  static getAllMessages () {
+  static getAllMessages() {
     return firestore
         .collection(chatCollection)
         .where('fromId', isEqualTo: currentUser!.uid)
         .snapshots();
+  }
+
+//get count of wishlist, orders and cart
+  static getCounts() async {
+    var res = await Future.wait([
+      firestore
+          .collection(cartCollection)
+          .where('added_by', isEqualTo: currentUser!.uid)
+          .get()
+          .then((value) {
+        return value.docs.length;
+      }),
+      firestore
+          .collection(productsCollection)
+          .where('p_wishlist', arrayContains: currentUser!.uid)
+          .get()
+          .then((value) {
+        return value.docs.length;
+      }),
+      firestore
+          .collection(ordersCollection)
+          .where('order_by', isEqualTo: currentUser!.uid)
+          .get()
+          .then((value) {
+        return value.docs.length;
+      }),
+    ]);
+    return res;
+  }
+
+  static allProducts() {
+    return firestore.collection(productsCollection).snapshots();
+  }
+
+//get featured products method
+  static getfeaturedProducts() {
+    return firestore
+        .collection(productsCollection)
+        .where('is_featured', isEqualTo: true)
+        .get();
   }
 }

@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pfe_app/consts/consts.dart';
 
@@ -9,7 +10,9 @@ class HomeController extends GetxController {
   }
 
   var currentNavIndex = 0.obs;
-  var usename = "";
+  var username = "";
+  var featuredList = [];
+  var searchController = TextEditingController();
   getUsername() async {
     var n = await firestore
         .collection(usersCollection)
@@ -20,7 +23,6 @@ class HomeController extends GetxController {
         return value.docs.single['name'];
       }
     });
-    usename = n;
-    print(usename);
+    username = n;
   }
 }
