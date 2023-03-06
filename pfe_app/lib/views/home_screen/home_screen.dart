@@ -6,6 +6,7 @@ import 'package:pfe_app/controllers/home_controller.dart';
 import 'package:pfe_app/services/firestore_services.dart';
 import 'package:pfe_app/views/category_screen/item_details.dart';
 import 'package:pfe_app/views/home_screen/components/featured_button.dart';
+import 'package:pfe_app/views/home_screen/search_screen.dart';
 import 'package:pfe_app/widget_common/home_buttons.dart';
 import 'package:pfe_app/widget_common/loading_indicator.dart';
 
@@ -16,7 +17,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-        var controller = Get.find<HomeController>();
+    var controller = Get.find<HomeController>();
 
     return Container(
       color: lightGrey,
@@ -32,15 +33,19 @@ class HomeScreen extends StatelessWidget {
             color: lightGrey,
             child: TextFormField(
               controller: controller.searchController,
-              decoration:  InputDecoration(
+              decoration: InputDecoration(
                 border: InputBorder.none,
-                suffixIcon: Icon(Icons.search).onTap(() {
-                  
+                suffixIcon: const Icon(Icons.search).onTap(() {
+                  if (controller.searchController.text.isNotEmptyAndNotNull) {
+                    Get.to(() => SearchScreen(
+                          title: controller.searchController.text,
+                        ));
+                  }
                 }),
                 filled: true,
                 fillColor: whiteColor,
                 hintText: searchanything,
-                hintStyle: TextStyle(color: textfieldGrey),
+                hintStyle: const TextStyle(color: textfieldGrey),
               ),
             ),
           ),
