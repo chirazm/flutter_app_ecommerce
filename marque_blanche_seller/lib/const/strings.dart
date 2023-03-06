@@ -3,7 +3,12 @@ const appname = "Marque Blanche Seller App",
     welcome = "Hi, Welcome to",
     email = "Email",
     password = "Password",
-    forgotPassword = "Forgot Password",
-    anyProblem = "In case of any difficulty, contact administration";
-    //credit = "@BaabaDevs"
-   
+    forgotPassword = "Forgot Password ?",
+    emailHint = "example@example.com",
+    passwordHint = "* * * * * * * *",
+    loginTo = "Login to your account",
+    anyProblem = "In case of any difficulty, contact administration",
+    dashboard = "Dashboard",
+    orders = "Orders",
+    products = "Products",
+    settings = "Settings";
