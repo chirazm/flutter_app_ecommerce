@@ -1,3 +1,5 @@
+import 'package:marque_blanche_seller/views/widgets/appbar_widget.dart';
+import 'package:marque_blanche_seller/views/widgets/dashboard_button.dart';
 import 'package:marque_blanche_seller/views/widgets/text_style.dart';
 
 import '../../const/const.dart';
@@ -9,39 +11,53 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: boldText(text: dashboard, color: darkGrey, size: 16.0),
-        actions: [
-          Center(
-            child: normalText(
-                text:
-                    intl.DateFormat('EEE, MMM d, ' 'yy').format(DateTime.now()),
-                color: purpleColor),
-          ),
-          10.widthBox,
-        ],
-      ),
+      appBar: appbarWidget(dashboard),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Column(),
-                Image.asset(
-                  icProducts,
-                  width: 40,
-                  color: white,
-                ),
+                dashboardButton(context,
+                    title: products, count: "60", icon: icProducts),
+                dashboardButton(context,
+                    title: orders, count: "15", icon: icOrders),
               ],
+            ),
+            10.heightBox,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                dashboardButton(context,
+                    title: rating, count: "60", icon: icStar),
+                dashboardButton(context,
+                    title: totalSales, count: "15", icon: icOrders),
+              ],
+            ),
+            10.heightBox,
+            const Divider(),
+            10.heightBox,
+            boldText(text: popular, color: Colors.black, size: 18.0),
+            20.heightBox,
+            ListView(
+              physics: const BouncingScrollPhysics(),
+              shrinkWrap: true,
+              children: List.generate(
+                  3,
+                  (index) => ListTile(
+                        onTap: () {},
+                        leading: Image.asset(
+                          imgProduct,
+                          width: 100,
+                          height: 100,
+                          fit: BoxFit.cover,
+                        ),
+                        title: boldText(text: "Product title", color: fontGrey),
+                        subtitle: normalText(text: "40.0 TND", color: darkGrey),
+                      )),
             )
-                .box
-                .color(purpleColor)
-                .rounded
-                .size(context.screenWidth * 0.4, 80)
-                .padding(const EdgeInsets.all(8))
-                .make(),
           ],
         ),
       ),
