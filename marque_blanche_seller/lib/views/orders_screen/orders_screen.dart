@@ -1,3 +1,6 @@
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:marque_blanche_seller/views/orders_screen/order_details.dart';
 import 'package:marque_blanche_seller/views/widgets/appbar_widget.dart';
 
 import '../../const/const.dart';
@@ -19,7 +22,9 @@ class OrdersScreen extends StatelessWidget {
             children: List.generate(
                 20,
                 (index) => ListTile(
-                      onTap: () {},
+                      onTap: () {
+                        Get.to(() => const OrderDetails());
+                      },
                       tileColor: textfieldGrey,
                       title:
                           boldText(text: "95529562528451", color: purpleColor),

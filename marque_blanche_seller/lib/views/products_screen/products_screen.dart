@@ -1,3 +1,6 @@
+import 'package:get/get.dart';
+import 'package:marque_blanche_seller/views/products_screen/add_product.dart';
+import 'package:marque_blanche_seller/views/products_screen/product_details.dart';
 import 'package:marque_blanche_seller/views/widgets/appbar_widget.dart';
 
 import '../../const/const.dart';
@@ -11,7 +14,9 @@ class ProductsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Get.to(() => const AddProduct());
+        },
         backgroundColor: purpleColor,
         child: const Icon(Icons.add),
       ),
@@ -24,7 +29,9 @@ class ProductsScreen extends StatelessWidget {
             children: List.generate(
                 20,
                 (index) => ListTile(
-                      onTap: () {},
+                      onTap: () {
+                        Get.to(() => const ProductDetails());
+                      },
                       leading: Image.asset(
                         imgProduct,
                         width: 100,
@@ -48,7 +55,7 @@ class ProductsScreen extends StatelessWidget {
                                               text: popupMenuTitles[index],
                                               color: darkGrey)
                                         ],
-                                      ).onTap(() { }),
+                                      ).onTap(() {}),
                                     ))).box.white.width(200).make(),
                         clickType: VxClickType.singleClick,
                         child: const Icon(Icons.more_vert_rounded),
