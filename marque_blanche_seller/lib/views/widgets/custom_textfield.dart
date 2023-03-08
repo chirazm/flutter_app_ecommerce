@@ -3,6 +3,8 @@ import 'package:marque_blanche_seller/views/widgets/text_style.dart';
 
 Widget customTextField({label, hint, controller, isDesc = false}) {
   return TextFormField(
+    controller: controller,
+    style: const TextStyle(color: white),
     maxLines: isDesc ? 4 : 1,
     decoration: InputDecoration(
         isDense: true,
