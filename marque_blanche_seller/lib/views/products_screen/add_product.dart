@@ -11,7 +11,6 @@ class AddProduct extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       backgroundColor: purpleColor,
       appBar: AppBar(
         leading: IconButton(
@@ -29,6 +28,7 @@ class AddProduct extends StatelessWidget {
         ],
       ),
       body: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
@@ -49,6 +49,9 @@ class AddProduct extends StatelessWidget {
               10.heightBox,
               productDropdown(),
               10.heightBox,
+              const Divider(
+                color: white,
+              ),
               boldText(text: "Choose product images"),
               10.heightBox,
               Row(
@@ -60,6 +63,9 @@ class AddProduct extends StatelessWidget {
               normalText(
                   text: "First image will be your display image",
                   color: lightGrey),
+              const Divider(
+                color: white,
+              ),
               10.heightBox,
               boldText(text: "Choose product colors"),
               10.heightBox,
@@ -68,12 +74,19 @@ class AddProduct extends StatelessWidget {
                 runSpacing: 8.0,
                 children: List.generate(
                     9,
-                    (index) => VxBox()
-                        .color(Vx.randomPrimaryColor)
-                        .roundedFull
-                        .size(70, 70)
-                        .make()),
-              )
+                    (index) => Stack(alignment: Alignment.center, children: [
+                          VxBox()
+                              .color(Vx.randomPrimaryColor)
+                              .roundedFull
+                              .size(50, 50)
+                              .make(),
+                          const Icon(
+                            Icons.done,
+                            color: white,
+                          )
+                        ])),
+              ),
+              100.heightBox,
             ],
           ),
         ),
