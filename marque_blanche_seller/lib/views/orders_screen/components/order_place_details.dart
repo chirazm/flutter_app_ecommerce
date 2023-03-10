@@ -21,7 +21,7 @@ Widget orderPlaceDetails({title1, title2, d1, d2}) {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               boldText(text: "$title2", color: purpleColor),
-              boldText(text: "$d1", color: red)
+              boldText(text: "$d2", color: red)
             ],
           ),
         )
