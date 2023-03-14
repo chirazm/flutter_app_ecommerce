@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:pfe_app/consts/consts.dart';
 import 'package:pfe_app/consts/lists.dart';
 import 'package:pfe_app/controllers/product_controller.dart';
+import 'package:pfe_app/views/cart_screen/cart_screen.dart';
 import 'package:pfe_app/views/chat_screen/chat_screen.dart';
 import 'package:pfe_app/widget_common/our_button.dart';
 
@@ -39,6 +40,12 @@ class ItemDetails extends StatelessWidget {
                 icon: const Icon(
                   Icons.share,
                 )),
+            IconButton(
+              icon: const Icon(Icons.shopping_cart),
+              onPressed: () {
+                Get.to(() => const CartScreen());
+              },
+            ),
             Obx(
               () => IconButton(
                   onPressed: () {

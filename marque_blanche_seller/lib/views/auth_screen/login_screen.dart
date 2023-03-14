@@ -5,6 +5,7 @@ import 'package:marque_blanche_seller/views/home_screen/home.dart';
 import 'package:marque_blanche_seller/views/widgets/our_button.dart';
 import 'package:marque_blanche_seller/views/widgets/text_style.dart';
 
+import '../forget_password/forget_password.dart';
 import '../widgets/loading_indicator.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -75,7 +76,9 @@ class LoginScreen extends StatelessWidget {
                     Align(
                       alignment: Alignment.centerRight,
                       child: TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Get.to(() => const ForgetPassword());
+                          },
                           child: normalText(
                               text: forgotPassword, color: purpleColor)),
                     ),
@@ -101,7 +104,8 @@ class LoginScreen extends StatelessWidget {
                                       controller.isloading(false);
                                     }
                                   });
-                                })),
+                                })
+                                ),
                   ],
                 )
                     .box

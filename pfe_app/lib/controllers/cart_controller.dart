@@ -80,4 +80,5 @@ class CartController extends GetxController {
       firestore.collection(cartCollection).doc(productSnapshot[i].id).delete();
     }
   }
+  
 }

@@ -4,6 +4,7 @@ import 'package:pfe_app/consts/consts.dart';
 import 'package:pfe_app/consts/lists.dart';
 import 'package:pfe_app/controllers/auth_controller.dart';
 import 'package:pfe_app/views/auth_screen/signup_screen.dart';
+import 'package:pfe_app/views/forget_password/forget_password.dart';
 import 'package:pfe_app/views/home_screen/home.dart';
 import 'package:pfe_app/widget_common/applogo_widget.dart';
 import 'package:pfe_app/widget_common/bg_widget.dart';
@@ -43,7 +44,10 @@ class LoginScreen extends StatelessWidget {
                 Align(
                   alignment: Alignment.centerRight,
                   child: TextButton(
-                      onPressed: () {}, child: forgetPass.text.make()),
+                      onPressed: () {
+                        Get.to(() => const ForgetPassword());
+                      },
+                      child: forgetPass.text.make()),
                 ),
                 5.heightBox,
                 controller.isloading.value

@@ -3,6 +3,9 @@ const appversion = "Version 1.0.0";
 //const credits = "@Chiraz Meddeb";
 const email = "Email";
 const emailHint = "example@example.com";
+const emailForgot = "Enter your email address";
+const pleaseEnterEmail =
+    "                        Please enter your email address. \nYou will receive a link to create a new password via email.";
 const password = "Password";
 const passwordHint = "*******";
 const retypePassword = "Retype Password";

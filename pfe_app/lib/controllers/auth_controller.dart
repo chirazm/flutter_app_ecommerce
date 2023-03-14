@@ -58,4 +58,12 @@ class AuthController extends GetxController {
       VxToast.show(context, msg: e.toString());
     }
   }
+
+  forgetPassword({email}) async {
+    try {
+      await auth.sendPasswordResetEmail(email: email);
+    } catch (e) {
+      print(e.toString());
+    }
+  }
 }
