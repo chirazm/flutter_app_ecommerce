@@ -59,20 +59,18 @@ class ProductDetails extends StatelessWidget {
                       FontWeight: FontWeight.bold),
 
                   10.heightBox,
-                  Row(
-                    children: [
-                      boldText(
-                          text: "${data['p_category']}",
-                          color: fontGrey,
-                          size: 17.0,
-                          FontWeight: FontWeight.w600),
-                      10.widthBox,
-                      normalText(
-                          text: "${data['p_subcategory']}",
-                          color: fontGrey,
-                          size: 16.0)
-                    ],
-                  ),
+
+                  boldText(
+                      text: "${data['p_category']}",
+                      color: fontGrey,
+                      size: 17.0,
+                      FontWeight: FontWeight.w600),
+                  10.heightBox,
+                  normalText(
+                      text: "${data['p_subcategory']}",
+                      color: fontGrey,
+                      size: 16.0),
+
                   10.heightBox,
                   //rating
                   VxRating(
