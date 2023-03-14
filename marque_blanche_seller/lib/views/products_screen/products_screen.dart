@@ -78,18 +78,59 @@ class ProductsScreen extends StatelessWidget {
                               menuBuilder: () => Column(
                                   children: List.generate(
                                       popupMenuTitles.length,
-                                      (index) => Padding(
+                                      (i) => Padding(
                                             padding: const EdgeInsets.all(12.0),
                                             child: Row(
                                               children: [
-                                                Icon(popupMenuIcons[index]),
+                                                Icon(
+                                                  popupMenuIcons[i],
+                                                  color:
+                                                      data[index]['featured_id'] ==
+                                                                  currentUser!
+                                                                      .uid &&
+                                                              i == 0
+                                                          ? green
+                                                          : darkGrey,
+                                                ),
                                                 10.widthBox,
                                                 normalText(
-                                                    text:
-                                                        popupMenuTitles[index],
+                                                    text: data[index][
+                                                                    'featured_id'] ==
+                                                                currentUser!
+                                                                    .uid &&
+                                                            i == 0
+                                                        ? 'Remove feature'
+                                                        : popupMenuTitles[i],
                                                     color: darkGrey)
                                               ],
-                                            ).onTap(() {}),
+                                            ).onTap(() {
+                                              switch (i) {
+                                                case 0:
+                                                  if (data[index]
+                                                          ['is_featured'] ==
+                                                      true) {
+                                                    controller.removeFeatured(
+                                                        data[index].id);
+                                                    VxToast.show(context,
+                                                        msg: "Removed");
+                                                  } else {
+                                                    controller.addFeatured(
+                                                        data[index].id);
+                                                    VxToast.show(context,
+                                                        msg: "Added");
+                                                  }
+                                                  break;
+                                                case 1:
+                                                  break;
+                                                case 2:
+                                                  controller.removeProduct(
+                                                      data[index].id);
+                                                  VxToast.show(context,
+                                                      msg: "Product removed");
+                                                  break;
+                                                default:
+                                              }
+                                            }),
                                           ))).box.white.width(200).make(),
                               clickType: VxClickType.singleClick,
                               child: const Icon(Icons.more_vert_rounded),
