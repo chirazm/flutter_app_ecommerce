@@ -74,67 +74,9 @@ class HomeScreen extends StatelessWidget {
                             .make();
                       }),
 
-                  10.heightBox,
-
-                  //deals buttons
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: List.generate(
-                        2,
-                        (index) => HomeButtons(
-                              height: context.screenHeight * 0.2,
-                              width: context.screenWidth / 2.5,
-                              icon: index == 0 ? icTodaysDeal : icFlashDeal,
-                              title: index == 0 ? todayDeal : flashsale,
-                            )),
-                  ),
-
-                  //2nd swiper
-                  10.heightBox,
-
-                  //swipers brands
-                  VxSwiper.builder(
-                      aspectRatio: 16 / 9,
-                      autoPlay: true,
-                      height: 150,
-                      enlargeCenterPage: true,
-                      itemCount: secondSlidersList.length,
-                      itemBuilder: (context, index) {
-                        return Image.asset(
-                          secondSlidersList[index],
-                          fit: BoxFit.fill,
-                        )
-                            .box
-                            .rounded
-                            .clip(Clip.antiAlias)
-                            .margin(const EdgeInsets.symmetric(horizontal: 8))
-                            .make();
-                      }),
-
-                  //category buttons
-                  10.heightBox,
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: List.generate(
-                        3,
-                        (index) => HomeButtons(
-                              height: context.screenHeight * 0.15,
-                              width: context.screenWidth / 3.5,
-                              icon: index == 0
-                                  ? icTopCategories
-                                  : index == 1
-                                      ? icBrands
-                                      : icTopSeller,
-                              title: index == 0
-                                  ? topCategories
-                                  : index == 1
-                                      ? brand
-                                      : topSellers,
-                            )),
-                  ),
+                  30.heightBox,
 
                   //featured categories
-                  20.heightBox,
 
                   Align(
                     alignment: Alignment.centerLeft,
@@ -144,9 +86,7 @@ class HomeScreen extends StatelessWidget {
                         .fontFamily(semibold)
                         .make(),
                   ),
-
-                  20.heightBox,
-
+                  10.heightBox,
                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: Row(
@@ -166,6 +106,28 @@ class HomeScreen extends StatelessWidget {
                       ).toList(),
                     ),
                   ),
+
+                  //2nd swiper
+                  30.heightBox,
+
+                  //swipers brands
+                  VxSwiper.builder(
+                      aspectRatio: 16 / 9,
+                      autoPlay: true,
+                      height: 150,
+                      enlargeCenterPage: true,
+                      itemCount: secondSlidersList.length,
+                      itemBuilder: (context, index) {
+                        return Image.asset(
+                          secondSlidersList[index],
+                          fit: BoxFit.fill,
+                        )
+                            .box
+                            .rounded
+                            .clip(Clip.antiAlias)
+                            .margin(const EdgeInsets.symmetric(horizontal: 8))
+                            .make();
+                      }),
 
                   //featured product
                   20.heightBox,
@@ -251,26 +213,6 @@ class HomeScreen extends StatelessWidget {
                       ],
                     ),
                   ),
-
-                  //third swiper
-                  20.heightBox,
-                  VxSwiper.builder(
-                      aspectRatio: 16 / 9,
-                      autoPlay: true,
-                      height: 150,
-                      enlargeCenterPage: true,
-                      itemCount: secondSlidersList.length,
-                      itemBuilder: (context, index) {
-                        return Image.asset(
-                          secondSlidersList[index],
-                          fit: BoxFit.fill,
-                        )
-                            .box
-                            .rounded
-                            .clip(Clip.antiAlias)
-                            .margin(const EdgeInsets.symmetric(horizontal: 8))
-                            .make();
-                      }),
 
                   //all products section
                   20.heightBox,
