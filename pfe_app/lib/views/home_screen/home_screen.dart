@@ -12,8 +12,35 @@ import 'package:pfe_app/widget_common/loading_indicator.dart';
 
 import '../../consts/lists.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  final List _bannerImage = [];
+  getBanners() {
+    return _firestore
+        .collection(bannersCollection)
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      querySnapshot.docs.forEach((doc) {
+        setState(() {
+          _bannerImage.add(doc['image']);
+        });
+      });
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getBanners();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,30 +77,31 @@ class HomeScreen extends StatelessWidget {
             ),
           ),
           10.heightBox,
+
+          //swipers brands
+
           Expanded(
             child: SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
               child: Column(
                 children: [
-                  //swipers brands
                   VxSwiper.builder(
-                      aspectRatio: 16 / 9,
-                      autoPlay: true,
-                      height: 150,
-                      enlargeCenterPage: true,
-                      itemCount: slidersList.length,
-                      itemBuilder: (context, index) {
-                        return Image.asset(
-                          slidersList[index],
-                          fit: BoxFit.fill,
-                        )
-                            .box
-                            .rounded
-                            .clip(Clip.antiAlias)
-                            .margin(const EdgeInsets.symmetric(horizontal: 8))
-                            .make();
-                      }),
-
+                    aspectRatio: 16 / 9,
+                    autoPlay: true,
+                    height: 150,
+                    enlargeCenterPage: true,
+                    itemCount: _bannerImage.length,
+                    itemBuilder: (context, index) {
+                      return Image.network(
+                        _bannerImage[index],
+                      )
+                          .box
+                          .rounded
+                          .clip(Clip.antiAlias)
+                          .margin(const EdgeInsets.symmetric(horizontal: 8))
+                          .make();
+                    },
+                  ),
                   30.heightBox,
 
                   //featured categories

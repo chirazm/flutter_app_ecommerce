@@ -1,4 +1,5 @@
 import 'package:file_picker/file_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
 class UploadBanner extends StatefulWidget {
@@ -9,8 +10,9 @@ class UploadBanner extends StatefulWidget {
 }
 
 class _UploadBannerState extends State<UploadBanner> {
+  final FirebaseStorage _storage = FirebaseStorage.instance;
   dynamic _image;
-
+  String? fileName;
   pickImage() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       allowMultiple: false,
@@ -19,8 +21,13 @@ class _UploadBannerState extends State<UploadBanner> {
     if (result != null) {
       setState(() {
         _image = result.files.first.bytes;
+        fileName = result.files.first.name;
       });
     }
+  }
+
+  _uploadBannersToStorage(dynamic image) {
+    _storage.ref().child('Banners');
   }
 
   @override

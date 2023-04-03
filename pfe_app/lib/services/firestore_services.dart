@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pfe_app/consts/consts.dart';
 
 class FirestoreServices {
@@ -112,4 +113,7 @@ class FirestoreServices {
   static searchProducts(title) {
     return firestore.collection(productsCollection).get();
   }
+
+  //get banners
+  
 }
