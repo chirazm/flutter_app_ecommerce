@@ -1,6 +1,9 @@
+import 'package:admin_panel_pfe/views/screens/side_bar_screens/widgets/banner_widget.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class UploadBanner extends StatefulWidget {
   static const String routeName = "\UploadBanner";
@@ -11,6 +14,7 @@ class UploadBanner extends StatefulWidget {
 
 class _UploadBannerState extends State<UploadBanner> {
   final FirebaseStorage _storage = FirebaseStorage.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   dynamic _image;
   String? fileName;
   pickImage() async {
@@ -26,8 +30,27 @@ class _UploadBannerState extends State<UploadBanner> {
     }
   }
 
-  _uploadBannersToStorage(dynamic image) {
-    _storage.ref().child('Banners');
+  _uploadBannersToStorage(dynamic image) async {
+    Reference ref = _storage.ref().child('Banners').child(fileName!);
+    UploadTask uploadTask = ref.putData(image);
+    TaskSnapshot snapshot = await uploadTask;
+    String downloadUrl = await snapshot.ref.getDownloadURL();
+    return downloadUrl;
+  }
+
+  uploadToFireStore() async {
+    EasyLoading.show();
+    if (_image != null) {
+      String imageUrl = await _uploadBannersToStorage(_image);
+      await _firestore.collection('banners').doc(fileName).set({
+        'image': imageUrl,
+      }).whenComplete((() {
+        EasyLoading.dismiss();
+        setState(() {
+          _image = null;
+        });
+      }));
+    }
   }
 
   @override
@@ -68,7 +91,7 @@ class _UploadBannerState extends State<UploadBanner> {
                               fit: BoxFit.cover,
                             )
                           : Center(
-                              child: Text('Banners'),
+                              child: Text('Banner'),
                             ),
                     ),
                     SizedBox(
@@ -93,11 +116,33 @@ class _UploadBannerState extends State<UploadBanner> {
                 style: ElevatedButton.styleFrom(
                   primary: Colors.yellow.shade900,
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  uploadToFireStore();
+                },
                 child: Text('Save'),
               ),
             ],
-          )
+          ),
+          Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Divider(
+              color: Colors.grey,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              alignment: Alignment.topLeft,
+              child: Text(
+                'Banners',
+                style: TextStyle(
+                  fontSize: 36,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+          BannerWidget(),
         ],
       ),
     );

@@ -94,6 +94,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     itemBuilder: (context, index) {
                       return Image.network(
                         _bannerImage[index],
+                        fit: BoxFit.fill,
                       )
                           .box
                           .rounded
