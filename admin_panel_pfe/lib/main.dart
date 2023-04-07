@@ -1,6 +1,8 @@
 import 'dart:io';
 
-import 'package:admin_panel_pfe/views/screens/main_screen.dart';
+import 'package:admin_panel_pfe/views/Splash_screen.dart';
+import 'package:admin_panel_pfe/views/screens/Login_screen.dart';
+import 'package:admin_panel_pfe/views/screens/Home_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -32,9 +34,9 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primaryColor: Color.fromARGB(255, 253, 159, 19),
       ),
-      home: MainScreen(),
+      home: SplashScreen(),
       builder: EasyLoading.init(),
     );
   }
