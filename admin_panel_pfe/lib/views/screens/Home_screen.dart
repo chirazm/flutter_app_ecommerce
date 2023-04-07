@@ -9,6 +9,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_admin_scaffold/admin_scaffold.dart';
 
+import '../../consts/colors.dart';
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -61,7 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return AdminScaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.yellow.shade900,
+        backgroundColor: appbarColor,
         title: Text('Management'),
       ),
       sideBar: SideBar(
@@ -84,7 +86,7 @@ class _HomeScreenState extends State<HomeScreen> {
               route: ProductScreen.routeName),
           AdminMenuItem(
               title: 'Upload Banners',
-              icon: CupertinoIcons.add,
+              icon: CupertinoIcons.photo,
               route: UploadBanner.routeName),
         ],
         selectedRoute: '',

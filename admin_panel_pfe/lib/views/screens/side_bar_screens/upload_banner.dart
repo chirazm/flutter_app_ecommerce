@@ -5,6 +5,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
+import '../../../consts/colors.dart';
+
 class UploadBanner extends StatefulWidget {
   static const String routeName = "\UploadBanner";
 
@@ -69,8 +71,21 @@ class _UploadBannerState extends State<UploadBanner> {
               ),
             ),
           ),
+          Padding(
+            padding: const EdgeInsets.only(left: 8.0),
+            child: Container(
+              alignment: Alignment.topLeft,
+              child: Text(
+                'Add/ Delete Home Screen Banner Images',
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
           Divider(
-            color: Colors.grey,
+            thickness: 5,
           ),
           Row(
             children: [
@@ -99,7 +114,7 @@ class _UploadBannerState extends State<UploadBanner> {
                     ),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.yellow.shade900,
+                        primary: buttonColor,
                       ),
                       onPressed: () {
                         pickImage();
@@ -114,7 +129,7 @@ class _UploadBannerState extends State<UploadBanner> {
               ),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.yellow.shade900,
+                  primary: buttonColor,
                 ),
                 onPressed: () {
                   uploadToFireStore();
@@ -123,26 +138,13 @@ class _UploadBannerState extends State<UploadBanner> {
               ),
             ],
           ),
-          Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Divider(
-              color: Colors.grey,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              alignment: Alignment.topLeft,
-              child: Text(
-                'Banners',
-                style: TextStyle(
-                  fontSize: 36,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
+          Divider(
+            thickness: 5,
           ),
           BannerWidget(),
+          Divider(
+            thickness: 5,
+          )
         ],
       ),
     );
