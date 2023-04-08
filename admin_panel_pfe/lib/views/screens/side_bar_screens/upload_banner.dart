@@ -79,7 +79,6 @@ class _UploadBannerState extends State<UploadBanner> {
                 'Add/ Delete Home Screen Banner Images',
                 style: TextStyle(
                   fontSize: 14,
-                  fontWeight: FontWeight.bold,
                 ),
               ),
             ),

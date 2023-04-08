@@ -6,6 +6,8 @@ class FirebaseServices {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   CollectionReference banners =
       FirebaseFirestore.instance.collection('banners');
+  CollectionReference vendors =
+      FirebaseFirestore.instance.collection('vendors');
   FirebaseStorage storage = FirebaseStorage.instance;
 
   Future<QuerySnapshot> getAdminCredentials() {
@@ -15,6 +17,12 @@ class FirebaseServices {
 
   deleteBannerImageFromFirebase(id) async {
     banners.doc(id).delete();
+  }
+
+updateVendorStatus({id, status}) async {
+    vendors.doc(id).update({
+      'account_verified' : status ? false : true
+    });
   }
 
   Future<void> confirmDeleteDialog({title, message, context, id}) async {

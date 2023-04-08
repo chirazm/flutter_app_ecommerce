@@ -1,18 +1,9 @@
-import 'dart:html';
-
 import 'package:admin_panel_pfe/consts/colors.dart';
 import 'package:admin_panel_pfe/services/firebase_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class BannerWidget extends StatefulWidget {
-  static const String id = 'banner_screen';
-
-  @override
-  State<BannerWidget> createState() => _BannerWidgetState();
-}
-
-class _BannerWidgetState extends State<BannerWidget> {
+class BannerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Stream<QuerySnapshot> _bannersStream =

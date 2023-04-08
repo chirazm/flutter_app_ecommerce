@@ -1,11 +1,8 @@
 import 'package:admin_panel_pfe/views/screens/side_bar_screens/categories_screen.dart';
 import 'package:admin_panel_pfe/views/screens/side_bar_screens/dashbord_screen.dart';
-import 'package:admin_panel_pfe/views/screens/side_bar_screens/orders_screen.dart';
 import 'package:admin_panel_pfe/views/screens/side_bar_screens/products_screen.dart';
 import 'package:admin_panel_pfe/views/screens/side_bar_screens/upload_banner.dart';
-import 'package:admin_panel_pfe/views/screens/side_bar_screens/vendors_screen.dart';
-import 'package:admin_panel_pfe/views/screens/side_bar_screens/withdrawal_screen.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:admin_panel_pfe/views/screens/side_bar_screens/vendors_screen.dart';import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_admin_scaffold/admin_scaffold.dart';
 
