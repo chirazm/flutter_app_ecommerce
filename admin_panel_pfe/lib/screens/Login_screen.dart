@@ -1,5 +1,5 @@
 import 'package:admin_panel_pfe/services/firebase_service.dart';
-import 'package:admin_panel_pfe/views/screens/Home_screen.dart';
+import 'package:admin_panel_pfe/screens/Home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';

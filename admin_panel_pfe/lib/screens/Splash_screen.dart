@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:admin_panel_pfe/views/screens/Home_screen.dart';
-import 'package:admin_panel_pfe/views/screens/Login_screen.dart';
+import 'package:admin_panel_pfe/screens/Home_screen.dart';
+import 'package:admin_panel_pfe/screens/Login_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 

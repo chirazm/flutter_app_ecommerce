@@ -68,8 +68,8 @@ class BannerWidget extends StatelessWidget {
                               icon: Icon(
                                 Icons.delete,
                                 color: buttonColor,
-                              )),
-                        ))
+                              ),),
+                        ),),
                   ],
                 ),
               );

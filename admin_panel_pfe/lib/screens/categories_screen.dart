@@ -1,9 +1,11 @@
-import 'package:admin_panel_pfe/views/screens/side_bar_screens/widgets/category_widget.dart';
+import 'package:admin_panel_pfe/consts/colors.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+
+import '../widgets/category/category_widget.dart';
 
 class CategoriesScreen extends StatefulWidget {
   static const String routeName = "\CategoriesScreen";
@@ -20,7 +22,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
   dynamic _image;
 
   String? fileName;
-  late String categoryName;
+  late String name;
 
   _pickImage() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -49,7 +51,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
       String imageUrl = await _uploadCategoryBannerToStorage(_image);
       await _firestore.collection('categories').doc(fileName).set({
         'image': imageUrl,
-        'categoryName': categoryName,
+        'name': name,
       }).whenComplete(() {
         EasyLoading.dismiss();
         setState(() {
@@ -81,7 +83,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
               ),
             ),
             Divider(
-              color: Colors.grey,
+              thickness: 5,
             ),
             Row(
               children: [
@@ -102,7 +104,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                                 fit: BoxFit.cover,
                               )
                             : Center(
-                                child: Text('Catergory'),
+                                child: Text('Catergory Image'),
                               ),
                       ),
                       SizedBox(
@@ -110,7 +112,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                       ),
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          primary: Colors.yellow.shade900,
+                          primary: buttonColor,
                         ),
                         onPressed: () {
                           _pickImage();
@@ -125,7 +127,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                     width: 180,
                     child: TextFormField(
                       onChanged: (value) {
-                        categoryName = value;
+                        name = value;
                       },
                       validator: ((value) {
                         if (value!.isEmpty) {
@@ -146,7 +148,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                 ),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.yellow.shade900,
+                    primary: buttonColor,
                   ),
                   onPressed: () {
                     uploadCategory();
@@ -155,11 +157,8 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                 ),
               ],
             ),
-            Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Divider(
-                color: Colors.grey,
-              ),
+            Divider(
+              thickness: 5,
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -173,8 +172,15 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                   ),
                 ),
               ),
-            ), 
-            CategoryWidget(),
+            ),
+            Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: CategoryWidget(),
+                ),
+              ],
+            ),
           ],
         ),
       ),

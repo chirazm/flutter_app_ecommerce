@@ -9,7 +9,10 @@ class FirebaseServices {
   CollectionReference vendors =
       FirebaseFirestore.instance.collection('vendors');
   FirebaseStorage storage = FirebaseStorage.instance;
+  CollectionReference category =
+      FirebaseFirestore.instance.collection('categories');
 
+      
   Future<QuerySnapshot> getAdminCredentials() {
     var result = FirebaseFirestore.instance.collection('admin').get();
     return result;
@@ -19,10 +22,8 @@ class FirebaseServices {
     banners.doc(id).delete();
   }
 
-updateVendorStatus({id, status}) async {
-    vendors.doc(id).update({
-      'account_verified' : status ? false : true
-    });
+  updateVendorStatus({id, status}) async {
+    vendors.doc(id).update({'account_verified': status ? false : true});
   }
 
   Future<void> confirmDeleteDialog({title, message, context, id}) async {
@@ -61,6 +62,7 @@ updateVendorStatus({id, status}) async {
 
   Future<void> showMyDialog({title, message, context}) async {
     return showDialog<void>(
+      
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {

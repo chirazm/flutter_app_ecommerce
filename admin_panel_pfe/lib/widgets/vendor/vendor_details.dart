@@ -247,16 +247,118 @@ class _VendorDetailsBoxState extends State<VendorDetailsBox> {
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
                                           Icon(
-                                            CupertinoIcons.money_dollar_circle,
+                                            CupertinoIcons
+                                                .money_dollar_circle_fill,
                                             size: 50,
                                             color: Colors.black54,
-                                          )
+                                          ),
+                                          Text('Total Revenue'),
+                                          Text('130.000')
                                         ],
                                       ),
                                     ),
                                   ),
                                 ),
-                              )
+                              ),
+                              SizedBox(
+                                height: 120,
+                                width: 120,
+                                child: Card(
+                                  color: Colors.orangeAccent.withOpacity(.9),
+                                  elevation: 4,
+                                  child: Padding(
+                                    padding: EdgeInsets.all(10.0),
+                                    child: Center(
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Icon(
+                                            CupertinoIcons.cart_fill,
+                                            size: 50,
+                                            color: Colors.black54,
+                                          ),
+                                          Text('Active Orders'),
+                                          Text('0')
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 120,
+                                width: 120,
+                                child: Card(
+                                  color: Colors.orangeAccent.withOpacity(.9),
+                                  elevation: 4,
+                                  child: Padding(
+                                    padding: EdgeInsets.all(10.0),
+                                    child: Center(
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Icon(
+                                            Icons.shopping_cart,
+                                            size: 50,
+                                            color: Colors.black54,
+                                          ),
+                                          Text('Total Orders'),
+                                          Text('30')
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 120,
+                                width: 120,
+                                child: Card(
+                                  color: Colors.orangeAccent.withOpacity(.9),
+                                  elevation: 4,
+                                  child: Padding(
+                                    padding: EdgeInsets.all(10.0),
+                                    child: Center(
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Icon(
+                                            Icons.grade_outlined,
+                                            size: 50,
+                                            color: Colors.black54,
+                                          ),
+                                          Text('Poducts'),
+                                          Text('130')
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 120,
+                                width: 120,
+                                child: Card(
+                                  color: Colors.orangeAccent.withOpacity(.9),
+                                  elevation: 4,
+                                  child: Padding(
+                                    padding: EdgeInsets.all(10.0),
+                                    child: Center(
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Icon(
+                                            Icons.list_alt_outlined,
+                                            size: 50,
+                                            color: Colors.black54,
+                                          ),
+                                          Text('Statement'),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ],
                           ),
                         ],

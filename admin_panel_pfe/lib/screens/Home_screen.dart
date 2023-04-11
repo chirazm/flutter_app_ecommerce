@@ -1,12 +1,13 @@
-import 'package:admin_panel_pfe/views/screens/side_bar_screens/categories_screen.dart';
-import 'package:admin_panel_pfe/views/screens/side_bar_screens/dashbord_screen.dart';
-import 'package:admin_panel_pfe/views/screens/side_bar_screens/products_screen.dart';
-import 'package:admin_panel_pfe/views/screens/side_bar_screens/upload_banner.dart';
-import 'package:admin_panel_pfe/views/screens/side_bar_screens/vendors_screen.dart';import 'package:flutter/cupertino.dart';
+import 'package:admin_panel_pfe/screens/categories_screen.dart';
+import 'package:admin_panel_pfe/screens/dashbord_screen.dart';
+import 'package:admin_panel_pfe/screens/products_screen.dart';
+import 'package:admin_panel_pfe/screens/banners_screen.dart';
+import 'package:admin_panel_pfe/screens/vendors_screen.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_admin_scaffold/admin_scaffold.dart';
 
-import '../../consts/colors.dart';
+import '../consts/colors.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -58,12 +59,18 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return AdminScaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.grey[100],
       appBar: AppBar(
         backgroundColor: appbarColor,
-        title: Text('Management'),
+        title: Text('Marque blanche Dashboard'),
       ),
       sideBar: SideBar(
+        textStyle: TextStyle(color: Colors.black, fontWeight: FontWeight.w200),
+        //activeBackgroundColor: Color.fromARGB(66, 224, 4, 4),
+        borderColor: Color.fromARGB(255, 194, 192, 192),
+        iconColor: Colors.black87,
+        //activeIconColor: Color.fromARGB(255, 228, 86, 31),
+
         items: [
           AdminMenuItem(
               title: 'Dashboard',
@@ -86,6 +93,7 @@ class _HomeScreenState extends State<HomeScreen> {
               icon: CupertinoIcons.photo,
               route: UploadBanner.routeName),
         ],
+
         selectedRoute: '',
         onSelected: (item) {
           screenSelector(item);
@@ -93,10 +101,10 @@ class _HomeScreenState extends State<HomeScreen> {
         header: Container(
           height: 50,
           width: double.infinity,
-          color: const Color(0xff444444),
+          color: Color.fromARGB(255, 155, 154, 154),
           child: const Center(
             child: Text(
-              'Admin Panel',
+              'Menu',
               style: TextStyle(
                 color: Colors.white,
               ),
@@ -106,15 +114,13 @@ class _HomeScreenState extends State<HomeScreen> {
         footer: Container(
           height: 50,
           width: double.infinity,
-          color: const Color(0xff444444),
-          child: const Center(
-            child: Text(
-              'footer',
-              style: TextStyle(
-                color: Colors.white,
-              ),
-            ),
-          ),
+          color: Color.fromARGB(255, 155, 154, 154),
+          child: Center(
+              child: Image.asset(
+            'app_logo.png',
+            width: 40,
+            height: 40,
+          )),
         ),
       ),
       body: _selectedItem,

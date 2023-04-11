@@ -1,8 +1,8 @@
 import 'dart:io';
 
-import 'package:admin_panel_pfe/views/Splash_screen.dart';
-import 'package:admin_panel_pfe/views/screens/Login_screen.dart';
-import 'package:admin_panel_pfe/views/screens/Home_screen.dart';
+import 'package:admin_panel_pfe/screens/Splash_screen.dart';
+import 'package:admin_panel_pfe/screens/Login_screen.dart';
+import 'package:admin_panel_pfe/screens/Home_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'Admin panel',
       theme: ThemeData(
         primaryColor: Color.fromARGB(255, 253, 159, 19),
       ),
