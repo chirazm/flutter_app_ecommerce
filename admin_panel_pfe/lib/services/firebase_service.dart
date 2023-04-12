@@ -11,8 +11,10 @@ class FirebaseServices {
   FirebaseStorage storage = FirebaseStorage.instance;
   CollectionReference category =
       FirebaseFirestore.instance.collection('categories');
+  CollectionReference users = FirebaseFirestore.instance.collection('user');
+  CollectionReference orders = FirebaseFirestore.instance.collection('orders');
+  CollectionReference products = FirebaseFirestore.instance.collection('products');
 
-      
   Future<QuerySnapshot> getAdminCredentials() {
     var result = FirebaseFirestore.instance.collection('admin').get();
     return result;
@@ -62,7 +64,6 @@ class FirebaseServices {
 
   Future<void> showMyDialog({title, message, context}) async {
     return showDialog<void>(
-      
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {

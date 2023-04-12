@@ -1,5 +1,6 @@
 import 'package:admin_panel_pfe/screens/categories_screen.dart';
 import 'package:admin_panel_pfe/screens/dashbord_screen.dart';
+import 'package:admin_panel_pfe/screens/exit_screen.dart';
 import 'package:admin_panel_pfe/screens/products_screen.dart';
 import 'package:admin_panel_pfe/screens/banners_screen.dart';
 import 'package:admin_panel_pfe/screens/vendors_screen.dart';
@@ -39,17 +40,18 @@ class _HomeScreenState extends State<HomeScreen> {
           });
         });
         break;
-      case ProductScreen.routeName:
-        setState(() {
-          setState(() {
-            _selectedItem = ProductScreen();
-          });
-        });
-        break;
+
       case UploadBanner.routeName:
         setState(() {
           setState(() {
             _selectedItem = UploadBanner();
+          });
+        });
+        break;
+      case ExitScreen.routeName:
+        setState(() {
+          setState(() {
+            _selectedItem = ExitScreen();
           });
         });
         break;
@@ -85,12 +87,12 @@ class _HomeScreenState extends State<HomeScreen> {
               icon: Icons.category,
               route: CategoriesScreen.routeName),
           AdminMenuItem(
-              title: 'Products',
-              icon: Icons.shop,
-              route: ProductScreen.routeName),
-          AdminMenuItem(
               title: 'Upload Banners',
               icon: CupertinoIcons.photo,
+              route: UploadBanner.routeName),
+          AdminMenuItem(
+              title: 'Exit',
+              icon: Icons.exit_to_app_outlined,
               route: UploadBanner.routeName),
         ],
 
