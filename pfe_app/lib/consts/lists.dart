@@ -1,9 +1,10 @@
 import 'package:pfe_app/consts/consts.dart';
 
 const socialIconList = [
-  icFacebookLogo,
-  icGoogleLogo,
-  icTwitterLogo,
+  //icFacebookLogo,
+ // icGoogleLogo,
+  //icTwitterLogo,
+  icPhoneLogo,
 ];
 
 const slidersList = [imgSlider1, imgSlider2, imgSlider3, imgSlider4];

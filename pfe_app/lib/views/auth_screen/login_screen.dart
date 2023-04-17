@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:pfe_app/consts/consts.dart';
 import 'package:pfe_app/consts/lists.dart';
 import 'package:pfe_app/controllers/auth_controller.dart';
+import 'package:pfe_app/views/auth_screen/phone_auth_screen.dart';
 import 'package:pfe_app/views/auth_screen/signup_screen.dart';
 import 'package:pfe_app/views/forget_password/forget_password.dart';
 import 'package:pfe_app/views/home_screen/home.dart';
@@ -13,6 +14,7 @@ import 'package:pfe_app/widget_common/our_button.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
+  //static const String id = 'HomeScreen';
 
   @override
   Widget build(BuildContext context) {
@@ -84,22 +86,14 @@ class LoginScreen extends StatelessWidget {
                 10.heightBox,
                 loginWith.text.color(fontGrey).make(),
                 5.heightBox,
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: List.generate(
-                      3,
-                      (index) => Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: CircleAvatar(
-                              backgroundColor: lightGrey,
-                              radius: 25,
-                              child: Image.asset(
-                                socialIconList[index],
-                                width: 30,
-                              ),
-                            ),
-                          )),
-                )
+                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      controller.signInWithGoogle(context);
+                    },
+                    child: const Icon(Icons.face),
+                  )
+                ])
               ],
             )
                 .box

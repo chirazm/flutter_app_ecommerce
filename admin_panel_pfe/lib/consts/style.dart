@@ -5,3 +5,7 @@ const VendorDetailsBoxTextStyle = TextStyle(
   fontSize: 14,
   fontWeight: FontWeight.bold,
 );
+
+const double kbigFontSize = 25;
+const double knormalFontSize = 18;
+const double ksmallFontSize = 15;

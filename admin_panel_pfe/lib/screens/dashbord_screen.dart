@@ -1,6 +1,7 @@
 import 'package:admin_panel_pfe/consts/colors.dart';
 import 'package:admin_panel_pfe/services/firebase_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class DashboardScreen extends StatelessWidget {
@@ -8,12 +9,13 @@ class DashboardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     FirebaseServices _services = FirebaseServices();
-    Widget analyticWidget({required String title, required String value}) {
+    Widget analyticWidget(
+        {required String title, required String value, required Icon icon}) {
       return Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(18.0),
         child: Container(
-          height: 100,
-          width: 180,
+          height: 120,
+          width: 220,
           decoration: BoxDecoration(
             border: Border.all(color: appbarColor),
             borderRadius: BorderRadius.circular(10),
@@ -24,15 +26,23 @@ class DashboardScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  title,
-                  style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold),
+                Row(
+                  children: [
+                    icon,
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Text(
+                      title,
+                      style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ],
                 ),
                 SizedBox(
-                  height: 11,
+                  height: 13,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -55,9 +65,9 @@ class DashboardScreen extends StatelessWidget {
     return SingleChildScrollView(
       child: Container(
           alignment: Alignment.topLeft,
-          padding: const EdgeInsets.all(10),
+          padding: const EdgeInsets.all(8),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
                 'Dashboard',
@@ -81,17 +91,15 @@ class DashboardScreen extends StatelessWidget {
                         return Center(child: Text('Something went wrong'));
                       }
 
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Center(
-                          child: CircularProgressIndicator(
-                            color: Colors.cyan,
-                          ),
-                        );
-                      }
                       if (snapshot.hasData) {
                         return analyticWidget(
-                            title: 'Total User',
-                            value: snapshot.data!.size.toString());
+                          title: 'Total User',
+                          value: snapshot.data!.size.toString(),
+                          icon: Icon(
+                            CupertinoIcons.person_3_fill,
+                            size: 35,
+                          ),
+                        );
                       }
                       return SizedBox();
                     },
@@ -114,7 +122,11 @@ class DashboardScreen extends StatelessWidget {
                       if (snapshot.hasData) {
                         return analyticWidget(
                             title: 'Total Vendor',
-                            value: snapshot.data!.size.toString());
+                            value: snapshot.data!.size.toString(),
+                            icon: Icon(
+                              CupertinoIcons.person_3_fill,
+                              size: 35,
+                            ));
                       }
                       return SizedBox();
                     },
@@ -127,17 +139,14 @@ class DashboardScreen extends StatelessWidget {
                         return Center(child: Text('Something went wrong'));
                       }
 
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Center(
-                          child: CircularProgressIndicator(
-                            color: Colors.cyan,
-                          ),
-                        );
-                      }
                       if (snapshot.hasData) {
                         return analyticWidget(
-                            title: 'Total Category',
-                            value: snapshot.data!.size.toString());
+                          title: 'Total Category',
+                          value: snapshot.data!.size.toString(),
+                          icon: Icon(
+                            Icons.category,
+                          ),
+                        );
                       }
                       return SizedBox();
                     },
@@ -159,8 +168,12 @@ class DashboardScreen extends StatelessWidget {
                       }
                       if (snapshot.hasData) {
                         return analyticWidget(
-                            title: 'Total Order',
-                            value: snapshot.data!.size.toString());
+                          title: 'Total Order',
+                          value: snapshot.data!.size.toString(),
+                          icon: Icon(
+                            Icons.shopping_cart,
+                          ),
+                        );
                       }
                       return SizedBox();
                     },
@@ -173,17 +186,14 @@ class DashboardScreen extends StatelessWidget {
                         return Center(child: Text('Something went wrong'));
                       }
 
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Center(
-                          child: CircularProgressIndicator(
-                            color: Colors.cyan,
-                          ),
-                        );
-                      }
                       if (snapshot.hasData) {
                         return analyticWidget(
-                            title: 'Total Product',
-                            value: snapshot.data!.size.toString());
+                          icon: Icon(
+                            Icons.shop,
+                          ),
+                          title: 'Total Product',
+                          value: snapshot.data!.size.toString(),
+                        );
                       }
                       return SizedBox();
                     },

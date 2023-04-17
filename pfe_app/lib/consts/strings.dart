@@ -1,4 +1,4 @@
-const appname = "Marque blanche";
+const appname = "Shop App";
 const appversion = "Version 1.0.0";
 //const credits = "@Chiraz Meddeb";
 const email = "Email";

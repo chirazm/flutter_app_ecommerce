@@ -6,6 +6,7 @@ import 'package:pfe_app/consts/colors.dart';
 import 'package:pfe_app/consts/consts.dart';
 import 'package:pfe_app/views/auth_screen/login_screen.dart';
 import 'package:pfe_app/views/home_screen/home.dart';
+import 'package:pfe_app/views/onboarding_screen/on_boarding_screen.dart';
 import 'package:pfe_app/widget_common/applogo_widget.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -17,12 +18,12 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   changeScreen() {
-    Future.delayed(Duration(seconds: 3), () {
+    Future.delayed(const Duration(seconds: 3), () {
       //Get.to(() => const LoginScreen());
 
       auth.authStateChanges().listen((User? user) {
         if (user == null && mounted) {
-          Get.to(() => const LoginScreen());
+          Get.to(() => const OnBoardingScreen());
         } else {
           Get.to(() => const Home());
         }
@@ -63,18 +64,18 @@ class _SplashScreenState extends State<SplashScreen> {
                 text: const TextSpan(
                   children: [
                     TextSpan(
-                        text: "Soyez au coeur de votre \n",
+                        text: "Be at the heart  \n",
                         style: TextStyle(
                           fontFamily: semibold,
                           color: whiteColor,
-                          fontSize: 25,
+                          fontSize: 30,
                         )),
                     TextSpan(
-                        text: " magasin",
+                        text: "of your store",
                         style: TextStyle(
                             fontFamily: semibold,
                             color: whiteColor,
-                            fontSize: 25)),
+                            fontSize: 30)),
                   ],
                 )),
 
