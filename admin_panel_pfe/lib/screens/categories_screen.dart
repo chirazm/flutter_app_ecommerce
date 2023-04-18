@@ -1,4 +1,7 @@
+import 'dart:html';
+
 import 'package:admin_panel_pfe/consts/colors.dart';
+import 'package:admin_panel_pfe/widgets/category/category_card_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -173,14 +176,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                 ),
               ),
             ),
-            Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: CategoryWidget(),
-                ),
-              ],
-            ),
+            CategoryCard(),
           ],
         ),
       ),

@@ -13,4 +13,4 @@ const chatCollection = "chats";
 const messageCollection = 'messages';
 const ordersCollection = "orders";
 const bannersCollection = "banners";
-
+const categoriesCollection = "categories";

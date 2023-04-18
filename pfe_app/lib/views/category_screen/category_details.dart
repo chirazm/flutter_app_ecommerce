@@ -5,6 +5,7 @@ import 'package:pfe_app/consts/consts.dart';
 import 'package:pfe_app/controllers/product_controller.dart';
 import 'package:pfe_app/services/firestore_services.dart';
 import 'package:pfe_app/views/category_screen/item_details.dart';
+import 'package:pfe_app/widget_common/counter_widget.dart';
 import 'package:pfe_app/widget_common/loading_indicator.dart';
 import 'package:pfe_app/controllers/home_controller.dart';
 import 'package:pfe_app/views/home_screen/home.dart';
@@ -13,6 +14,7 @@ import '../../widget_common/bg_widget.dart';
 class CategoryDetails extends StatefulWidget {
   final String? title;
   final dynamic data;
+
   const CategoryDetails({Key? key, required this.title, this.data})
       : super(key: key);
 
@@ -114,13 +116,13 @@ class _CategoryDetailsState extends State<CategoryDetails> {
                               width: 200,
                               fit: BoxFit.cover,
                             ),
-                            15.heightBox,
+                            //2.heightBox,
                             "${data[index]['p_name']}"
                                 .text
                                 .fontFamily(semibold)
                                 .color(darkFontGrey)
                                 .make(),
-                            10.heightBox,
+                            4.heightBox,
                             "${data[index]['p_price']}"
                                 .numCurrency
                                 .text
@@ -128,7 +130,15 @@ class _CategoryDetailsState extends State<CategoryDetails> {
                                 .fontFamily(semibold)
                                 .size(16)
                                 .make(),
-                            10.heightBox,
+                            9.heightBox,
+                            // Row(
+                            //   mainAxisAlignment: MainAxisAlignment.center,
+                            //   children: [
+                            //     Row(
+                            //       children: [CounterForCard()],
+                            //     )
+                            //   ],
+                            // )
                           ],
                         )
                             .box

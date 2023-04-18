@@ -26,6 +26,13 @@ class FirestoreServices {
         .snapshots();
   }
 
+  static getCategoriesName(name) {
+    return firestore
+        .collection(categoriesCollection)
+        .where('name', isEqualTo: name)
+        .snapshots();
+  }
+
   //get cart
   static getCart(uid) {
     return firestore
@@ -68,6 +75,10 @@ class FirestoreServices {
         .collection(chatCollection)
         .where('fromId', isEqualTo: currentUser!.uid)
         .snapshots();
+  }
+
+  static getCategories() {
+    return firestore.collection(categoriesCollection).get();
   }
 
 //get count of wishlist, orders and cart
@@ -115,5 +126,4 @@ class FirestoreServices {
   }
 
   //get banners
-  
 }

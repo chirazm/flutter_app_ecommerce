@@ -45,7 +45,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     var controller = Get.find<HomeController>();
-
     return Container(
       color: lightGrey,
       width: context.screenWidth,

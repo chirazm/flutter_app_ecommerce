@@ -1,8 +1,10 @@
+import 'package:admin_panel_pfe/consts/colors.dart';
 import 'package:admin_panel_pfe/services/firebase_service.dart';
 import 'package:admin_panel_pfe/screens/Home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:sn_progress_dialog/progress_dialog.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -21,6 +23,11 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     Future<void> _login() async {
+      ProgressDialog pd = ProgressDialog(context: context);
+      pd.show(
+        max: 100,
+        msg: 'Waiting...',
+      );
       _services.getAdminCredentials().then(
         (value) {
           value.docs.forEach((doc) async {
@@ -28,19 +35,21 @@ class _LoginScreenState extends State<LoginScreen> {
               if (doc.get('password') == password) {
                 UserCredential userCredential =
                     await FirebaseAuth.instance.signInAnonymously();
-                CircularProgressIndicator();
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (BuildContext context) => HomeScreen()));
-                return;
+                pd.close();
+                if (userCredential.user!.uid != null) {
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => HomeScreen()));
+                  return;
+                } else {
+                  _showMyDialog(title: 'Login', message: 'Login Failed.');
+                }
               } else {
-                _showMyDialog(title: 'Login', message: 'Login Failed.');
+                _showMyDialog(
+                    title: 'Invalid Username',
+                    message: 'Username you entered is not valid.');
               }
-            } else {
-              _showMyDialog(
-                  title: 'Invalid Username',
-                  message: 'Username you entered is not valid.');
             }
           });
         },
@@ -53,7 +62,7 @@ class _LoginScreenState extends State<LoginScreen> {
         elevation: 0.0,
         title: Center(
           child: Text(
-            'Marque blanche admin panel',
+            'Shop App admin panel',
             style: TextStyle(
               color: Colors.white,
             ),
@@ -80,8 +89,8 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               child: Center(
                 child: Container(
-                  width: 300,
-                  height: 300,
+                  width: 320,
+                  height: 350,
                   child: Card(
                     elevation: 6,
                     shape: Border.all(
@@ -108,7 +117,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                           fontSize: 13),
                                     ),
                                     SizedBox(
-                                      height: 20,
+                                      height: 30,
                                     ),
                                     TextFormField(
                                       validator: (value) {
@@ -121,15 +130,19 @@ class _LoginScreenState extends State<LoginScreen> {
                                         return null;
                                       },
                                       decoration: InputDecoration(
-                                          icon: Icon(Icons.person),
+                                          prefixIcon: Icon(
+                                            Icons.person,
+                                            color: appbarColor,
+                                          ),
                                           labelText: 'User Name',
+                                          labelStyle: TextStyle(
+                                              color: appbarColor, fontSize: 14),
                                           contentPadding: EdgeInsets.only(
-                                              left: 20, right: 20),
+                                              left: 13, right: 20),
                                           border: OutlineInputBorder(),
                                           focusedBorder: OutlineInputBorder(
                                               borderSide: BorderSide(
-                                                  color: Theme.of(context)
-                                                      .primaryColor,
+                                                  color: Colors.grey.shade300,
                                                   width: 2))),
                                     ),
                                     SizedBox(
@@ -147,40 +160,55 @@ class _LoginScreenState extends State<LoginScreen> {
                                       },
                                       obscureText: true,
                                       decoration: InputDecoration(
-                                          icon: Icon(Icons.vpn_key_off_rounded),
+                                          prefixIcon: Icon(
+                                            Icons.vpn_key_off_rounded,
+                                            color: appbarColor,
+                                          ),
                                           labelText: 'Password',
+                                          labelStyle: TextStyle(
+                                              color: appbarColor, fontSize: 14),
                                           contentPadding: EdgeInsets.only(
-                                              left: 20, right: 20),
+                                              left: 13, right: 20),
                                           border: OutlineInputBorder(),
                                           focusedBorder: OutlineInputBorder(
                                               borderSide: BorderSide(
-                                                  color: Theme.of(context)
-                                                      .primaryColor,
+                                                  color: Colors.grey.shade300,
                                                   width: 2))),
                                     ),
                                   ],
                                 ),
                               ),
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: TextButton(
-                                      style: TextButton.styleFrom(
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Container(
+                                width: 100,
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: TextButton(
+                                        style: TextButton.styleFrom(
                                           primary: Colors.white,
-                                          backgroundColor: Color.fromARGB(
-                                              255, 213, 10, 231)),
-                                      onPressed: () async {
-                                        if (_formKey.currentState!.validate()) {
-                                          _login();
-                                        }
-                                      },
-                                      child: Text(
-                                        'Login',
-                                        style: TextStyle(color: Colors.white),
+                                          backgroundColor:
+                                              Color.fromARGB(255, 213, 10, 231),
+                                        ),
+                                        onPressed: () async {
+                                          if (_formKey.currentState!
+                                              .validate()) {
+                                            _login();
+                                          }
+                                        },
+                                        child: Text(
+                                          'Login',
+                                          style: TextStyle(color: Colors.white),
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
+                              ),
+                              SizedBox(
+                                height: 15,
                               )
                             ],
                           )),

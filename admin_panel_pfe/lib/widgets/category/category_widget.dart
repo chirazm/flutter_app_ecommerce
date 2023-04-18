@@ -23,14 +23,14 @@ class CategoryWidget extends StatelessWidget {
           );
         }
 
-        return 
-            Wrap(
-              direction: Axis.horizontal,
-              children: snapshot.data!.docs.map((DocumentSnapshot document) {
-                return CategoryCard(document);
-              }).toList(),
-            
-          
+        return SizedBox(
+          width: 1000,
+          child: Wrap(
+            direction: Axis.horizontal,
+            children: snapshot.data!.docs.map((DocumentSnapshot document) {
+              return CategoryCard();
+            }).toList(),
+          ),
         );
       },
     );

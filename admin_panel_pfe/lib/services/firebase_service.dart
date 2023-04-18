@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 class FirebaseServices {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
+  
   CollectionReference banners =
       FirebaseFirestore.instance.collection('banners');
   CollectionReference vendors =
@@ -88,4 +89,42 @@ class FirebaseServices {
       },
     );
   }
+
+deleteCategoryFromFirebase(id) async {
+    category.doc(id).delete();
+  }
+  Future<void> confirmDeleteDialogCategory({title, message, context, id}) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text(message),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: const Text('Delete'),
+              onPressed: () {
+                deleteCategoryFromFirebase(id);
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
 }

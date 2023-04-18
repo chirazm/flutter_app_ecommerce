@@ -52,24 +52,26 @@ class BannerWidget extends StatelessWidget {
                       ),
                     ),
                     Positioned(
-                        top: 10,
-                        right: 10,
-                        child: CircleAvatar(
-                          backgroundColor: Colors.white,
-                          child: IconButton(
-                              onPressed: () {
-                                _services.confirmDeleteDialog(
-                                  context: context,
-                                  message: 'Are you sure you want to delete ?',
-                                  title: 'Delete Banner',
-                                  id: snapshot.data!.docs[index].reference.id,
-                                );
-                              },
-                              icon: Icon(
-                                Icons.delete,
-                                color: buttonColor,
-                              ),),
-                        ),),
+                      top: 10,
+                      right: 10,
+                      child: CircleAvatar(
+                        backgroundColor: Colors.white,
+                        child: IconButton(
+                          onPressed: () {
+                            _services.confirmDeleteDialog(
+                              context: context,
+                              message: 'Are you sure you want to delete ?',
+                              title: 'Delete Banner',
+                              id: snapshot.data!.docs[index].reference.id,
+                            );
+                          },
+                          icon: Icon(
+                            Icons.delete,
+                            color: buttonColor,
+                          ),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               );

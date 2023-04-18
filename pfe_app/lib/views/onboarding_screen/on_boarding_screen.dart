@@ -21,6 +21,8 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
+    //final locationData = Provider.of<LocationProvider>(context, listen: false);
+
     return Scaffold(
       backgroundColor: whiteColor,
       body: Stack(
@@ -139,39 +141,6 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     const Text(
-                      'Set Your Delivery\nLocation ',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: whiteColor,
-                          fontSize: 32),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    SizedBox(
-                        height: 300, width: 300, child: Image.asset(onboard7)),
-                    TextButton(
-                        onPressed: () {},
-                        style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all(whiteColor),
-                        ),
-                        child: const Text(
-                          'Set Delivery Location',
-                          style: TextStyle(
-                              color: redColor,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16),
-                        ))
-                  ],
-                ),
-              ),
-              OnBoardPage(
-                boardColumn: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Text(
                       'Safe & Secure\nPayments',
                       textAlign: TextAlign.center,
                       style: TextStyle(
@@ -195,7 +164,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 DotsIndicator(
-                  dotsCount: 6,
+                  dotsCount: 5,
                   position: scrollerPosition,
                   decorator: const DotsDecorator(
                     activeColor: whiteColor,

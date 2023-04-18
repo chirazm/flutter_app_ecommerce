@@ -24,6 +24,6 @@ Widget featuredButton({String? title, icon}) {
       .outerShadowSm
       .make()
       .onTap(() {
-    Get.to(() => CategoryDetails(title: title));
+    Get.to(() => CategoryDetails(title: title,));
   });
 }
