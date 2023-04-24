@@ -402,41 +402,41 @@ class _VendorDetailsBoxState extends State<VendorDetailsBox> {
                               ],
                             ),
                           ),
-                   ),
-                   SizedBox(
-                                height: 120,
-                                width: 120,
-                                child: Card(
-                                  color: Colors.orangeAccent.withOpacity(.9),
-                                  elevation: 4,
-                                  child: Padding(
-                                    padding: EdgeInsets.all(10.0),
-                                    child: Center(
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          Icon(
-                                            Icons.list_alt_outlined,
-                                            size: 50,
-                                            color: Colors.black54,
-                                          ),
-                                          Text('Block now'),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                    Positioned(
-                    top: 10,
-                    right: 10,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        //Icon(Icons.block_)
-                      ],
-                    )
-                   ),
+                  ),
+                  //  SizedBox(
+                  //               height: 120,
+                  //               width: 120,
+                  //               child: Card(
+                  //                 color: Colors.orangeAccent.withOpacity(.9),
+                  //                 elevation: 4,
+                  //                 child: Padding(
+                  //                   padding: EdgeInsets.all(10.0),
+                  //                   child: Center(
+                  //                     child: Column(
+                  //                       mainAxisSize: MainAxisSize.min,
+                  //                       children: [
+                  //                         Icon(
+                  //                           Icons.list_alt_outlined,
+                  //                           size: 50,
+                  //                           color: Colors.black54,
+                  //                         ),
+                  //                         Text('Block now'),
+                  //                       ],
+                  //                     ),
+                  //                   ),
+                  //                 ),
+                  //               ),
+                  //             ),
+                  //   Positioned(
+                  //   top: 10,
+                  //   right: 10,
+                  //   child: Row(
+                  //     mainAxisAlignment: MainAxisAlignment.center,
+                  //     children: [
+                  //       //Icon(Icons.block_)
+                  //     ],
+                  //   )
+                  //  ),
                 ],
               ),
             ),

@@ -159,13 +159,6 @@ class DashboardScreen extends StatelessWidget {
                         return Center(child: Text('Something went wrong'));
                       }
 
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Center(
-                          child: CircularProgressIndicator(
-                            color: Colors.cyan,
-                          ),
-                        );
-                      }
                       if (snapshot.hasData) {
                         return analyticWidget(
                           title: 'Total Order',

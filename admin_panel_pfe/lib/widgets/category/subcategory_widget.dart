@@ -20,9 +20,10 @@ class _SubCategoryWidgetState extends State<SubCategoryWidget> {
         width: 300,
         child: Padding(
           padding: EdgeInsets.all(10),
-          child: FutureBuilder(
+          child: FutureBuilder<DocumentSnapshot>(
             future: _services.category.doc(widget.categoryName).get(),
-            builder: (BuildContext context, AsyncSnapshot snapshot) {
+            builder: (BuildContext context,
+                AsyncSnapshot<DocumentSnapshot> snapshot) {
               if (snapshot.hasError) {
                 return Center(child: Text('Something went wrong'));
               }
@@ -30,6 +31,11 @@ class _SubCategoryWidgetState extends State<SubCategoryWidget> {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(
                   child: CircularProgressIndicator(),
+                );
+              }
+              if (!snapshot.hasData) {
+                return Center(
+                  child: Text('No SubCategories Added'),
                 );
               }
               if (snapshot.connectionState == ConnectionState.done) {

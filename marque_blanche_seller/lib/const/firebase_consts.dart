@@ -8,6 +8,7 @@ User? currentUser = auth.currentUser;
 //collections
 const vendorsCollection = "vendors";
 const productsCollection = "products";
+const couponsCollection = "coupons";
 const chatsCollection = "chats";
 const messagesCollection = "messages";
 const ordersCollection = "orders";

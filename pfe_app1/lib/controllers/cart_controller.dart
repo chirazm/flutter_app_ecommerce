@@ -19,6 +19,7 @@ class CartController extends GetxController {
   late dynamic productSnapshot;
   var products = [];
   var vendors = [];
+  bool cod = false;
 
   var placingOrder = false.obs;
   calculate(data) {
@@ -78,6 +79,15 @@ class CartController extends GetxController {
   clearCart() {
     for (var i = 0; i < productSnapshot.length; i++) {
       firestore.collection(cartCollection).doc(productSnapshot[i].id).delete();
+    }
+  }
+
+  getPayementMethod(index) {
+    if (index == 0) {
+      this.cod = false;
+    }
+    else{
+      this.cod = true;
     }
   }
 }

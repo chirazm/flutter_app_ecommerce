@@ -43,7 +43,7 @@ class ItemDetails extends StatelessWidget {
             IconButton(
               icon: const Icon(Icons.shopping_cart),
               onPressed: () {
-                Get.to(() => const CartScreen());
+                Get.to(() =>  CartScreen());
               },
             ),
             Obx(

@@ -3,6 +3,7 @@ const icAccount = "assets/icons/account.png";
 const icAdd = "assets/icons/add.png";
 const icChat = "assets/icons/chat.png";
 const icGeneralSettings = "assets/icons/general_setting.png";
+const icCoupons = "assets/icons/coupon.png";
 const icOrders = "assets/icons/orders.png";
 const icProducts = "assets/icons/products.png";
 const icProfile = "assets/icons/profile.png";

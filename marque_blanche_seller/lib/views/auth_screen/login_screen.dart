@@ -13,8 +13,11 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
     var controller = Get.put(AuthController());
     return Scaffold(
+      key: _scaffoldKey,
       resizeToAvoidBottomInset: false,
       backgroundColor: purpleColor,
       body: SafeArea(
@@ -104,8 +107,7 @@ class LoginScreen extends StatelessWidget {
                                       controller.isloading(false);
                                     }
                                   });
-                                })
-                                ),
+                                })),
                   ],
                 )
                     .box

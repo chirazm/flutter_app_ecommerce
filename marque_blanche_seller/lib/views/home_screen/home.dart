@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:marque_blanche_seller/const/const.dart';
 import 'package:marque_blanche_seller/controllers/home_controller.dart';
+import 'package:marque_blanche_seller/views/coupon_screen/CouponScreen.dart';
 import 'package:marque_blanche_seller/views/home_screen/home_screen.dart';
 import 'package:marque_blanche_seller/views/orders_screen/orders_screen.dart';
 import 'package:marque_blanche_seller/views/products_screen/products_screen.dart';
@@ -33,6 +34,13 @@ class Home extends StatelessWidget {
           label: orders),
       BottomNavigationBarItem(
           icon: Image.asset(
+            icCoupons,
+            color: darkGrey,
+            width: 24,
+          ),
+          label: coupons),
+      BottomNavigationBarItem(
+          icon: Image.asset(
             icGeneralSettings,
             color: darkGrey,
             width: 24,
@@ -44,6 +52,7 @@ class Home extends StatelessWidget {
       const HomeScreen(),
       const ProductsScreen(),
       const OrdersScreen(),
+      const CouponScreen(),
       const ProfileScreen()
     ];
     return Scaffold(
