@@ -115,7 +115,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         sideBar: SideBar(
           textStyle:
-              TextStyle(color: Colors.black, fontWeight: FontWeight.w200),
+              TextStyle(color: Colors.black, fontWeight: FontWeight.w400),
           //activeBackgroundColor: Color.fromARGB(66, 224, 4, 4),
           borderColor: Color.fromARGB(255, 194, 192, 192),
           iconColor: Colors.black87,
@@ -159,9 +159,8 @@ class _HomeScreenState extends State<HomeScreen> {
             child: const Center(
               child: Text(
                 'Menu',
-                style: TextStyle(
-                  color: Colors.white,
-                ),
+                style:
+                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
               ),
             ),
           ),

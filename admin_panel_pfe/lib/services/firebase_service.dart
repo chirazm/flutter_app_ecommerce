@@ -127,4 +127,41 @@ deleteCategoryFromFirebase(id) async {
     );
   }
 
+ deleteVendorFromFirebase(id) async {
+    vendors.doc(id).delete();
+  }
+
+  Future<void> confirmDeleteDialogVendor({title, message, context, id}) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text(message),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: const Text('Delete'),
+              onPressed: () {
+                deleteVendorFromFirebase(id);
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 }

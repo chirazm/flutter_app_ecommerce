@@ -26,6 +26,16 @@ class FirestoreServices {
         .snapshots();
   }
 
+  static updateDocument(String documentId, Map<String, dynamic> data) async {
+    final DocumentReference documentReference =
+        FirebaseFirestore.instance.collection(cartCollection).doc(documentId);
+
+    await documentReference
+        .update(data)
+        .then((value) => print("Document Updated"))
+        .catchError((error) => print("Failed to update document: $error"));
+  }
+
   static getCategoriesName(name) {
     return firestore
         .collection(categoriesCollection)

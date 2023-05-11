@@ -89,7 +89,7 @@ class _VendorWidgetState extends State<VendorWidget> {
             return SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: DataTable(
-                columnSpacing: 45.0,
+                columnSpacing: 65.0,
                 showBottomBorder: true,
                 dataRowHeight: 100,
                 headingTextStyle:
@@ -107,9 +107,6 @@ class _VendorWidgetState extends State<VendorWidget> {
                     label: Text('Shop Name'),
                   ),
                   DataColumn(
-                    label: Text('Vendor Name'),
-                  ),
-                  DataColumn(
                     label: Text('Shop Address'),
                   ),
                   DataColumn(
@@ -121,6 +118,7 @@ class _VendorWidgetState extends State<VendorWidget> {
                   DataColumn(
                     label: Text('View Details'),
                   ),
+                
                 ],
                 rows: _vendorsDetailsRows(snapshot.data, _services),
               ),
@@ -164,9 +162,6 @@ class _VendorWidgetState extends State<VendorWidget> {
           Text((document.data() as dynamic)['shop_name']),
         ),
         DataCell(
-          Text((document.data() as dynamic)['vendor_name']),
-        ),
-        DataCell(
           Text((document.data() as dynamic)['shop_address']),
         ),
         DataCell(
@@ -184,6 +179,8 @@ class _VendorWidgetState extends State<VendorWidget> {
                   });
             },
             icon: Icon(Icons.info_outline))),
+
+         
       ]);
     }).toList();
     return newList;

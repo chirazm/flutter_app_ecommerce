@@ -29,5 +29,10 @@ class StoreServices {
         .snapshots();
   }
 
-  
+  static getCoupons(uid) {
+    return firestore
+        .collection(couponsCollection)
+        .where('vendor_id', isEqualTo: uid)
+        .snapshots();
+  }
 }

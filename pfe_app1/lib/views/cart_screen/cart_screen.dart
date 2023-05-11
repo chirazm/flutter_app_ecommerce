@@ -5,6 +5,7 @@ import 'package:pfe_app/consts/consts.dart';
 import 'package:pfe_app/controllers/cart_controller.dart';
 import 'package:pfe_app/services/firestore_services.dart';
 import 'package:pfe_app/views/cart_screen/shipping_screen.dart';
+import 'package:pfe_app/views/category_screen/item_details.dart';
 import 'package:pfe_app/widget_common/cod_toggle.dart';
 import 'package:pfe_app/widget_common/loading_indicator.dart';
 
@@ -12,13 +13,16 @@ import '../../widget_common/coupon_widget.dart';
 import '../../widget_common/our_button.dart';
 
 class CartScreen extends StatelessWidget {
-  int discount = 30;
-  int deliveryFree = 50;
+  //late final DocumentSnapshot document;
+  //int discount = 30;
+
+  int deliveryFree = 7;
 
   @override
   Widget build(BuildContext context) {
     var controller = Get.put(CartController());
-    var _payable = controller.totalP + deliveryFree - discount;
+
+    var payable = controller.totalP.value + deliveryFree;
     return Scaffold(
         backgroundColor: whiteColor,
         bottomNavigationBar: SizedBox(
@@ -42,8 +46,7 @@ class CartScreen extends StatelessWidget {
         ),
         body: StreamBuilder(
           stream: FirestoreServices.getCart(currentUser!.uid),
-          builder:
-              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (!snapshot.hasData) {
               return Center(
                 child: loadingIndicator(),
@@ -65,17 +68,26 @@ class CartScreen extends StatelessWidget {
                             itemCount: data.length,
                             itemBuilder: (BuildContext context, int index) {
                               return ListTile(
-                                leading: Image.network(
-                                  "${data[index]['img']}",
-                                  width: 80,
-                                  fit: BoxFit.cover,
+                                leading: GestureDetector(
+                                  child: Image.network(
+                                    "${data[index]['img']}",
+                                    width: 80,
+                                    fit: BoxFit.cover,
+                                  ),
                                 ),
-                                title:
-                                    "${data[index]['title']} (x${data[index]['qty']})"
-                                        .text
-                                        .size(16)
-                                        .fontFamily(semibold)
-                                        .make(),
+                                title: GestureDetector(
+                                  onTap: () {
+                                    Get.to(() => ItemDetails(
+                                        title: "${data[index]['p_name']}",
+                                        data: data[index]));
+                                  },
+                                  child:
+                                      "${data[index]['title']} (x${data[index]['qty']})"
+                                          .text
+                                          .size(16)
+                                          .fontFamily(semibold)
+                                          .make(),
+                                ),
                                 subtitle: "${data[index]['tprice']}"
                                     .numCurrency
                                     .text
@@ -95,9 +107,21 @@ class CartScreen extends StatelessWidget {
                     const Divider(
                       color: Colors.grey,
                     ),
-                    const SizedBox(
-                      child: CouponWidget(),
-                    ),
+                    // SizedBox(
+                    // // child: CouponWidget((doc.data() as dynamic)['uid']),
+
+                    // ),
+                    // SizedBox(
+                    //   width: 1000,
+                    //   child: Wrap(
+                    //     direction: Axis.horizontal,
+                    //     children: snapshot.data!.docs
+                    //         .map((DocumentSnapshot document) {
+                    //       return CouponWidget(
+                    //           (document.data() as dynamic)['uid']);
+                    //     }).toList(),
+                    //   ),
+                    // ),
                     Padding(
                       padding: const EdgeInsets.all(4.0),
                       child: SizedBox(
@@ -123,30 +147,34 @@ class CartScreen extends StatelessWidget {
                                     const Expanded(
                                       child: Text(
                                         'Basket value',
-                                        style: TextStyle(color: Colors.grey),
+                                        style: TextStyle(
+                                            color: Color.fromARGB(
+                                                255, 70, 69, 69)),
                                       ),
                                     ),
                                     Text(
-                                        "${controller.totalP.toStringAsFixed(0)} TND",
-                                        style: TextStyle(color: Colors.grey)),
+                                        "${controller.totalP.toStringAsFixed(3)} TND",
+                                        style: const TextStyle(
+                                            color: Color.fromARGB(
+                                                255, 70, 69, 69))),
                                   ],
                                 ),
                                 const SizedBox(
-                                  height: 10,
+                                  height: 5,
                                 ),
-                                Row(
-                                  children: [
-                                    const Expanded(
-                                      child: Text(
-                                        'Discount',
-                                        style: TextStyle(color: Colors.grey),
-                                      ),
-                                    ),
-                                    Text("$discount TND",
-                                        style: const TextStyle(
-                                            color: Colors.grey)),
-                                  ],
-                                ),
+                                // Row(
+                                //   children: [
+                                //     const Expanded(
+                                //       child: Text(
+                                //         'Discount',
+                                //         style: TextStyle(color: Colors.grey),
+                                //       ),
+                                //     ),
+                                //     Text("$discount TND",
+                                //         style: const TextStyle(
+                                //             color: Colors.grey)),
+                                //   ],
+                                // ),
                                 const SizedBox(
                                   height: 10,
                                 ),
@@ -155,33 +183,37 @@ class CartScreen extends StatelessWidget {
                                     const Expanded(
                                       child: Text(
                                         'Delivery',
-                                        style: TextStyle(color: Colors.grey),
+                                        style: TextStyle(
+                                            color: Color.fromARGB(
+                                                255, 70, 69, 69)),
                                       ),
                                     ),
-                                    Text("$deliveryFree TND",
+                                    Text(
+                                        "${deliveryFree.toStringAsFixed(3)} TND",
                                         style: const TextStyle(
-                                            color: Colors.grey)),
+                                            color: Color.fromARGB(
+                                                255, 70, 69, 69))),
                                   ],
                                 ),
                                 const Divider(
                                   color: Colors.grey,
                                 ),
-                                Row(
-                                  children: [
-                                    const Expanded(
-                                      child: Text(
-                                        'Total amount payable',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ),
-                                    Text(
-                                      "${_payable.toStringAsFixed(0)} TND",
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ],
-                                ),
+                                // Row(
+                                //   children: [
+                                //     const Expanded(
+                                //       child: Text(
+                                //         'Total amount payable',
+                                //         style: TextStyle(
+                                //             fontWeight: FontWeight.bold),
+                                //       ),
+                                //     ),
+                                //     Text(
+                                //       "${payable.toStringAsFixed(0)} TND",
+                                //       style: const TextStyle(
+                                //           fontWeight: FontWeight.bold),
+                                //     ),
+                                //   ],
+                                // ),
                                 const SizedBox(
                                   height: 10,
                                 ),
@@ -193,8 +225,8 @@ class CartScreen extends StatelessWidget {
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Row(
-                                      children: const [
-                                        Expanded(
+                                      children: [
+                                        const Expanded(
                                           child: Text(
                                             'Total Saving',
                                             style: TextStyle(
@@ -203,8 +235,8 @@ class CartScreen extends StatelessWidget {
                                           ),
                                         ),
                                         Text(
-                                          '200 TND',
-                                          style: TextStyle(
+                                          "${payable.toStringAsFixed(3)} TND",
+                                          style: const TextStyle(
                                               color: Colors.black,
                                               fontWeight: FontWeight.bold),
                                         )

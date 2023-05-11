@@ -59,6 +59,12 @@ class ProductController extends GetxController {
     });
   }
 
+  updateCartItemQuantity(docId, int newQuantity) async {
+    await FirebaseFirestore.instance.collection('cart').doc(docId).update({
+      'qty': newQuantity,
+    });
+  }
+
   resetValues() {
     totalPrice.value = 0;
     quantity.value = 0;

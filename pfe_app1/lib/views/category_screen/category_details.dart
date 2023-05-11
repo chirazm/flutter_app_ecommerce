@@ -149,10 +149,11 @@ class _CategoryDetailsState extends State<CategoryDetails> {
                             .padding(const EdgeInsets.all(12))
                             .make()
                             .onTap(() {
-                          controller.checkIfFav(data[index]);
-                          Get.to(() => ItemDetails(
+                              controller.checkIfFav(data[index]);
+                              Get.to(() => ItemDetails(
                               title: "${data[index]['p_name']}",
-                              data: data[index]));
+                              data: data[index])
+                              );
                         });
                       }),
                 );

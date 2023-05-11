@@ -1,3 +1,4 @@
+import 'package:admin_panel_pfe/consts/colors.dart';
 import 'package:admin_panel_pfe/consts/style.dart';
 import 'package:admin_panel_pfe/services/firebase_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -36,10 +37,9 @@ class _VendorDetailsBoxState extends State<VendorDetailsBox> {
           child: Padding(
             padding: const EdgeInsets.all(15.0),
             child: SizedBox(
-              width: 450,
-              height: 700,
-              child: Stack(
-                children: [
+                width: 450,
+                height: 700,
+                child: Stack(children: [
                   Container(
                     height: MediaQuery.of(context).size.height,
                     width: MediaQuery.of(context).size.width * .3,
@@ -220,7 +220,25 @@ class _VendorDetailsBoxState extends State<VendorDetailsBox> {
                                               ],
                                             ),
                                           )
-                                        : Container(),
+                                        : Chip(
+                                            backgroundColor: Colors.red,
+                                            label: Row(
+                                              children: [
+                                                Icon(
+                                                  Icons.remove_circle,
+                                                  color: Colors.white,
+                                                ),
+                                                SizedBox(
+                                                  width: 2,
+                                                ),
+                                                Text(
+                                                  'Inactive',
+                                                  style: TextStyle(
+                                                      color: Colors.white),
+                                                )
+                                              ],
+                                            ),
+                                          ),
                                   ),
                                 ),
                               ],
@@ -366,80 +384,57 @@ class _VendorDetailsBoxState extends State<VendorDetailsBox> {
                     ]),
                   ),
                   Positioned(
-                    top: 10,
-                    right: 10,
-                    child: snapshot.data!['account_verified']
-                        ? Chip(
-                            backgroundColor: Colors.green,
-                            label: Row(
-                              children: [
-                                Icon(
-                                  Icons.check,
-                                  color: Colors.white,
-                                ),
-                                Text(
-                                  'Verified',
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                              ],
-                            ),
-                          )
-                        : Chip(
-                            backgroundColor: Colors.red,
-                            label: Row(
-                              children: [
-                                Icon(
-                                  Icons.remove_circle,
-                                  color: Colors.white,
-                                ),
-                                SizedBox(
-                                  width: 2,
-                                ),
-                                Text(
-                                  'Inactive',
-                                  style: TextStyle(color: Colors.white),
-                                )
-                              ],
-                            ),
-                          ),
-                  ),
-                  //  SizedBox(
-                  //               height: 120,
-                  //               width: 120,
-                  //               child: Card(
-                  //                 color: Colors.orangeAccent.withOpacity(.9),
-                  //                 elevation: 4,
-                  //                 child: Padding(
-                  //                   padding: EdgeInsets.all(10.0),
-                  //                   child: Center(
-                  //                     child: Column(
-                  //                       mainAxisSize: MainAxisSize.min,
-                  //                       children: [
-                  //                         Icon(
-                  //                           Icons.list_alt_outlined,
-                  //                           size: 50,
-                  //                           color: Colors.black54,
-                  //                         ),
-                  //                         Text('Block now'),
-                  //                       ],
-                  //                     ),
-                  //                   ),
-                  //                 ),
-                  //               ),
-                  //             ),
-                  //   Positioned(
-                  //   top: 10,
-                  //   right: 10,
-                  //   child: Row(
-                  //     mainAxisAlignment: MainAxisAlignment.center,
-                  //     children: [
-                  //       //Icon(Icons.block_)
-                  //     ],
-                  //   )
-                  //  ),
-                ],
-              ),
-            ),
+                      top: 10,
+                      right: 10,
+                      child: IconButton(
+                        onPressed: () {
+                          _services.confirmDeleteDialog(
+                            context: context,
+                            message: 'Are you sure you want to delete ?',
+                            title: 'Delete Banner',
+                            //id: snapshot.data!.docs[index].reference.id,
+                          );
+                        },
+                        icon: Icon(
+                          Icons.delete,
+                          color: buttonColor,
+                        ),
+                      )),
+                ])),
+            //  SizedBox(
+            //               height: 120,
+            //               width: 120,
+            //               child: Card(
+            //                 color: Colors.orangeAccent.withOpacity(.9),
+            //                 elevation: 4,
+            //                 child: Padding(
+            //                   padding: EdgeInsets.all(10.0),
+            //                   child: Center(
+            //                     child: Column(
+            //                       mainAxisSize: MainAxisSize.min,
+            //                       children: [
+            //                         Icon(
+            //                           Icons.list_alt_outlined,
+            //                           size: 50,
+            //                           color: Colors.black54,
+            //                         ),
+            //                         Text('Block now'),
+            //                       ],
+            //                     ),
+            //                   ),
+            //                 ),
+            //               ),
+            //             ),
+            //   Positioned(
+            //   top: 10,
+            //   right: 10,
+            //   child: Row(
+            //     mainAxisAlignment: MainAxisAlignment.center,
+            //     children: [
+            //       //Icon(Icons.block_)
+            //     ],
+            //   )
+            //  ),
           ),
         );
       },

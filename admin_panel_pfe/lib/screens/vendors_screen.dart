@@ -1,3 +1,4 @@
+import 'package:admin_panel_pfe/widgets/vendor/vendor_add.dart';
 import 'package:admin_panel_pfe/widgets/vendor/vendor_filter_widget.dart';
 import 'package:admin_panel_pfe/widgets/vendor/vendor_widget.dart';
 import 'package:flutter/material.dart';
@@ -47,8 +48,31 @@ class VendorsScreen extends StatelessWidget {
                   fontSize: 36,
                 ),
               ),
-              Text(
-                'Manage all the vendors activities',
+              Row(
+                children: [
+                  Text(
+                    'Manage all the vendors activities',
+                  ),
+                  SizedBox(
+                    width: 770,
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AddVendorWidget();
+                          });
+                    },
+                    child: Text("Add new Vendor"),
+                    style: TextButton.styleFrom(
+                      primary: Colors.white,
+                      backgroundColor: Color.fromARGB(255, 213, 10, 231),
+                      textStyle:
+                          TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ],
               ),
               Divider(
                 thickness: 5,

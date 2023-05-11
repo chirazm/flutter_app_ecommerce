@@ -7,14 +7,14 @@ import 'package:marque_blanche_seller/controllers/coupon_controller.dart';
 import 'package:marque_blanche_seller/views/widgets/loading_indicator.dart';
 import 'package:sn_progress_dialog/sn_progress_dialog.dart';
 
-class AddEditCoupon extends StatefulWidget {
-  final DocumentSnapshot document;
-  const AddEditCoupon({super.key, required this.document});
+class AddCoupon extends StatefulWidget {
+  const AddCoupon({super.key});
+
   @override
-  State<AddEditCoupon> createState() => _AddEditCouponState();
+  State<AddCoupon> createState() => _AddCouponState();
 }
 
-class _AddEditCouponState extends State<AddEditCoupon> {
+class _AddCouponState extends State<AddCoupon> {
   final _formKey = GlobalKey<FormState>();
   DateTime _selectedDate = DateTime.now();
   var dateText = TextEditingController();
@@ -37,23 +37,6 @@ class _AddEditCouponState extends State<AddEditCoupon> {
         dateText.text = formattedText;
       });
     }
-  }
-
-  @override
-  void initState() {
-    if (widget.document != null) {
-      setState(() {
-        titleText.text = (widget.document.data() as dynamic)['title'];
-        discountRate.text =
-            (widget.document.data() as dynamic)['discountRate'].toString();
-        detailsText.text =
-            (widget.document.data() as dynamic)['details'].toString();
-        dateText.text =
-            (widget.document.data() as dynamic)['expiry'].toDate().toString();
-        _active = (widget.document.data() as dynamic)['active'];
-      });
-    }
-    super.initState();
   }
 
   @override
@@ -178,7 +161,6 @@ class _AddEditCouponState extends State<AddEditCoupon> {
                               );
                               controller
                                   .saveCoupon(
-                                document: widget.document,
                                 title: titleText.text.toUpperCase(),
                                 details: detailsText.text,
                                 discountRate: int.parse(discountRate.text),
