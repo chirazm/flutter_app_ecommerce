@@ -11,7 +11,7 @@ class CouponController with ChangeNotifier {
     DocumentSnapshot document =
         await FirebaseFirestore.instance.collection('coupons').doc(title).get();
 
-    if (document.exists) {
+    if (document != null && document.exists) {
       if (((document.data() as dynamic)['vendor_id']) == vendorId) {
         checkExpiry(document);
       }

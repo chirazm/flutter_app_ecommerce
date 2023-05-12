@@ -16,28 +16,28 @@ class Home extends StatelessWidget {
     //init home controller
     var controller = Get.put(HomeController());
     var navbarItem = [
-      BottomNavigationBarItem(
-          icon: Image.asset(
-            icHome,
-            width: 26,
+      const BottomNavigationBarItem(
+          icon: Icon(
+            Icons.home,
+            size: 30,
           ),
           label: home),
-      BottomNavigationBarItem(
-          icon: Image.asset(
-            icCategories,
-            width: 26,
+      const BottomNavigationBarItem(
+          icon: Icon(
+            Icons.category,
+            size: 30,
           ),
           label: categories),
-      BottomNavigationBarItem(
-          icon: Image.asset(
-            icCart,
-            width: 26,
+      const BottomNavigationBarItem(
+          icon: Icon(
+            Icons.shopping_cart,
+            size: 30,
           ),
           label: cart),
-      BottomNavigationBarItem(
-          icon: Image.asset(
-            icProfile,
-            width: 26,
+      const BottomNavigationBarItem(
+          icon: Icon(
+            Icons.account_circle,
+            size: 30,
           ),
           label: account),
     ];

@@ -1,5 +1,4 @@
 import 'package:admin_panel_pfe/consts/colors.dart';
-import 'package:admin_panel_pfe/widgets/vendor/ShopPicCard.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';

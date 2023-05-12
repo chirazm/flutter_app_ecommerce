@@ -91,15 +91,17 @@ class _HomeScreenState extends State<HomeScreen> {
                     enlargeCenterPage: true,
                     itemCount: _bannerImage.length,
                     itemBuilder: (context, index) {
-                      return Image.network(
-                        _bannerImage[index],
-                        fit: BoxFit.fill,
-                      )
-                          .box
-                          .rounded
-                          .clip(Clip.antiAlias)
-                          .margin(const EdgeInsets.symmetric(horizontal: 8))
-                          .make();
+                      return _bannerImage.isEmpty
+                          ? Container()
+                          : Image.network(
+                              _bannerImage[index].toString(),
+                              fit: BoxFit.fill,
+                            )
+                              .box
+                              .rounded
+                              .clip(Clip.antiAlias)
+                              .margin(const EdgeInsets.symmetric(horizontal: 8))
+                              .make();
                     },
                   ),
                   30.heightBox,

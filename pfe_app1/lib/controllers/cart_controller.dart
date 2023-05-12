@@ -22,6 +22,27 @@ class CartController extends GetxController {
   bool cod = false;
 
   var placingOrder = false.obs;
+
+  var deliveryFree;
+
+  Future<int> getNextOrderCode() async {
+    await Future.delayed(Duration(seconds: 1));
+    var lastOrder = await firestore
+        .collection(ordersCollection)
+        .orderBy('order_code', descending: true)
+        .limit(1)
+        .get();
+    if (lastOrder.docs.isNotEmpty) {
+      var orderCode = lastOrder.docs.first['order_code'];
+      if (orderCode is int) {
+        return orderCode + 1;
+      } else if (orderCode is String) {
+        return int.tryParse(orderCode) ?? 25813260;
+      }
+    }
+    return 25813260;
+  }
+
   calculate(data) {
     totalP.value = 0;
     for (var i = 0; i < data.length; i++) {
@@ -36,8 +57,10 @@ class CartController extends GetxController {
   placeMyOrder({required orderPaymentMethod, required totalAmount}) async {
     placingOrder(true);
     await getProductDetails();
+    var newOrderCode = await getNextOrderCode();
+
     await firestore.collection(ordersCollection).doc().set({
-      'order_code': "25813255",
+      'order_code': newOrderCode,
       'order_date': FieldValue.serverTimestamp(),
       'order_by': currentUser!.uid,
       'order_by_name': Get.find<HomeController>().username,
@@ -59,8 +82,6 @@ class CartController extends GetxController {
     });
     placingOrder(false);
   }
-
-
 
   getProductDetails() {
     products.clear();
@@ -87,8 +108,7 @@ class CartController extends GetxController {
   getPayementMethod(index) {
     if (index == 0) {
       this.cod = false;
-    }
-    else{
+    } else {
       this.cod = true;
     }
   }
