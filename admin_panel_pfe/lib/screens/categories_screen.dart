@@ -1,4 +1,4 @@
-import 'dart:html';
+import 'dart:io';
 
 import 'package:admin_panel_pfe/consts/colors.dart';
 import 'package:admin_panel_pfe/widgets/category/category_card_widget.dart';
@@ -40,7 +40,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
     }
   }
 
-  _uploadCategoryBannerToStorage(dynamic image) async {
+  _uploadCategoryImageToStorage(dynamic image) async {
     Reference ref = _storage.ref().child('categoryImages').child(fileName!);
     UploadTask uploadTask = ref.putData(image);
     TaskSnapshot snapshot = await uploadTask;
@@ -51,8 +51,8 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
   uploadCategory() async {
     EasyLoading.show();
     if (_formKey.currentState!.validate()) {
-      String imageUrl = await _uploadCategoryBannerToStorage(_image);
-      await _firestore.collection('categories').doc(fileName).set({
+      String imageUrl = await _uploadCategoryImageToStorage(_image);
+      await _firestore.collection('categories').doc(name).set({
         'image': imageUrl,
         'name': name,
       }).whenComplete(() {

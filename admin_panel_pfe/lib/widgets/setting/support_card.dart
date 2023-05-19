@@ -3,10 +3,7 @@ import 'package:admin_panel_pfe/consts/style.dart';
 import 'package:flutter/material.dart';
 
 class SupportCard extends StatelessWidget {
-  const SupportCard({
-    super.key,
-  });
-
+  
   @override
   Widget build(BuildContext context) {
     return Container(

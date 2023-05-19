@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 class SettingTile extends StatelessWidget {
   final Setting setting;
   const SettingTile({
-    super.key,
     required this.setting,
   });
 

@@ -14,7 +14,6 @@ import 'package:flutter_admin_scaffold/admin_scaffold.dart';
 import '../consts/colors.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:image_picker/image_picker.dart';
@@ -13,6 +14,8 @@ import '../models/category_model.dart';
 import 'package:path/path.dart';
 
 class ProductsController extends GetxController {
+  CollectionReference products =
+      FirebaseFirestore.instance.collection('products');
   var isloading = false.obs;
   //text field controllers
   var pnameController = TextEditingController();
@@ -104,6 +107,37 @@ class ProductsController extends GetxController {
     VxToast.show(context, msg: "Product uploaded");
   }
 
+  void updateProduct({
+    required BuildContext context,
+    required String productName,
+    required String description,
+    required String price,
+    required String category,
+    required String subcategory,
+    required String quantity,
+    required String seller,
+    required String productId,
+    required List<String> image,
+  }) async {
+    try {
+      final firestore = FirebaseFirestore.instance;
+      final productRef = firestore.collection('products').doc(productId);
+      await productRef.update({
+        'p_name': productName,
+        'p_desc': description,
+        'p_price': price,
+        'p_category': category,
+        'p_subcategory': subcategory,
+        'p_quantity': quantity,
+        'p_seller': seller,
+        'p_imgs': image,
+      });
+      EasyLoading.showSuccess('Product Updated Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry’s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.!');
+    } catch (e) {
+      EasyLoading.showError('Failed to update product.');
+    }
+  }
+
   addFeatured(docId) async {
     await firestore.collection(productsCollection).doc(docId).set({
       'featured_id': currentUser!.uid,
@@ -121,4 +155,6 @@ class ProductsController extends GetxController {
   removeProduct(docId) async {
     await firestore.collection(productsCollection).doc(docId).delete();
   }
+
+  uploadImageToFirebaseStorage(File newImage) {}
 }

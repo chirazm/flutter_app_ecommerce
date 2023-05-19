@@ -52,10 +52,10 @@ dependencies:
   chips_choice: ^3.0.0
   provider: ^6.0.5
   flutter_easyloading: ^3.0.5
-  stripe_payment: ^1.1.4
   snackbar: ^1.0.2
   http: ^0.13.6
   flutter_credit_card: ^3.0.6
+  flutter_stripe: ^9.2.0
  
 
  

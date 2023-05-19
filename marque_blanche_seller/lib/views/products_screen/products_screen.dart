@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:marque_blanche_seller/controllers/products_controller.dart';
 import 'package:marque_blanche_seller/services/store_services.dart';
 import 'package:marque_blanche_seller/views/products_screen/add_product.dart';
+import 'package:marque_blanche_seller/views/products_screen/edit_product.dart';
 import 'package:marque_blanche_seller/views/products_screen/product_details.dart';
 import 'package:marque_blanche_seller/views/widgets/appbar_widget.dart';
 import 'package:marque_blanche_seller/views/widgets/loading_indicator.dart';
@@ -50,21 +51,33 @@ class ProductsScreen extends StatelessWidget {
                             },
                             leading: Image.network(
                               data[index]['p_imgs'][0],
-                              width: 90,
-                              height: 100,
+                              width: 100,
+                              height: 150,
                               fit: BoxFit.fill,
                             ),
                             title: boldText(
-                                text: "${data[index]['p_name']}",
-                                color: fontGrey,
-                                FontWeight: FontWeight.w500),
+                              text: "${data[index]['p_name']}",
+                              color: darkGrey,
+                              FontWeight: FontWeight.bold,
+                              size: 18.0,
+                            ),
                             subtitle: Row(
                               children: [
-                                normalText(
-                                    text:
-                                        "${data[index]['p_price']}".numCurrency,
-                                    color: darkGrey),
-                                30.widthBox,
+                                Row(
+                                  children: [
+                                    boldText(
+                                      text: "Qty : ",
+                                      color: red,
+                                      FontWeight: FontWeight.bold,
+                                    ),
+                                    boldText(
+                                      text: "${data[index]['p_quantity']}",
+                                      color: darkGrey,
+                                      FontWeight: FontWeight.w500,
+                                    ),
+                                  ],
+                                ),
+                                50.widthBox,
                                 boldText(
                                   text: data[index]['is_featured'] == true
                                       ? "Featured"
@@ -121,6 +134,16 @@ class ProductsScreen extends StatelessWidget {
                                                   }
                                                   break;
                                                 case 1:
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          EditProduct(
+                                                              productId:
+                                                                  data[index]
+                                                                      .id),
+                                                    ),
+                                                  );
                                                   break;
                                                 case 2:
                                                   controller.removeProduct(

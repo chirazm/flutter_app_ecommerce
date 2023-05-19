@@ -8,7 +8,7 @@ class CategoryWidget extends StatelessWidget {
     final Stream<QuerySnapshot> _categoriesStream =
         FirebaseFirestore.instance.collection('categories').snapshots();
 
-    return StreamBuilder<QuerySnapshot>(
+    return StreamBuilder(
       stream: _categoriesStream,
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasError) {

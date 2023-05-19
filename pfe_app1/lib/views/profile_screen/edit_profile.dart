@@ -81,14 +81,13 @@ class EditProfileScreen extends StatelessWidget {
                           onPress: () async {
                             controller.isloading(true);
 
-                            //if image is selected
+                         
                             if (controller.profileImgPath.value.isNotEmpty) {
                               await controller.uploadProfileImage();
                             } else {
                               controller.profileImageLink = data['imageUrl'];
                             }
 
-                            //if old password matches data base
                             if (data['password'] ==
                                 controller.oldpassController.text) {
                               await controller.changeAuthPassword(

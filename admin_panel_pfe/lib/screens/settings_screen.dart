@@ -23,7 +23,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const AvatarCard(),
+                AvatarCard(),
                 const SizedBox(height: 20),
                 const Divider(),
                 const SizedBox(height: 10),
@@ -43,7 +43,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                const SupportCard()
+                SupportCard()
               ],
             ),
           ),

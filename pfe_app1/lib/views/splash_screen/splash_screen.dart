@@ -6,6 +6,7 @@ import 'package:pfe_app/consts/colors.dart';
 import 'package:pfe_app/consts/consts.dart';
 import 'package:pfe_app/views/auth_screen/login_screen.dart';
 import 'package:pfe_app/views/home_screen/home.dart';
+import 'package:pfe_app/views/homehome.dart';
 import 'package:pfe_app/views/onboarding_screen/on_boarding_screen.dart';
 import 'package:pfe_app/widget_common/applogo_widget.dart';
 
@@ -25,7 +26,7 @@ class _SplashScreenState extends State<SplashScreen> {
         if (user == null && mounted) {
           Get.to(() => const OnBoardingScreen());
         } else {
-          Get.to(() => const Home());
+          Get.to(() => const homehome());
         }
       });
     });

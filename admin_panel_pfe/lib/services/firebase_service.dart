@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 class FirebaseServices {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
-  
+
   CollectionReference banners =
       FirebaseFirestore.instance.collection('banners');
   CollectionReference vendors =
@@ -14,7 +14,8 @@ class FirebaseServices {
       FirebaseFirestore.instance.collection('categories');
   CollectionReference users = FirebaseFirestore.instance.collection('user');
   CollectionReference orders = FirebaseFirestore.instance.collection('orders');
-  CollectionReference products = FirebaseFirestore.instance.collection('products');
+  CollectionReference products =
+      FirebaseFirestore.instance.collection('products');
 
   Future<QuerySnapshot> getAdminCredentials() {
     var result = FirebaseFirestore.instance.collection('admin').get();
@@ -90,10 +91,12 @@ class FirebaseServices {
     );
   }
 
-deleteCategoryFromFirebase(id) async {
+  deleteCategoryFromFirebase(id) async {
     category.doc(id).delete();
   }
-  Future<void> confirmDeleteDialogCategory({title, message, context, id}) async {
+
+  Future<void> confirmDeleteDialogCategory(
+      {title, message, context, id}) async {
     return showDialog<void>(
       context: context,
       barrierDismissible: false,
@@ -127,7 +130,7 @@ deleteCategoryFromFirebase(id) async {
     );
   }
 
- deleteVendorFromFirebase(id) async {
+  deleteVendorFromFirebase(id) async {
     vendors.doc(id).delete();
   }
 

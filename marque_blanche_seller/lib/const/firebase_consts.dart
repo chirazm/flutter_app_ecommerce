@@ -12,3 +12,4 @@ const couponsCollection = "coupons";
 const chatsCollection = "chats";
 const messagesCollection = "messages";
 const ordersCollection = "orders";
+const categoriesCollection = "categories";

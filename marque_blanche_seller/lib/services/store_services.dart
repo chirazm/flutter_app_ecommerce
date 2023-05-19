@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:marque_blanche_seller/const/const.dart';
 
 class StoreServices {
@@ -20,6 +21,10 @@ class StoreServices {
         .collection(ordersCollection)
         .where('vendors', arrayContains: uid)
         .snapshots();
+  }
+
+  static Stream<QuerySnapshot> searchOrdersByName(String buyerName) {
+    return firestore.collection(ordersCollection).snapshots();
   }
 
   static getProducts(uid) {

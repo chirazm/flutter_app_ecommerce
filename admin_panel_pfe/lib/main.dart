@@ -21,11 +21,10 @@ void main() async {
               appId: "1:927570459688:web:01d609f76c860300b7091d")
           : null);
 
-  runApp(const MyApp());
+  runApp( MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
 
   // This widget is the root of your application.
   @override

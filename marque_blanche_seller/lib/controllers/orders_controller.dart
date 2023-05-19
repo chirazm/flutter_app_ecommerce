@@ -7,6 +7,8 @@ class OrdersController extends GetxController {
   var confirmed = false.obs;
   var ondelivery = false.obs;
   var delivered = false.obs;
+        var searchController = TextEditingController();
+
   getOrders(data) {
     orders.clear();
     for (var item in data['orders']) {

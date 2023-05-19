@@ -8,8 +8,9 @@ import 'components/order_place_details.dart';
 import 'package:intl/intl.dart' as intl;
 
 class OrderDetails extends StatefulWidget {
-  final dynamic data;
-  const OrderDetails({super.key, this.data});
+  final dynamic data;  final String? title;
+
+  const OrderDetails({super.key, this.data, this.title});
 
   @override
   State<OrderDetails> createState() => _OrderDetailsState();

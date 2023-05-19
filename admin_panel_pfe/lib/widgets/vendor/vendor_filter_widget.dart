@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 class VendorFilterWidget extends StatelessWidget {
-  const VendorFilterWidget({super.key});
 
   @override
   Widget build(BuildContext context) {

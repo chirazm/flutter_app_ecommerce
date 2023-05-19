@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 
 class SubCategoryWidget extends StatefulWidget {
   final String categoryName;
+
   SubCategoryWidget(this.categoryName);
+
   @override
   State<SubCategoryWidget> createState() => _SubCategoryWidgetState();
 }
@@ -12,6 +14,19 @@ class SubCategoryWidget extends StatefulWidget {
 class _SubCategoryWidgetState extends State<SubCategoryWidget> {
   FirebaseServices _services = FirebaseServices();
   var _subcategoryTextController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _subcategoryTextController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _subcategoryTextController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -33,151 +48,157 @@ class _SubCategoryWidgetState extends State<SubCategoryWidget> {
                   child: CircularProgressIndicator(),
                 );
               }
-              if (!snapshot.hasData) {
-                return Center(
-                  child: Text('No SubCategories Added'),
-                );
-              }
-              if (snapshot.connectionState == ConnectionState.done) {
-                Map<String, dynamic> data =
-                    snapshot.data!.data() as Map<String, dynamic>;
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      child: Column(
-                        children: [
-                          Row(
+
+              Map<String, dynamic>? data =
+                  snapshot.data?.data() as Map<String, dynamic>?;
+
+              String categoryName = widget.categoryName;
+
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Text('Main category : '),
+                            Text(
+                              categoryName,
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        ),
+                        Divider(
+                          thickness: 3,
+                        ),
+                      ],
+                    ),
+                  ),
+                  if (data == null || data['subCat'] == null)
+                    Expanded(
+                      child: Center(
+                        child: Text('No SubCategories Added'),
+                      ),
+                    )
+                  else
+                    Expanded(
+                      child: ListView.builder(
+                        itemBuilder: (BuildContext context, int index) {
+                          return ListTile(
+                            contentPadding: EdgeInsets.zero,
+                            leading: CircleAvatar(
+                              child: Text('${index + 1}'),
+                            ),
+                            title: Text(data['subCat'][index]['name']),
+                            trailing: Icon(Icons.delete),
+                          );
+                        },
+                        itemCount: data['subCat'].length,
+                      ),
+                    ),
+                  Container(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          child: Column(
                             children: [
-                              Text('Main category :'),
-                              Text(
-                                widget.categoryName,
-                                style: TextStyle(fontWeight: FontWeight.bold),
+                              Divider(
+                                thickness: 4,
+                              ),
+                              Container(
+                                color: Colors.grey,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(
+                                        "Add new SubCategory",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 6,
+                                    ),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          child: SizedBox(
+                                            height: 30,
+                                            child: TextField(
+                                              controller:
+                                                  _subcategoryTextController,
+                                              decoration: InputDecoration(
+                                                hintText: 'Sub Category Name',
+                                                border: OutlineInputBorder(),
+                                                focusedBorder:
+                                                    OutlineInputBorder(),
+                                                fillColor: Colors.white,
+                                                filled: true,
+                                                contentPadding:
+                                                    EdgeInsets.only(left: 10),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        TextButton(
+                                          onPressed: () {
+                                            if (_subcategoryTextController
+                                                .text.isEmpty) {
+                                              _services.showMyDialog(
+                                                context: context,
+                                                title: 'Add New SubCategory',
+                                                message:
+                                                    'Need to Give SubCategory Name',
+                                              );
+                                            } else {
+                                              DocumentReference doc = _services
+                                                  .category
+                                                  .doc(categoryName);
+                                              doc.update({
+                                                'subCat':
+                                                    FieldValue.arrayUnion([
+                                                  {
+                                                    'name':
+                                                        _subcategoryTextController
+                                                            .text
+                                                  }
+                                                ]),
+                                              }).then((value) {
+                                                // Fetch the updated snapshot to get the updated data
+                                                doc.get().then((snapshot) {
+                                                  setState(() {
+                                                    _subcategoryTextController
+                                                        .clear();
+                                                  });
+                                                });
+                                              });
+                                            }
+                                          },
+                                          child: Text(
+                                            'Save',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
                             ],
                           ),
-                          Divider(
-                            thickness: 3,
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      //subcategory list
-                      child: Expanded(
-                        child: ListView.builder(
-                          itemBuilder: (BuildContext context, int index) {
-                            return ListTile(
-                              contentPadding: EdgeInsets.zero,
-                              leading: CircleAvatar(
-                                child: Text('${index + 1}'),
-                              ),
-                              title: Text(data['subCat'][index]['name']),
-                            );
-                          },
-                          itemCount: data['subCat'] == null
-                              ? 0
-                              : data['subCat'].length,
                         ),
-                      ),
+                      ],
                     ),
-                    Container(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            child: Column(
-                              children: [
-                                Divider(
-                                  thickness: 4,
-                                ),
-                                Container(
-                                    color: Colors.grey,
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Text(
-                                            "Add new SubCategory",
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 6,
-                                        ),
-                                        Row(
-                                          children: [
-                                            Expanded(
-                                              child: SizedBox(
-                                                height: 30,
-                                                child: TextField(
-                                                  controller:
-                                                      _subcategoryTextController,
-                                                  decoration: InputDecoration(
-                                                      hintText:
-                                                          'Sub Category Name',
-                                                      border:
-                                                          OutlineInputBorder(),
-                                                      focusedBorder:
-                                                          OutlineInputBorder(),
-                                                      fillColor: Colors.white,
-                                                      filled: true,
-                                                      contentPadding:
-                                                          EdgeInsets.only(
-                                                              left: 10)),
-                                                ),
-                                              ),
-                                            ),
-                                            TextButton(
-                                              onPressed: () {
-                                                if (_subcategoryTextController
-                                                    .text.isEmpty) {
-                                                  _services.showMyDialog(
-                                                      context: context,
-                                                      title:
-                                                          'Add New SubCategory',
-                                                      message:
-                                                          'Need to Give SubaCategory Name');
-                                                }
-                                                DocumentReference doc =
-                                                    _services.category.doc(
-                                                        widget.categoryName);
-                                                doc.update({
-                                                  'subCat':
-                                                      FieldValue.arrayUnion([
-                                                    {
-                                                      'name':
-                                                          _subcategoryTextController
-                                                              .text
-                                                    }
-                                                  ]),
-                                                });
-                                                _subcategoryTextController
-                                                    .clear();
-                                              },
-                                              child: Text(
-                                                'Save',
-                                                style: TextStyle(
-                                                    color: Colors.white),
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      ],
-                                    )),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                );
-              }
-              return Center(child: CircularProgressIndicator());
+                  ),
+                ],
+              );
             },
           ),
         ),

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:admin_panel_pfe/consts/colors.dart';
 import 'package:admin_panel_pfe/widgets/category/subcategory_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -7,6 +9,7 @@ import 'package:velocity_x/velocity_x.dart';
 import '../../services/firebase_service.dart';
 
 class CategoryCard extends StatelessWidget {
+ 
   @override
   Widget build(BuildContext context) {
     final Stream<QuerySnapshot> _categorysStream =
@@ -39,15 +42,15 @@ class CategoryCard extends StatelessWidget {
             itemBuilder: (context, index) {
               final categoriesData = snapshot.data!.docs[index];
 
-              return  InkWell(
-      borderRadius: BorderRadius.circular(4),
-      onTap: () {
-        showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return SubCategoryWidget(categoriesData['name']);
-            });
-      },
+              return InkWell(
+                borderRadius: BorderRadius.circular(4),
+                onTap: () {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return SubCategoryWidget(categoriesData['name']);
+                      });
+                },
                 child: Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: Stack(children: [
