@@ -1,14 +1,14 @@
 import 'dart:io';
 
 import 'package:admin_panel_pfe/consts/colors.dart';
-import 'package:admin_panel_pfe/widgets/category/category_card_widget.dart';
+import 'package:admin_panel_pfe/screens/category/category_card_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
-import '../widgets/category/category_widget.dart';
+import 'category_widget.dart';
 
 class CategoriesScreen extends StatefulWidget {
   static const String routeName = "\CategoriesScreen";

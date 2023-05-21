@@ -1,7 +1,7 @@
 import 'package:admin_panel_pfe/models/setting.dart';
-import 'package:admin_panel_pfe/widgets/setting/avatar_card.dart';
-import 'package:admin_panel_pfe/widgets/setting/setting_tile.dart';
-import 'package:admin_panel_pfe/widgets/setting/support_card.dart';
+import 'package:admin_panel_pfe/screens/setting/avatar_card.dart';
+import 'package:admin_panel_pfe/screens/setting/setting_tile.dart';
+import 'package:admin_panel_pfe/screens/setting/support_card.dart';
 import 'package:flutter/material.dart';
 
 class SettingsScreen extends StatefulWidget {

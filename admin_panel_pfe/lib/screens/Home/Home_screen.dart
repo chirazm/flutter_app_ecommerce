@@ -1,17 +1,17 @@
-import 'package:admin_panel_pfe/screens/Login_screen.dart';
-import 'package:admin_panel_pfe/screens/categories_screen.dart';
-import 'package:admin_panel_pfe/screens/dashbord_screen.dart';
+import 'package:admin_panel_pfe/screens/login/Login_screen.dart';
+import 'package:admin_panel_pfe/screens/category/categories_screen.dart';
+import 'package:admin_panel_pfe/screens/dashboard/dashbord_screen.dart';
 import 'package:admin_panel_pfe/screens/products_screen.dart';
-import 'package:admin_panel_pfe/screens/banners_screen.dart';
-import 'package:admin_panel_pfe/screens/settings_screen.dart';
-import 'package:admin_panel_pfe/screens/vendors_screen.dart';
+import 'package:admin_panel_pfe/screens/banner/banners_screen.dart';
+import 'package:admin_panel_pfe/screens/setting/settings_screen.dart';
+import 'package:admin_panel_pfe/screens/vendor/vendors_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_admin_scaffold/admin_scaffold.dart';
 
-import '../consts/colors.dart';
+import '../../consts/colors.dart';
 
 class HomeScreen extends StatefulWidget {
 

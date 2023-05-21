@@ -131,14 +131,7 @@ class _CategoryDetailsState extends State<CategoryDetails> {
                                 .size(16)
                                 .make(),
                             9.heightBox,
-                            // Row(
-                            //   mainAxisAlignment: MainAxisAlignment.center,
-                            //   children: [
-                            //     Row(
-                            //       children: [CounterForCard()],
-                            //     )
-                            //   ],
-                            // )
+                         
                           ],
                         )
                             .box
@@ -149,11 +142,13 @@ class _CategoryDetailsState extends State<CategoryDetails> {
                             .padding(const EdgeInsets.all(12))
                             .make()
                             .onTap(() {
-                              controller.checkIfFav(data[index]);
-                              Get.to(() => ItemDetails(
+                          controller.checkIfFav(data[index]);
+                          Get.to(
+                            () => ItemDetails(
                               title: "${data[index]['p_name']}",
-                              data: data[index])
-                              );
+                              data: data[index],
+                            ),
+                          );
                         });
                       }),
                 );

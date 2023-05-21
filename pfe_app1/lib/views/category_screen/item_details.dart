@@ -35,15 +35,16 @@ class ItemDetails extends StatelessWidget {
               icon: const Icon(Icons.arrow_back)),
           title: title!.text.color(darkFontGrey).fontFamily(bold).make(),
           actions: [
-            IconButton(
-                onPressed: () {},
-                icon: const Icon(
-                  Icons.share,
-                )),
+            // IconButton(
+            //   onPressed: () {},
+            //   icon: const Icon(
+            //     Icons.share,
+            //   ),
+            // ),
             IconButton(
               icon: const Icon(Icons.shopping_cart),
               onPressed: () {
-                Get.to(() =>  CartScreen());
+                Get.to(() => CartScreen());
               },
             ),
             Obx(
@@ -164,52 +165,55 @@ class ItemDetails extends StatelessWidget {
                     Obx(
                       () => Column(
                         children: [
-                          Row(
-                            children: [
-                              SizedBox(
-                                width: 100,
-                                child:
-                                    "Color: ".text.color(textfieldGrey).make(),
-                              ),
-                              Row(
-                                children: List.generate(
-                                  data["p_colors"].length,
-                                  (index) => Stack(
-                                    alignment: Alignment.center,
-                                    children: [
-                                      VxBox()
-                                          .size(40, 40)
-                                          .roundedFull
-                                          .color(Color(data["p_colors"][index])
-                                              .withOpacity(1.0))
-                                          .margin(const EdgeInsets.symmetric(
-                                              horizontal: 4))
-                                          .make()
-                                          .onTap(() {
-                                        controller.changeColorIndex(index);
-                                      }),
-                                      Visibility(
-                                          visible: index ==
-                                              controller.colorIndex.value,
-                                          child: const Icon(
-                                            Icons.done,
-                                            color: Colors.white,
-                                          )),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ).box.padding(const EdgeInsets.all(8)).make(),
+                          // Row(
+                          //children: [
+                          // SizedBox(
+                          //   width: 100,
+                          //   child:
+                          //       "Color: ".text.color(textfieldGrey).make(),
+                          // ),
+                          // Row(
+                          //   children: List.generate(
+                          //     data["p_colors"].length,
+                          //     (index) => Stack(
+                          //       alignment: Alignment.center,
+                          //       children: [
+                          //         VxBox()
+                          //             .size(40, 40)
+                          //             .roundedFull
+                          //             .color(Color(data["p_colors"][index])
+                          //                 .withOpacity(1.0))
+                          //             .margin(const EdgeInsets.symmetric(
+                          //                 horizontal: 4))
+                          //             .make()
+                          //             .onTap(() {
+                          //           controller.changeColorIndex(index);
+                          //         }),
+                          //         Visibility(
+                          //             visible: index ==
+                          //                 controller.colorIndex.value,
+                          //             child: const Icon(
+                          //               Icons.done,
+                          //               color: Colors.white,
+                          //             )),
+                          //       ],
+                          //     ),
+                          //   ),
+                          // ),
+                          //],
+                          // ).box.padding(const EdgeInsets.all(8)).make(),
 
                           //quantity row
                           Row(
                             children: [
                               SizedBox(
                                 width: 100,
-                                child: "Quantity: "
+                                child: "Quantity : "
                                     .text
                                     .color(textfieldGrey)
+                                    .color(Colors.black)
+                                    .fontWeight(FontWeight.bold)
+                                    .size(14)
                                     .make(),
                               ),
                               Obx(
@@ -251,8 +255,12 @@ class ItemDetails extends StatelessWidget {
                             children: [
                               SizedBox(
                                 width: 100,
-                                child:
-                                    "Total:".text.color(textfieldGrey).make(),
+                                child: "Total : "
+                                    .text
+                                    .color(Colors.black)
+                                    .fontWeight(FontWeight.bold)
+                                    .size(14)
+                                    .make(),
                               ),
                               "${controller.totalPrice.value}"
                                   .numCurrency
@@ -269,76 +277,15 @@ class ItemDetails extends StatelessWidget {
 
                     //description section
                     10.heightBox,
-                    "Description"
+                    "Description : "
                         .text
-                        .color(darkFontGrey)
-                        .fontFamily(bold)
+                        .color(Colors.black)
+                        .fontWeight(FontWeight.bold)
+                        .size(14)
                         .make(),
                     10.heightBox,
                     "${data["p_desc"]}".text.color(darkFontGrey).make(),
                     10.heightBox,
-                    //buttons section
-                    ListView(
-                      physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      children: List.generate(
-                          itemDetailButtonList.length,
-                          (index) => ListTile(
-                                title: itemDetailButtonList[index]
-                                    .text
-                                    .fontFamily(semibold)
-                                    .color(darkFontGrey)
-                                    .make(),
-                                trailing: const Icon(Icons.arrow_forward),
-                              )),
-                    ).color(lightGrey),
-
-                    //products you may like
-                    20.heightBox,
-                    productsyoumaylike.text
-                        .fontFamily(bold)
-                        .size(16)
-                        .color(darkFontGrey)
-                        .make(),
-                    10.heightBox,
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        children: List.generate(
-                            6,
-                            (index) => Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Image.asset(
-                                      imgP1,
-                                      width: 130,
-                                      fit: BoxFit.cover,
-                                    ),
-                                    10.heightBox,
-                                    "Laptop 4GB/64GB"
-                                        .text
-                                        .fontFamily(semibold)
-                                        .color(darkFontGrey)
-                                        .make(),
-                                    10.heightBox,
-                                    "1200 TND"
-                                        .text
-                                        .color(redColor)
-                                        .fontFamily(semibold)
-                                        .size(16)
-                                        .make(),
-                                    10.heightBox,
-                                  ],
-                                )
-                                    .box
-                                    .white
-                                    .margin(const EdgeInsets.symmetric(
-                                        horizontal: 4))
-                                    .roundedSM
-                                    .padding(const EdgeInsets.all(8))
-                                    .make()),
-                      ),
-                    ),
                   ],
                 ),
               ),

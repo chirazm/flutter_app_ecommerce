@@ -8,7 +8,8 @@ import 'components/order_place_details.dart';
 import 'package:intl/intl.dart' as intl;
 
 class OrderDetails extends StatefulWidget {
-  final dynamic data;  final String? title;
+  final dynamic data;
+  final String? title;
 
   const OrderDetails({super.key, this.data, this.title});
 
@@ -212,7 +213,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         orderPlaceDetails(
-                            title1: "${controller.orders[index]['title']} TND",
+                            title1: "${controller.orders[index]['title']}",
                             title2: "${controller.orders[index]['tprice']} TND",
                             d1: "${controller.orders[index]['qty']}x",
                             d2: "Refundable"),

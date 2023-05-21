@@ -1,4 +1,4 @@
-import 'package:admin_panel_pfe/widgets/vendor/vendor_details.dart';
+import 'package:admin_panel_pfe/screens/vendor/vendor_details.dart';
 import 'package:flutter/material.dart';
 
 const VendorDetailsBoxTextStyle = TextStyle(

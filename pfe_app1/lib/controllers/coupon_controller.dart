@@ -1,35 +1,50 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pfe_app/consts/consts.dart';
+import 'package:pfe_app/views/cart_screen/coupn.dart';
 
-class CouponController with ChangeNotifier {
-  late bool expired;
-  late final DocumentSnapshot document;
-  int discountRate = 0;
-  Future<DocumentSnapshot> getCouponDetails(title, vendorId) async {
-    DocumentSnapshot document =
-        await FirebaseFirestore.instance.collection('coupons').doc(title).get();
+class CouponController extends GetxController {
+  RxList<Coupon> coupons = <Coupon>[].obs;
+  Rx<Coupon?> activeCoupon = Rx<Coupon?>(null);
 
-    if (document != null && document.exists) {
-      if (((document.data() as dynamic)['vendor_id']) == vendorId) {
-        checkExpiry(document);
-      }
-    }
-    return document;
+  void getCoupons() {
+
+    coupons.value = [
+      Coupon(
+          id: '1',
+          title: 'Coupon 1',
+          discountRate: 10.0,
+          details: "",
+          active: true,
+          expiry: DateTime(12, 12, 2024)),
+      Coupon(
+          id: '2',
+          title: 'Coupon 2',
+          discountRate: 15.0,
+          details: "",
+          active: true,
+          expiry: DateTime(12, 12, 2024)),
+      Coupon(
+          id: '3',
+          title: 'Coupon 3',
+          discountRate: 20.0,
+          details: "",
+          active: true,
+          expiry: DateTime(12, 12, 2024)),
+    ];
   }
 
-  checkExpiry(DocumentSnapshot document) {
-    DateTime date = (document.data() as dynamic)['expiry'].toDate();
-    var dateDiff = date.difference(DateTime.now()).inDays;
-    if (dateDiff < 0) {
-      expired = true;
-      notifyListeners();
-    } else {
-      this.document = document;
-      expired = false;
-      discountRate = (document.data() as dynamic)['discountRate'];
-      notifyListeners();
+  void applyCoupon(Coupon coupon) {
+    activeCoupon.value = coupon;
+  }
+
+  void removeCoupon() {
+    activeCoupon.value = null;
+  }
+
+  double getDiscountedAmount(double totalPrice) {
+    if (activeCoupon.value != null) {
+      final discountRate = activeCoupon.value!.discountRate;
+      return totalPrice * (discountRate / 100);
     }
+    return 0.0;
   }
 }

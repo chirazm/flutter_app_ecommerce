@@ -1,6 +1,6 @@
-import 'package:admin_panel_pfe/widgets/vendor/vendor_add.dart';
-import 'package:admin_panel_pfe/widgets/vendor/vendor_filter_widget.dart';
-import 'package:admin_panel_pfe/widgets/vendor/vendor_widget.dart';
+import 'package:admin_panel_pfe/screens/vendor/vendor_add.dart';
+import 'package:admin_panel_pfe/screens/vendor/vendor_filter_widget.dart';
+import 'package:admin_panel_pfe/screens/vendor/vendor_widget.dart';
 import 'package:flutter/material.dart';
 
 class VendorsScreen extends StatelessWidget {

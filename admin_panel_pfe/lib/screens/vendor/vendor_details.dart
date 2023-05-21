@@ -1,7 +1,7 @@
 import 'package:admin_panel_pfe/consts/colors.dart';
 import 'package:admin_panel_pfe/consts/style.dart';
 import 'package:admin_panel_pfe/services/firebase_service.dart';
-import 'package:admin_panel_pfe/widgets/vendor/vendor_edit.dart';
+import 'package:admin_panel_pfe/screens/vendor/vendor_edit.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

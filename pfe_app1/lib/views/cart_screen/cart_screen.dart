@@ -4,14 +4,23 @@ import 'package:get/get.dart';
 import 'package:pfe_app/consts/consts.dart';
 import 'package:pfe_app/controllers/cart_controller.dart';
 import 'package:pfe_app/services/firestore_services.dart';
+import 'package:pfe_app/views/cart_screen/CouponWidgett.dart';
 import 'package:pfe_app/views/cart_screen/shipping_screen.dart';
 import 'package:pfe_app/views/category_screen/item_details.dart';
 import 'package:pfe_app/widget_common/cod_toggle.dart';
 import 'package:pfe_app/widget_common/loading_indicator.dart';
+import '../../controllers/coupon_controller.dart';
 import '../../widget_common/coupon_widget.dart';
 import '../../widget_common/our_button.dart';
 
-class CartScreen extends StatelessWidget {
+class CartScreen extends StatefulWidget {
+  @override
+  State<CartScreen> createState() => _CartScreenState();
+}
+
+class _CartScreenState extends State<CartScreen> {
+  CouponController couponController = Get.find<CouponController>();
+
   int deliveryFree = 7;
 
   @override
@@ -51,7 +60,6 @@ class CartScreen extends StatelessWidget {
         body: StreamBuilder(
           stream: FirestoreServices.getCart(currentUser!.uid),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
-
             if (!snapshot.hasData) {
               return Center(
                 child: loadingIndicator(),
@@ -116,21 +124,10 @@ class CartScreen extends StatelessWidget {
                     const Divider(
                       color: Colors.grey,
                     ),
-                    // SizedBox(
-                    // // child: CouponWidget((doc.data() as dynamic)['uid']),
 
-                    // ),
-                    // SizedBox(
-                    //   width: 1000,
-                    //   child: Wrap(
-                    //     direction: Axis.horizontal,
-                    //     children: snapshot.data!.docs
-                    //         .map((DocumentSnapshot document) {
-                    //       return CouponWidget(
-                    //           (document.data() as dynamic)['uid']);
-                    //     }).toList(),
-                    //   ),
-                    // ),
+                    // i want in this part add couponwidget
+                    //CouponWidgett(), // Add the CouponWidget here
+
                     Padding(
                       padding: const EdgeInsets.all(4.0),
                       child: SizedBox(
@@ -171,19 +168,6 @@ class CartScreen extends StatelessWidget {
                                 const SizedBox(
                                   height: 5,
                                 ),
-                                // Row(
-                                //   children: [
-                                //     const Expanded(
-                                //       child: Text(
-                                //         'Discount',
-                                //         style: TextStyle(color: Colors.grey),
-                                //       ),
-                                //     ),
-                                //     Text("$discount TND",
-                                //         style: const TextStyle(
-                                //             color: Colors.grey)),
-                                //   ],
-                                // ),
                                 const SizedBox(
                                   height: 10,
                                 ),
@@ -207,22 +191,6 @@ class CartScreen extends StatelessWidget {
                                 const Divider(
                                   color: Colors.grey,
                                 ),
-                                // Row(
-                                //   children: [
-                                //     const Expanded(
-                                //       child: Text(
-                                //         'Total amount payable',
-                                //         style: TextStyle(
-                                //             fontWeight: FontWeight.bold),
-                                //       ),
-                                //     ),
-                                //     Text(
-                                //       "${payable.toStringAsFixed(0)} TND",
-                                //       style: const TextStyle(
-                                //           fontWeight: FontWeight.bold),
-                                //     ),
-                                //   ],
-                                // ),
                                 const SizedBox(
                                   height: 10,
                                 ),
@@ -259,41 +227,6 @@ class CartScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-
-                    // Row(
-                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //   children: [
-                    //     "Total Price"
-                    //         .text
-                    //         .fontFamily(semibold)
-                    //         .color(darkFontGrey)
-                    //         .make(),
-                    //     Obx(
-                    //       () => "${controller.totalP.value}"
-                    //           .numCurrency
-                    //           .text
-                    //           .fontFamily(semibold)
-                    //           .color(darkFontGrey)
-                    //           .make(),
-                    //     )
-                    //   ],
-                    // )
-                    //     .box
-                    //     .padding(const EdgeInsets.all(12))
-                    //     .color(lightGolden)
-                    //     .width(context.screenWidth - 60)
-                    //     .roundedSM
-                    //     .make(),
-
-                    // SizedBox(
-                    //   width: context.screenWidth - 60,
-                    //   child: ourButton(
-                    //     color: redColor,
-                    //     onPress: () {},
-                    //     textColor: whiteColor,
-                    //     title: "Proceed to shipping",
-                    //   ),
-                    // )
                   ],
                 ),
               );

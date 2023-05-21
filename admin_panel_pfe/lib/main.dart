@@ -1,8 +1,8 @@
 import 'dart:io';
 
 import 'package:admin_panel_pfe/screens/Splash_screen.dart';
-import 'package:admin_panel_pfe/screens/Login_screen.dart';
-import 'package:admin_panel_pfe/screens/Home_screen.dart';
+import 'package:admin_panel_pfe/screens/login/Login_screen.dart';
+import 'package:admin_panel_pfe/screens/Home/Home_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';

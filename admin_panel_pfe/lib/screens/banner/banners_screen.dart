@@ -1,11 +1,11 @@
-import 'package:admin_panel_pfe/widgets/banner/banner_widget.dart';
+import 'package:admin_panel_pfe/screens/banner/banner_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
-import '../consts/colors.dart';
+import '../../consts/colors.dart';
 
 class UploadBanner extends StatefulWidget {
   static const String routeName = "\UploadBanner";

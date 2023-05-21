@@ -1,3 +1,4 @@
+import 'package:admin_panel_pfe/consts/colors.dart';
 import 'package:admin_panel_pfe/services/firebase_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -91,7 +92,53 @@ class _SubCategoryWidgetState extends State<SubCategoryWidget> {
                               child: Text('${index + 1}'),
                             ),
                             title: Text(data['subCat'][index]['name']),
-                            trailing: Icon(Icons.delete),
+                            trailing: IconButton(
+                              icon: Icon(
+                                Icons.delete,
+                                color: buttonColor,
+                              ),
+                              onPressed: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: Text('Confirm Deletion'),
+                                      content: Text(
+                                          'Are you sure you want to delete this subcategory?'),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: Text('Cancel'),
+                                        ),
+                                        TextButton(
+                                          onPressed: () {
+                                            DocumentReference doc = _services
+                                                .category
+                                                .doc(categoryName);
+                                            doc.update({
+                                              'subCat': FieldValue.arrayRemove(
+                                                  [data['subCat'][index]])
+                                            }).then((value) {
+                                              doc.get().then((snapshot) {
+                                                setState(() {
+                                                  _subcategoryTextController
+                                                      .clear();
+                                                });
+                                              });
+                                            });
+                                            Navigator.of(context)
+                                                .pop(); // Close the dialog
+                                          },
+                                          child: Text('Delete'),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              },
+                            ),
                           );
                         },
                         itemCount: data['subCat'].length,

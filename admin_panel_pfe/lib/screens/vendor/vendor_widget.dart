@@ -1,7 +1,7 @@
 import 'dart:html';
 
 import 'package:admin_panel_pfe/services/firebase_service.dart';
-import 'package:admin_panel_pfe/widgets/vendor/vendor_details.dart';
+import 'package:admin_panel_pfe/screens/vendor/vendor_details.dart';
 import 'package:chips_choice/chips_choice.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';

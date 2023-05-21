@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:admin_panel_pfe/consts/colors.dart';
-import 'package:admin_panel_pfe/widgets/category/subcategory_widget.dart';
+import 'package:admin_panel_pfe/screens/category/subcategory_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:velocity_x/velocity_x.dart';

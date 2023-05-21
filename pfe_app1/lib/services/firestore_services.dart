@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pfe_app/consts/consts.dart';
+import 'package:pfe_app/views/cart_screen/coupn.dart';
 
 class FirestoreServices {
   //get users data
@@ -41,6 +42,28 @@ class FirestoreServices {
         .collection(categoriesCollection)
         .where('name', isEqualTo: name)
         .snapshots();
+  }
+  static Future<List<Coupon>> getCoupons() async {
+    final couponsSnapshot = await FirebaseFirestore.instance
+        .collection('coupons')
+        .get();
+
+    final List<Coupon> coupons = [];
+
+    couponsSnapshot.docs.forEach((doc) {
+      final coupon = Coupon(
+        id: doc.id,
+        title: doc.data()['title'] ?? '',
+        details: doc.data()['details'] ?? '',
+        active: doc.data()['active'] ?? false,
+        expiry: (doc.data()['expiry'] as Timestamp).toDate(),
+        discountRate: doc.data()['discountRate']?.toDouble() ?? 0.0,
+      );
+
+      coupons.add(coupon);
+    });
+
+    return coupons;
   }
 
   //get cart
