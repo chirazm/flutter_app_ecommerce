@@ -189,7 +189,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     CrossAxisAlignment.center,
                                                 children: [
                                                   Image.network(
-                                                    product.imageURL!,
+                                                    product.imageURL,
                                                     height: 150,
                                                     width: 150,
                                                     fit: BoxFit.cover,
