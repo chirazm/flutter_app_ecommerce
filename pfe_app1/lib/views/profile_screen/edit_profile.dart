@@ -27,7 +27,7 @@ class EditProfileScreen extends StatelessWidget {
             children: [
               data['imageUrl'] == '' && controller.profileImgPath.isEmpty
                   ? Image.asset(
-                      imgProfile2,
+                      imgProfile,
                       width: 100,
                       fit: BoxFit.cover,
                     ).box.roundedFull.clip(Clip.antiAlias).make()
@@ -56,19 +56,22 @@ class EditProfileScreen extends StatelessWidget {
                   controller: controller.nameController,
                   hint: nameHint,
                   title: name,
-                  isPass: false),
+                  isPass: false,
+                  validator: (value) {}),
               10.heightBox,
               customTextField(
                   controller: controller.oldpassController,
                   hint: passwordHint,
                   title: oldpass,
-                  isPass: true),
+                  isPass: true,
+                  validator: (value) {}),
               10.heightBox,
               customTextField(
                   controller: controller.newpassController,
                   hint: passwordHint,
                   title: newpass,
-                  isPass: true),
+                  isPass: true,
+                  validator: (value) {}),
               20.heightBox,
               controller.isloading.value
                   ? const CircularProgressIndicator(
@@ -81,7 +84,6 @@ class EditProfileScreen extends StatelessWidget {
                           onPress: () async {
                             controller.isloading(true);
 
-                         
                             if (controller.profileImgPath.value.isNotEmpty) {
                               await controller.uploadProfileImage();
                             } else {

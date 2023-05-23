@@ -32,6 +32,7 @@ class ProductsController extends GetxController {
   var categoryvalue = ''.obs;
   var subcategoryvalue = ''.obs;
   var selectedColorIndex = 0.obs;
+  var searchController = TextEditingController();
 
   getCategories() async {
     var data = await rootBundle.loadString("lib/services/category_model.json");
@@ -132,7 +133,8 @@ class ProductsController extends GetxController {
         'p_seller': seller,
         'p_imgs': image,
       });
-      EasyLoading.showSuccess('Product Updated Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry’s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.!');
+      EasyLoading.showSuccess(
+          'Product Updated Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry’s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.!');
     } catch (e) {
       EasyLoading.showError('Failed to update product.');
     }

@@ -63,6 +63,22 @@ class ProfileController extends GetxController {
       print(error.toString());
     });
   }
+  // void fetchShopData() async {
+  //   try {
+  //     // Fetch shop data from the database
+  //     var shopData = await FirebaseFirestore.fetchShopData();
+
+  //     // Populate the text fields with the retrieved data
+  //     shopNameController.text = shopData['shopname'];
+  //     shopAddressController.text = shopData['shopaddress'];
+  //     shopMobileController.text = shopData['shopmobile'];
+  //     shopWebsiteController.text = shopData['shopwebsite'];
+  //     shopDescController.text = shopData['shopdesc'];
+  //   } catch (error) {
+  //     // Handle error during data retrieval
+  //     print('Error fetching shop data: $error');
+  //   }
+  // }
 
   updateShop({shopname, shopaddress, shopmobile, shopwebsite, shopdesc}) async {
     var store = firestore.collection(vendorsCollection).doc(currentUser!.uid);

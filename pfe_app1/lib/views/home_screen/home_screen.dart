@@ -7,11 +7,13 @@ import 'package:pfe_app/models/product_model.dart';
 import 'package:pfe_app/services/firestore_services.dart';
 import 'package:pfe_app/views/category_screen/item_details.dart';
 import 'package:pfe_app/views/home_screen/components/featured_button.dart';
+import 'package:pfe_app/views/home_screen/components/home_buttons.dart';
 import 'package:pfe_app/views/home_screen/search_screen.dart';
-import 'package:pfe_app/widget_common/home_buttons.dart';
+import 'package:pfe_app/views/sellers/list_sellers.dart';
 import 'package:pfe_app/widget_common/loading_indicator.dart';
 import 'components/count_down_Timer.dart';
 import '../../consts/lists.dart';
+import '../flash_sale_screen/flash_sale.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -85,219 +87,61 @@ class _HomeScreenState extends State<HomeScreen> {
               physics: const BouncingScrollPhysics(),
               child: Column(
                 children: [
-                  //limited time offers
+                  //swiper offers
                   10.heightBox,
-                  StreamBuilder<QuerySnapshot>(
-                    stream: FirebaseFirestore.instance
-                        .collection('products')
-                        .where('endDate', isNull: false)
-                        .snapshots(),
-                    builder: (BuildContext context,
-                        AsyncSnapshot<QuerySnapshot> snapshot) {
-                      if (snapshot.hasData) {
-                        List<Product> products = snapshot.data!.docs.map((doc) {
-                          Map<String, dynamic> data =
-                              doc.data() as Map<String, dynamic>;
-                          return Product(
-                            id: doc.id,
-                            name: data['p_name'],
-                            price: data['p_price'],
-                            imageURL: data['p_imgs'][0],
-                            endDate: data['endDate'] != null
-                                ? (data['endDate'] as Timestamp).toDate()
-                                : null,
-                          );
-                        }).toList();
-
-                        bool hasLimitedTimeOffers = products.isNotEmpty &&
-                            products.any((product) => product.endDate != null);
-
-                        PageController pageController =
-                            PageController(initialPage: 0);
-
-                        return Column(
-                          children: [
-                            Visibility(
-                              visible: hasLimitedTimeOffers,
-                              child: Column(
-                                children: [
-                                  const Text(
-                                    'Limited-time Offers',
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 10),
-                                  Container(
-                                    height: 270,
-                                    child: PageView.builder(
-                                      controller: pageController,
-                                      itemCount: products.length,
-                                      itemBuilder: (context, index) {
-                                        Product product = products[index];
-                                        DateTime now = DateTime.now();
-                                        Duration remainingTime =
-                                            product.endDate!.difference(now);
-                                        bool offerExpired =
-                                            remainingTime.isNegative ||
-                                                remainingTime.inSeconds == 0;
-
-                                        String formattedTime = offerExpired
-                                            ? 'Offer expired'
-                                            : '${remainingTime.inDays}d: ${remainingTime.inHours.remainder(24)}h: ${remainingTime.inMinutes.remainder(60)}m: ${remainingTime.inSeconds.remainder(60)}s';
-
-                                        return GestureDetector(
-                                          onTap: () {
-                                            var offeredData =
-                                                snapshot.data!.docs;
-
-                                            Get.to(
-                                              () => ItemDetails(
-                                                title:
-                                                    "${offeredData[index]['p_name']}",
-                                                data: offeredData[index],
-                                              ),
-                                            );
-                                          },
-                                          child: Row(
-                                            children: [
-                                              25.widthBox,
-                                              Visibility(
-                                                visible: hasLimitedTimeOffers,
-                                                child: CircleAvatar(
-                                                  radius: 20,
-                                                  backgroundColor: redColor,
-                                                  child: IconButton(
-                                                    icon: const Icon(
-                                                      Icons.arrow_back,
-                                                    ),
-                                                    onPressed: () {
-                                                      pageController.previousPage(
-                                                          duration:
-                                                              const Duration(
-                                                                  milliseconds:
-                                                                      300),
-                                                          curve: Curves.ease);
-                                                    },
-                                                  ),
-                                                ),
-                                              ),
-                                              45.widthBox,
-                                              Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                children: [
-                                                  Image.network(
-                                                    product.imageURL,
-                                                    height: 150,
-                                                    width: 150,
-                                                    fit: BoxFit.cover,
-                                                  ),
-                                                  10.heightBox,
-                                                  Text(
-                                                    product.name!,
-                                                    style: const TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    ),
-                                                  ),
-                                                  const SizedBox(height: 5),
-                                                  Text(
-                                                    product.price.numCurrency
-                                                        .toString(),
-                                                    style: const TextStyle(
-                                                      color: redColor,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 16,
-                                                    ),
-                                                  ),
-                                                  const SizedBox(height: 10),
-                                                  offerExpired
-                                                      ? Container(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(8),
-                                                          color: Colors.grey,
-                                                          child: const Text(
-                                                            'Offer expired',
-                                                            style: TextStyle(
-                                                              color:
-                                                                  Colors.white,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                            ),
-                                                          ),
-                                                        )
-                                                      : CountdownTimer(
-                                                          duration:
-                                                              remainingTime,
-                                                        ),
-                                                  const SizedBox(height: 10),
-                                                ],
-                                              ),
-                                              45.widthBox,
-                                              CircleAvatar(
-                                                radius: 20,
-                                                backgroundColor: redColor,
-                                                child: Visibility(
-                                                  visible: hasLimitedTimeOffers,
-                                                  child: IconButton(
-                                                    icon: const Icon(
-                                                        Icons.arrow_forward),
-                                                    onPressed: () {
-                                                      pageController.nextPage(
-                                                          duration:
-                                                              const Duration(
-                                                                  milliseconds:
-                                                                      300),
-                                                          curve: Curves.ease);
-                                                    },
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Visibility(
-                              visible: !hasLimitedTimeOffers,
-                              child: Container(
-                                height: 150,
-                                child: ListView.builder(
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: _bannerImage.length,
-                                  itemBuilder: (context, index) {
-                                    return Image.network(
-                                      _bannerImage[index].toString(),
-                                      fit: BoxFit.fill,
-                                    )
-                                        .box
-                                        .rounded
-                                        .clip(Clip.antiAlias)
-                                        .margin(const EdgeInsets.symmetric(
-                                            horizontal: 8))
-                                        .make();
-                                  },
-                                ),
-                              ),
-                            ),
-                          ],
-                        );
-                      } else {
-                        return const CircularProgressIndicator();
-                      }
+                  VxSwiper.builder(
+                    aspectRatio: 16 / 9,
+                    autoPlay: true,
+                    height: 150,
+                    enlargeCenterPage: true,
+                    itemCount: _bannerImage.length,
+                    itemBuilder: (context, index) {
+                      return _bannerImage.isEmpty
+                          ? Container()
+                          : Image.network(
+                              _bannerImage[index].toString(),
+                              fit: BoxFit.fill,
+                            )
+                              .box
+                              .rounded
+                              .clip(Clip.antiAlias)
+                              .margin(const EdgeInsets.symmetric(horizontal: 8))
+                              .make();
                     },
                   ),
 
+                  //Deals buttons
+                  20.heightBox,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: List.generate(
+                      2,
+                      (index) => HomeButtons(
+                          height: context.screenHeight * 0.15,
+                          width: context.screenWidth / 2.5,
+                          icon: index == 0 ? icSellers : icFlashDeal,
+                          title: index == 0 ? sellers : flashsale,
+                          onPressed: () {
+                            if (index == 0) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const SellerList()),
+                              );
+                            } else if (index == 1) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const FlashSaleScreen()),
+                              );
+                            }
+                          }),
+                    ),
+                  ),
+
                   //featured categories
+                  20.heightBox,
                   Align(
                     alignment: Alignment.centerLeft,
                     child: featuredCategories.text
@@ -327,31 +171,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
 
-                  //swiper offers
-                  20.heightBox,
-                  VxSwiper.builder(
-                    aspectRatio: 16 / 9,
-                    autoPlay: true,
-                    height: 150,
-                    enlargeCenterPage: true,
-                    itemCount: _bannerImage.length,
-                    itemBuilder: (context, index) {
-                      return _bannerImage.isEmpty
-                          ? Container()
-                          : Image.network(
-                              _bannerImage[index].toString(),
-                              fit: BoxFit.fill,
-                            )
-                              .box
-                              .rounded
-                              .clip(Clip.antiAlias)
-                              .margin(const EdgeInsets.symmetric(horizontal: 8))
-                              .make();
-                    },
-                  ),
-
                   //featured product
-                  30.heightBox,
+                  20.heightBox,
                   Container(
                     padding: const EdgeInsets.all(12),
                     width: double.infinity,
@@ -453,56 +274,61 @@ class _HomeScreenState extends State<HomeScreen> {
                       } else {
                         var allproductsData = snapshot.data!.docs;
                         return GridView.builder(
-                            physics: const NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            itemCount: allproductsData.length,
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 2,
-                                    mainAxisSpacing: 8,
-                                    crossAxisSpacing: 8,
-                                    mainAxisExtent: 280),
-                            itemBuilder: ((context, index) {
-                              return Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Image.network(
-                                    allproductsData[index]['p_imgs'][0],
-                                    height: 200,
-                                    width: 200,
-                                    fit: BoxFit.cover,
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: allproductsData.length,
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                  mainAxisSpacing: 8,
+                                  crossAxisSpacing: 8,
+                                  mainAxisExtent: 280),
+                          itemBuilder: ((context, index) {
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Image.network(
+                                  allproductsData[index]['p_imgs'][0],
+                                  height: 200,
+                                  width: 200,
+                                  fit: BoxFit.cover,
+                                ),
+                                const Spacer(),
+                                "${allproductsData[index]['p_name']}"
+                                    .text
+                                    .fontFamily(semibold)
+                                    .color(darkFontGrey)
+                                    .make(),
+                                10.heightBox,
+                                "${allproductsData[index]['p_price']} TND"
+                                    .text
+                                    .color(redColor)
+                                    .fontFamily(semibold)
+                                    .size(16)
+                                    .make(),
+                                10.heightBox,
+                              ],
+                            )
+                                .box
+                                .white
+                                .margin(
+                                    const EdgeInsets.symmetric(horizontal: 4))
+                                .roundedSM
+                                .padding(const EdgeInsets.all(12))
+                                .make()
+                                .onTap(
+                              () {
+                                Get.to(
+                                  () => ItemDetails(
+                                    title:
+                                        "${allproductsData[index]['p_name']}",
+                                    data: allproductsData[index],
                                   ),
-                                  const Spacer(),
-                                  "${allproductsData[index]['p_name']}"
-                                      .text
-                                      .fontFamily(semibold)
-                                      .color(darkFontGrey)
-                                      .make(),
-                                  10.heightBox,
-                                  "${allproductsData[index]['p_price']} TND"
-                                      .text
-                                      .color(redColor)
-                                      .fontFamily(semibold)
-                                      .size(16)
-                                      .make(),
-                                  10.heightBox,
-                                ],
-                              )
-                                  .box
-                                  .white
-                                  .margin(
-                                      const EdgeInsets.symmetric(horizontal: 4))
-                                  .roundedSM
-                                  .padding(const EdgeInsets.all(12))
-                                  .make()
-                                  .onTap(() {
-                                Get.to(() => ItemDetails(
-                                      title:
-                                          "${allproductsData[index]['p_name']}",
-                                      data: allproductsData[index],
-                                    ));
-                              });
-                            }));
+                                );
+                              },
+                            );
+                          }),
+                        );
                       }
                     },
                   ),

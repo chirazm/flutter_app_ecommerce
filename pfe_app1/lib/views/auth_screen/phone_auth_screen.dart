@@ -50,7 +50,7 @@ class _PhoneScreenState extends State<PhoneScreen> {
                 hint: 'Enter phone number',
                 title: 'ddd',
                 isPass: false,
-                controller: phoneController,
+                controller: phoneController, validator: (value) {  },
               ),
               ourButton(onPress: phoneSignIn, title: 'Send OTP'),
               Align(

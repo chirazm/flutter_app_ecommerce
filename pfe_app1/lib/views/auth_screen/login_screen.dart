@@ -37,19 +37,31 @@ class LoginScreen extends StatelessWidget {
                     hint: emailHint,
                     title: email,
                     isPass: false,
-                    controller: controller.emailController),
+                    controller: controller.emailController,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your email';
+                      }
+                      return null;
+                    }),
                 customTextField(
                     hint: passwordHint,
                     title: password,
                     isPass: true,
-                    controller: controller.passwordController),
+                    controller: controller.passwordController,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter a password';
+                      }
+                      return null;
+                    }),
                 Align(
                   alignment: Alignment.centerRight,
                   child: TextButton(
                       onPressed: () {
                         Get.to(() => const ForgetPassword());
                       },
-                      child: forgetPass.text.make()),
+                      child: forgetPass.text.color(darkFontGrey).make()),
                 ),
                 5.heightBox,
                 controller.isloading.value
@@ -84,16 +96,16 @@ class LoginScreen extends StatelessWidget {
                       Get.to(() => const SignUpScreen());
                     }).box.width(context.screenWidth - 50).make(),
                 10.heightBox,
-                loginWith.text.color(fontGrey).make(),
+                //loginWith.text.color(fontGrey).make(),
                 5.heightBox,
-                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      controller.signInWithGoogle(context);
-                    },
-                    child: const Icon(Icons.face),
-                  )
-                ])
+                // Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                //   ElevatedButton(
+                //     onPressed: () {
+                //       controller.signInWithGoogle(context);
+                //     },
+                //     child: const Icon(Icons.face),
+                //   )
+                // ])
               ],
             )
                 .box

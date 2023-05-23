@@ -37,7 +37,8 @@ class ForgetPassword extends StatelessWidget {
                     hint: emailForgot,
                     title: email,
                     isPass: false,
-                    controller: controller.emailController),
+                    controller: controller.emailController,
+                    validator: (value) {}),
                 5.heightBox,
                 controller.isloading.value
                     ? const CircularProgressIndicator(

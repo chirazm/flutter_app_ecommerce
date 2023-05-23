@@ -27,6 +27,10 @@ class StoreServices {
     return firestore.collection(ordersCollection).snapshots();
   }
 
+  static Stream<QuerySnapshot> searchProductsByName(String productName) {
+    return firestore.collection(productsCollection).snapshots();
+  }
+
   static getProducts(uid) {
     return firestore
         .collection(productsCollection)

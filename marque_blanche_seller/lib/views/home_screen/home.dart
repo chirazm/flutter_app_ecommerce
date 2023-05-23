@@ -15,21 +15,23 @@ class Home extends StatelessWidget {
     var controller = Get.put(HomeController());
     var bottomNavBar = [
       const BottomNavigationBarItem(
-        icon: Icon(Icons.home),
+        icon: Icon(
+          Icons.home,
+          size: 28,
+        ),
         label: dashboard,
       ),
-      BottomNavigationBarItem(
-          icon: Image.asset(
-            icProducts,
-            color: darkGrey,
-            width: 24,
-          ),
-          label: products),
-      BottomNavigationBarItem(
-          icon: Image.asset(
-            icOrders,
-            color: darkGrey,
-            width: 24,
+      const BottomNavigationBarItem(
+        icon: Icon(
+          Icons.apps_outlined,
+          size: 28,
+        ),
+        label: products,
+      ),
+      const BottomNavigationBarItem(
+          icon: Icon(
+            Icons.article,
+            size: 28,
           ),
           label: orders),
       BottomNavigationBarItem(
@@ -39,13 +41,12 @@ class Home extends StatelessWidget {
             width: 24,
           ),
           label: coupons),
-      BottomNavigationBarItem(
-          icon: Image.asset(
-            icGeneralSettings,
-            color: darkGrey,
-            width: 24,
+      const BottomNavigationBarItem(
+          icon: Icon(
+            Icons.settings,
+            size: 28,
           ),
-          label: settings),
+          label: settings,),
     ];
 
     var navScreens = [

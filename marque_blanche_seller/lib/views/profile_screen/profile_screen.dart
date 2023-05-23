@@ -80,7 +80,7 @@ class ProfileScreen extends StatelessWidget {
                                       Get.to(() => const ShopSettings());
                                       break;
                                     case 1:
-                                      Get.to(() => const MessagesScreen());
+                                      Get.to(() => MessagesScreen());
                                       break;
                                     default:
                                   }

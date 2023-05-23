@@ -59,6 +59,7 @@ dependencies:
   flutter_countdown_timer: ^4.1.0
   carousel_slider: ^4.2.1
   cached_network_image: ^3.2.3
+  flutter_paypal: ^0.0.8
  
 
  

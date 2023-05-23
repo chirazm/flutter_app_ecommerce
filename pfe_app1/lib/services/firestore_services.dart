@@ -1,5 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pfe_app/consts/consts.dart';
+import 'package:pfe_app/models/product_model.dart';
+import 'package:pfe_app/models/seller_model.dart';
+import 'package:pfe_app/models/vendor_model.dart';
 import 'package:pfe_app/views/cart_screen/coupn.dart';
 
 class FirestoreServices {
@@ -43,10 +46,10 @@ class FirestoreServices {
         .where('name', isEqualTo: name)
         .snapshots();
   }
+
   static Future<List<Coupon>> getCoupons() async {
-    final couponsSnapshot = await FirebaseFirestore.instance
-        .collection('coupons')
-        .get();
+    final couponsSnapshot =
+        await FirebaseFirestore.instance.collection('coupons').get();
 
     final List<Coupon> coupons = [];
 
@@ -158,5 +161,51 @@ class FirestoreServices {
     return firestore.collection(productsCollection).get();
   }
 
-  //get banners
+  static Future<List<Seller>> getSellers() async {
+    List<Seller> sellers = [];
+
+    QuerySnapshot querySnapshot =
+        await FirebaseFirestore.instance.collection('vendors').get();
+    for (QueryDocumentSnapshot vendorDoc in querySnapshot.docs) {
+      String vendorId = vendorDoc.id;
+      String name = vendorDoc['shop_name'];
+      String image = vendorDoc['imageUrl'];
+
+      QuerySnapshot productSnapshot = await FirebaseFirestore.instance
+          .collection('products')
+          .where('vendor_id', isEqualTo: vendorId)
+          .get();
+      int numberOfProducts = productSnapshot.size;
+
+      sellers.add(Seller(
+          name: name,
+          image: image,
+          numberOfProducts: numberOfProducts,
+          vendorId: vendorId));
+    }
+
+    return sellers;
+  }
+
+  static Future<List<Product>> fetchVendorProducts(String vendorId) async {
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection('products')
+        .where('vendor_id', isEqualTo: vendorId)
+        .get();
+
+    return querySnapshot.docs.map((doc) {
+      Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+      return Product(
+        id: doc.id,
+        name: data['p_name'],
+        price: data['p_price'],
+        imageURL: data['p_imgs'][0],
+        desc: data['p_desc'],
+        seller: data['p_seller'],
+        vendorId: data['vendor_id'],
+        quantity: data['p_quantity'],
+        img: data['p_imgs'][0],
+      );
+    }).toList();
+  }
 }

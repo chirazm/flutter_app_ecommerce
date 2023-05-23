@@ -40,7 +40,7 @@ class ProfileScreen extends StatelessWidget {
                   children: [
                     //edit profile button
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.all(5.0),
                       child: const Align(
                         alignment: Alignment.topRight,
                         child: Icon(
@@ -60,13 +60,13 @@ class ProfileScreen extends StatelessWidget {
                         children: [
                           data['imageUrl'] == ''
                               ? Image.asset(
-                                  imgProfile2,
-                                  width: 100,
+                                  imgProfile,
+                                  width: 80,
                                   fit: BoxFit.cover,
                                 ).box.roundedFull.clip(Clip.antiAlias).make()
                               : Image.network(
                                   data['imageUrl'],
-                                  width: 100,
+                                  width: 80,
                                   fit: BoxFit.cover,
                                 ).box.roundedFull.clip(Clip.antiAlias).make(),
                           10.widthBox,

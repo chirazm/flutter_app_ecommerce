@@ -2,9 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:marque_blanche_seller/controllers/products_controller.dart';
 import 'package:marque_blanche_seller/services/store_services.dart';
+import 'package:marque_blanche_seller/views/orders_screen/order_search_screen.dart';
 import 'package:marque_blanche_seller/views/products_screen/add_product.dart';
 import 'package:marque_blanche_seller/views/products_screen/edit_product.dart';
 import 'package:marque_blanche_seller/views/products_screen/product_details.dart';
+import 'package:marque_blanche_seller/views/products_screen/product_search_screen.dart';
 import 'package:marque_blanche_seller/views/widgets/appbar_widget.dart';
 import 'package:marque_blanche_seller/views/widgets/loading_indicator.dart';
 
@@ -41,124 +43,155 @@ class ProductsScreen extends StatelessWidget {
               child: SingleChildScrollView(
                 physics: const BouncingScrollPhysics(),
                 child: Column(
-                  children: List.generate(
-                      data.length,
-                      (index) => ListTile(
-                            onTap: () {
-                              Get.to(() => ProductDetails(
-                                    data: data[index],
+                  children: [
+                    Container(
+                      height: 60,
+                      alignment: Alignment.center,
+                      color: lightGrey,
+                      child: TextFormField(
+                        controller: controller.searchController,
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          suffixIcon: const Icon(Icons.search).onTap(() {
+                            if (controller
+                                .searchController.text.isNotEmptyAndNotNull) {
+                              Get.to(() => ProductSearchScreen(
+                                    title: controller.searchController.text,
                                   ));
-                            },
-                            leading: Image.network(
-                              data[index]['p_imgs'][0],
-                              width: 100,
-                              height: 150,
-                              fit: BoxFit.fill,
-                            ),
-                            title: boldText(
-                              text: "${data[index]['p_name']}",
-                              color: darkGrey,
-                              FontWeight: FontWeight.bold,
-                              size: 18.0,
-                            ),
-                            subtitle: Row(
-                              children: [
-                                Row(
+                            }
+                          }),
+                          filled: true,
+                          fillColor: white,
+                          hintText: "Search anything",
+                          hintStyle: const TextStyle(color: textfieldGrey),
+                        ),
+                      ),
+                    ),
+                    Column(
+                      children: List.generate(
+                          data.length,
+                          (index) => ListTile(
+                                onTap: () {
+                                  Get.to(() => ProductDetails(
+                                        data: data[index],
+                                      ));
+                                },
+                                leading: Image.network(
+                                  data[index]['p_imgs'][0],
+                                  width: 100,
+                                  height: 150,
+                                  fit: BoxFit.fill,
+                                ),
+                                title: boldText(
+                                  text: "${data[index]['p_name']}",
+                                  color: darkGrey,
+                                  FontWeight: FontWeight.bold,
+                                  size: 18.0,
+                                ),
+                                subtitle: Row(
                                   children: [
-                                    boldText(
-                                      text: "Qty : ",
-                                      color: red,
-                                      FontWeight: FontWeight.bold,
+                                    Row(
+                                      children: [
+                                        boldText(
+                                          text: "Qty : ",
+                                          color: red,
+                                          FontWeight: FontWeight.bold,
+                                        ),
+                                        boldText(
+                                          text: "${data[index]['p_quantity']}",
+                                          color: darkGrey,
+                                          FontWeight: FontWeight.w500,
+                                        ),
+                                      ],
                                     ),
+                                    50.widthBox,
                                     boldText(
-                                      text: "${data[index]['p_quantity']}",
-                                      color: darkGrey,
-                                      FontWeight: FontWeight.w500,
-                                    ),
+                                      text: data[index]['is_featured'] == true
+                                          ? "Featured"
+                                          : '',
+                                      color: green,
+                                    )
                                   ],
                                 ),
-                                50.widthBox,
-                                boldText(
-                                  text: data[index]['is_featured'] == true
-                                      ? "Featured"
-                                      : '',
-                                  color: green,
-                                )
-                              ],
-                            ),
-                            trailing: VxPopupMenu(
-                              arrowSize: 0.0,
-                              menuBuilder: () => Column(
-                                  children: List.generate(
-                                      popupMenuTitles.length,
-                                      (i) => Padding(
-                                            padding: const EdgeInsets.all(12.0),
-                                            child: Row(
-                                              children: [
-                                                Icon(
-                                                  popupMenuIcons[i],
-                                                  color:
-                                                      data[index]['featured_id'] ==
+                                trailing: VxPopupMenu(
+                                  arrowSize: 0.0,
+                                  menuBuilder: () => Column(
+                                      children: List.generate(
+                                          popupMenuTitles.length,
+                                          (i) => Padding(
+                                                padding:
+                                                    const EdgeInsets.all(12.0),
+                                                child: Row(
+                                                  children: [
+                                                    Icon(
+                                                      popupMenuIcons[i],
+                                                      color: data[index][
+                                                                      'featured_id'] ==
                                                                   currentUser!
                                                                       .uid &&
                                                               i == 0
                                                           ? green
                                                           : darkGrey,
-                                                ),
-                                                10.widthBox,
-                                                normalText(
-                                                    text: data[index][
-                                                                    'featured_id'] ==
-                                                                currentUser!
-                                                                    .uid &&
-                                                            i == 0
-                                                        ? 'Remove feature'
-                                                        : popupMenuTitles[i],
-                                                    color: darkGrey)
-                                              ],
-                                            ).onTap(() {
-                                              switch (i) {
-                                                case 0:
-                                                  if (data[index]
-                                                          ['is_featured'] ==
-                                                      true) {
-                                                    controller.removeFeatured(
-                                                        data[index].id);
-                                                    VxToast.show(context,
-                                                        msg: "Removed");
-                                                  } else {
-                                                    controller.addFeatured(
-                                                        data[index].id);
-                                                    VxToast.show(context,
-                                                        msg: "Added");
-                                                  }
-                                                  break;
-                                                case 1:
-                                                  Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          EditProduct(
-                                                              productId:
-                                                                  data[index]
-                                                                      .id),
                                                     ),
-                                                  );
-                                                  break;
-                                                case 2:
-                                                  controller.removeProduct(
-                                                      data[index].id);
-                                                  VxToast.show(context,
-                                                      msg: "Product removed");
-                                                  break;
-                                                default:
-                                              }
-                                            }),
-                                          ))).box.white.width(200).make(),
-                              clickType: VxClickType.singleClick,
-                              child: const Icon(Icons.more_vert_rounded),
-                            ),
-                          )),
+                                                    10.widthBox,
+                                                    normalText(
+                                                        text: data[index][
+                                                                        'featured_id'] ==
+                                                                    currentUser!
+                                                                        .uid &&
+                                                                i == 0
+                                                            ? 'Remove feature'
+                                                            : popupMenuTitles[
+                                                                i],
+                                                        color: darkGrey)
+                                                  ],
+                                                ).onTap(() {
+                                                  switch (i) {
+                                                    case 0:
+                                                      if (data[index]
+                                                              ['is_featured'] ==
+                                                          true) {
+                                                        controller
+                                                            .removeFeatured(
+                                                                data[index].id);
+                                                        VxToast.show(context,
+                                                            msg: "Removed");
+                                                      } else {
+                                                        controller.addFeatured(
+                                                            data[index].id);
+                                                        VxToast.show(context,
+                                                            msg: "Added");
+                                                      }
+                                                      break;
+                                                    case 1:
+                                                      Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              EditProduct(
+                                                                  productId:
+                                                                      data[index]
+                                                                          .id),
+                                                        ),
+                                                      );
+                                                      break;
+                                                    case 2:
+                                                      controller.removeProduct(
+                                                          data[index].id);
+                                                      VxToast.show(context,
+                                                          msg:
+                                                              "Product removed");
+                                                      break;
+                                                    default:
+                                                  }
+                                                }),
+                                              ))).box.white.width(200).make(),
+                                  clickType: VxClickType.singleClick,
+                                  child: const Icon(Icons.more_vert_rounded),
+                                ),
+                              )),
+                    ),
+                  ],
                 ),
               ),
             );

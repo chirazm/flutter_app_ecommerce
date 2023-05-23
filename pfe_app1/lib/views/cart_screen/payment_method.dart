@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pfe_app/consts/lists.dart';
@@ -15,6 +13,7 @@ class PaymentMethods extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     var controller = Get.find<CartController>();
     return Obx(
       () => Scaffold(
@@ -32,6 +31,7 @@ class PaymentMethods extends StatelessWidget {
                             paymentMethods[controller.paymentIndex.value],
                         totalAmount: controller.totalP.value);
                     await controller.clearCart();
+                    // ignore: use_build_context_synchronously
                     VxToast.show(context, msg: "Order placed successfuly");
                     Get.offAll(const Home());
                   },

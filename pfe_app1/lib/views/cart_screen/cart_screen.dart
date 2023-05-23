@@ -7,7 +7,6 @@ import 'package:pfe_app/services/firestore_services.dart';
 import 'package:pfe_app/views/cart_screen/CouponWidgett.dart';
 import 'package:pfe_app/views/cart_screen/shipping_screen.dart';
 import 'package:pfe_app/views/category_screen/item_details.dart';
-import 'package:pfe_app/widget_common/cod_toggle.dart';
 import 'package:pfe_app/widget_common/loading_indicator.dart';
 import '../../controllers/coupon_controller.dart';
 import '../../widget_common/coupon_widget.dart';
@@ -19,7 +18,7 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
-  CouponController couponController = Get.find<CouponController>();
+  //CouponController couponController = Get.find<CouponController>();
 
   int deliveryFree = 7;
 
@@ -29,7 +28,7 @@ class _CartScreenState extends State<CartScreen> {
     bool cartIsEmpty = true;
     var payable = controller.totalP.value + deliveryFree;
     return Scaffold(
-        backgroundColor: whiteColor,
+        backgroundColor: lightGrey,
         bottomNavigationBar: SizedBox(
           height: 50,
           child: ourButton(
@@ -45,12 +44,12 @@ class _CartScreenState extends State<CartScreen> {
         ),
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          leading: IconButton(
-            onPressed: () {
-              Get.back();
-            },
-            icon: const Icon(Icons.arrow_back),
-          ),
+          // leading: IconButton(
+          //   onPressed: () {
+          //     Get.back();
+          //   },
+          //   icon: const Icon(Icons.arrow_back),
+          // ),
           title: "Shopping cart"
               .text
               .color(darkFontGrey)

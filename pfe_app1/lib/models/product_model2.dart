@@ -4,21 +4,12 @@ class Product {
   final String price;
   final String imageURL;
   final DateTime? endDate;
-  final String? desc;
-  final String? seller;
-  final String? vendorId;
-  final String quantity;
-  final String? img;
-
+  final String desc;
   Product({
     required this.id,
-    this.desc,
-    this.seller,
-    this.img,
-    required this.quantity,
-    this.vendorId,
     this.name,
     required this.price,
+    required this.desc,
     required this.imageURL,
     this.endDate,
   });

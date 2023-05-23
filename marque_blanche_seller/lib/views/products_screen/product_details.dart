@@ -63,7 +63,7 @@ class ProductDetails extends StatelessWidget {
                   boldText(
                       text: "${data['p_category']}",
                       color: fontGrey,
-                      size: 17.0,
+                      size: 18.0,
                       FontWeight: FontWeight.w600),
                   10.heightBox,
                   normalText(
@@ -94,31 +94,6 @@ class ProductDetails extends StatelessWidget {
                   //color section
                   Column(
                     children: [
-                      Row(
-                        children: [
-                          SizedBox(
-                            width: 100,
-                            child: boldText(
-                                text: "Color",
-                                color: fontGrey,
-                                size: 17.5,
-                                FontWeight: FontWeight.w600),
-                          ),
-                          Row(
-                            children: List.generate(
-                              data['p_colors'].length,
-                              (index) => VxBox()
-                                  .size(40, 40)
-                                  .roundedFull
-                                  .color(Color(data['p_colors'][index]))
-                                  .margin(
-                                      const EdgeInsets.symmetric(horizontal: 4))
-                                  .make()
-                                  .onTap(() {}),
-                            ),
-                          ),
-                        ],
-                      ),
                       10.heightBox,
                       //quantity row
                       Row(
@@ -126,9 +101,9 @@ class ProductDetails extends StatelessWidget {
                           SizedBox(
                             width: 100,
                             child: boldText(
-                                text: "Quantity",
+                                text: "Quantity : ",
                                 color: fontGrey,
-                                size: 17.5,
+                                size: 18.0,
                                 FontWeight: FontWeight.w600),
                           ),
                           normalText(

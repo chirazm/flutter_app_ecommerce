@@ -18,7 +18,7 @@ const createNewAccount = "or, create a new account";
 const loginWith = "Log in with";
 const privacyPolicy = "Privacy Policy";
 const termAndCond = "Terms and Conditions";
-const alreadyHaveAccount = "Already have account ?";
+const alreadyHaveAccount = "Already have account ? ";
 const logout = "Log out";
 const loggedin = "Logged in successfully";
 const loggedout = "Logged out successfully";
@@ -29,7 +29,7 @@ const home = "Home",
 
 //search and home page
 const searchanything = "Search anything...",
-    todayDeal = "Today's Deal",
+    sellers = "Our Sellers",
     flashsale = "Flash Sale",
     topSellers = "Top Sellers",
     brand = "Brand",

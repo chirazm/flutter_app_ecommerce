@@ -8,8 +8,8 @@ import 'package:marque_blanche_seller/views/orders_screen/order_details.dart';
 
 import '../widgets/loading_indicator.dart';
 
-class SearchScreen extends StatelessWidget {
-  const SearchScreen({Key? key, this.title}) : super(key: key);
+class OrderSearchScreen extends StatelessWidget {
+  const OrderSearchScreen({Key? key, this.title}) : super(key: key);
   final String? title;
 
   @override

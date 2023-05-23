@@ -5,7 +5,6 @@ import 'package:pfe_app/consts/consts.dart';
 import 'package:pfe_app/controllers/product_controller.dart';
 import 'package:pfe_app/services/firestore_services.dart';
 import 'package:pfe_app/views/category_screen/item_details.dart';
-import 'package:pfe_app/widget_common/counter_widget.dart';
 import 'package:pfe_app/widget_common/loading_indicator.dart';
 import 'package:pfe_app/controllers/home_controller.dart';
 import 'package:pfe_app/views/home_screen/home.dart';
@@ -157,7 +156,6 @@ class _CategoryDetailsState extends State<CategoryDetails> {
           ),
         ],
       ),
-      // bottomNavigationBar: home() ,
     ));
   }
 }

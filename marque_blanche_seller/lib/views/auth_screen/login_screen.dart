@@ -87,27 +87,20 @@ class LoginScreen extends StatelessWidget {
                     ),
                     30.heightBox,
                     SizedBox(
-                        width: context.screenWidth - 100,
-                        child: controller.isloading.value
-                            ? Center(
-                                child: loadingIndicator(),
-                              )
-                            : ourButton(
-                                title: login,
-                                onPress: () async {
-                                  controller.isloading(true);
-                                  await controller
-                                      .loginMethod(context: context)
-                                      .then((value) {
-                                    if (value != null) {
-                                      VxToast.show(context, msg: "Logged in");
-                                      controller.isloading(false);
-                                      Get.offAll(() => const Home());
-                                    } else {
-                                      controller.isloading(false);
-                                    }
-                                  });
-                                })),
+                      width: context.screenWidth - 100,
+                      child: controller.isloading.value
+                          ? Center(
+                              child: loadingIndicator(),
+                            )
+                          : ourButton(
+                              title: login,
+                              onPress: () async {
+                                controller.isloading(true);
+                                await controller.loginMethod(context: context);
+                                controller.isloading(false);
+                              },
+                            ),
+                    ),
                   ],
                 )
                     .box
