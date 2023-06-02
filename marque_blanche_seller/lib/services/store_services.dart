@@ -44,4 +44,13 @@ class StoreServices {
         .where('vendor_id', isEqualTo: uid)
         .snapshots();
   }
+    static getChatMessages(docId) {
+    return firestore
+        .collection(chatsCollection)
+        .doc(docId)
+        .collection(messagesCollection)
+        .orderBy('created_on', descending: false)
+        .snapshots();
+  }
+
 }

@@ -1,18 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:pfe_app/consts/consts.dart';
 
-Widget customTextField({
+Widget customTextField2({
   String? title,
   String? hint,
   TextEditingController? controller,
   bool? isPass,
+  required String? Function(dynamic value) validator,
 }) {
   String? errorText;
   TextInputType keyboardType = TextInputType.text;
-
-  if (title == 'Phone' || title == 'Postal Code') {
-    keyboardType = TextInputType.number;
-  }
 
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
@@ -36,6 +33,7 @@ Widget customTextField({
           focusedBorder: const OutlineInputBorder(
             borderSide: BorderSide(color: redColor),
           ),
+          errorText: errorText,
         ),
       ),
       5.heightBox,

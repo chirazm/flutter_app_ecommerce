@@ -21,6 +21,8 @@ class ProductsController extends GetxController {
   var pnameController = TextEditingController();
   var pdescController = TextEditingController();
   var ppriceController = TextEditingController();
+  var pdiscountController = TextEditingController();
+
   var pquantityController = TextEditingController();
 
   var categoryList = <String>[].obs;
@@ -85,7 +87,9 @@ class ProductsController extends GetxController {
 
   uploadProduct(context) async {
     var store = firestore.collection(productsCollection).doc();
+    String productId = store.id;
     await store.set({
+      'id': productId,
       'is_featured': false,
       'p_category': categoryvalue.value,
       'p_subcategory': subcategoryvalue.value,
@@ -103,6 +107,7 @@ class ProductsController extends GetxController {
       'p_rating': "5.0",
       'vendor_id': currentUser!.uid,
       'featured_id': '',
+      'discountedPrice': pdiscountController.text,
     });
     isloading(false);
     VxToast.show(context, msg: "Product uploaded");
@@ -133,8 +138,7 @@ class ProductsController extends GetxController {
         'p_seller': seller,
         'p_imgs': image,
       });
-      EasyLoading.showSuccess(
-          'Product Updated Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry’s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.!');
+      EasyLoading.showSuccess('Product Updated !');
     } catch (e) {
       EasyLoading.showError('Failed to update product.');
     }

@@ -31,12 +31,15 @@ class ShippingDetails extends StatelessWidget {
                 controller.stateController.text.isEmpty ||
                 controller.phoneController.text.isEmpty ||
                 controller.postalcodeController.text.isEmpty ||
-                controller.addressController.text.length < 10 ||
+                controller.addressController.text.length < 8 ||
                 controller.phoneController.text.length != 8 ||
                 controller.postalcodeController.text.length != 4) {
               String errorMessage = '';
               if (controller.addressController.text.isEmpty) {
                 errorMessage += 'Address must not be empty. ';
+              }
+              if (controller.addressController.text.length < 8) {
+                errorMessage += 'Please enter a valid address. ';
               }
               if (controller.cityController.text.isEmpty) {
                 errorMessage += 'City must not be empty. ';
@@ -56,7 +59,7 @@ class ShippingDetails extends StatelessWidget {
               }
               VxToast.show(context, msg: errorMessage);
             } else {
-              Get.to(() => const PaymentMethods());
+              Get.to(() => PaymentMethods());
             }
           },
           color: redColor,
@@ -73,33 +76,31 @@ class ShippingDetails extends StatelessWidget {
               isPass: false,
               title: "Address",
               controller: controller.addressController,
-              validator: (value) {},
             ),
             customTextField(
               hint: "City",
               isPass: false,
               title: "City",
               controller: controller.cityController,
-              validator: (value) {},
             ),
             customTextField(
-                hint: "State",
-                isPass: false,
-                title: "State",
-                controller: controller.stateController,
-                validator: (value) {}),
+              hint: "State",
+              isPass: false,
+              title: "State",
+              controller: controller.stateController,
+            ),
             customTextField(
-                hint: "Postal Code",
-                isPass: false,
-                title: "Postal Code",
-                controller: controller.postalcodeController,
-                validator: (value) {}),
+              hint: "Postal Code",
+              isPass: false,
+              title: "Postal Code",
+              controller: controller.postalcodeController,
+            ),
             customTextField(
-                hint: "Phone",
-                isPass: false,
-                title: "Phone",
-                controller: controller.phoneController,
-                validator: (value) {}),
+              hint: "Phone",
+              isPass: false,
+              title: "Phone",
+              controller: controller.phoneController,
+            ),
           ],
         ),
       ),

@@ -13,7 +13,6 @@ class PaymentMethods extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
     var controller = Get.find<CartController>();
     return Obx(
       () => Scaffold(

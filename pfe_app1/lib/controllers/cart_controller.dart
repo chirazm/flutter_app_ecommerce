@@ -7,7 +7,6 @@ import 'package:pfe_app/controllers/home_controller.dart';
 class CartController extends GetxController {
   var totalP = 0.obs;
 
-//text controllers dor shipping details
   var addressController = TextEditingController();
   var cityController = TextEditingController();
   var stateController = TextEditingController();
@@ -25,22 +24,8 @@ class CartController extends GetxController {
 
   var deliveryFree;
 
-  Future<int> getNextOrderCode() async {
-    await Future.delayed(Duration(seconds: 1));
-    var lastOrder = await firestore
-        .collection(ordersCollection)
-        .orderBy('order_code', descending: true)
-        .limit(1)
-        .get();
-    if (lastOrder.docs.isNotEmpty) {
-      var orderCode = lastOrder.docs.first['order_code'];
-      if (orderCode is int) {
-        return orderCode + 1;
-      } else if (orderCode is String) {
-        return int.tryParse(orderCode) ?? 25813260;
-      }
-    }
-    return 25813260;
+  void setProductSnapshot(dynamic snapshot) {
+    productSnapshot = snapshot;
   }
 
   calculate(data) {
@@ -57,10 +42,9 @@ class CartController extends GetxController {
   placeMyOrder({required orderPaymentMethod, required totalAmount}) async {
     placingOrder(true);
     await getProductDetails();
-    var newOrderCode = await getNextOrderCode();
 
     await firestore.collection(ordersCollection).doc().set({
-      'order_code': newOrderCode,
+      'order_code': '555555',
       'order_date': FieldValue.serverTimestamp(),
       'order_by': currentUser!.uid,
       'order_by_name': Get.find<HomeController>().username,
@@ -86,30 +70,36 @@ class CartController extends GetxController {
   getProductDetails() {
     products.clear();
     vendors.clear();
-    for (var i = 0; i < productSnapshot.length; i++) {
-      products.add({
-        'color': productSnapshot[i]['color'],
-        'img': productSnapshot[i]['img'],
-        'vendor_id': productSnapshot[i]['vendor_id'],
-        'tprice': productSnapshot[i]['tprice'],
-        'qty': productSnapshot[i]['qty'],
-        'title': productSnapshot[i]['title'],
-      });
-      vendors.add(productSnapshot[i]['vendor_id']);
+    if (productSnapshot != null) {
+      for (var i = 0; i < productSnapshot.length; i++) {
+        products.add({
+          'img': productSnapshot[i]['img'],
+          'vendor_id': productSnapshot[i]['vendor_id'],
+          'tprice': productSnapshot[i]['tprice'],
+          'qty': productSnapshot[i]['qty'],
+          'title': productSnapshot[i]['title'],
+        });
+        vendors.add(productSnapshot[i]['vendor_id']);
+      }
     }
   }
 
   clearCart() {
-    for (var i = 0; i < productSnapshot.length; i++) {
-      firestore.collection(cartCollection).doc(productSnapshot[i].id).delete();
+    if (productSnapshot != null && productSnapshot.isNotEmpty) {
+      for (var i = 0; i < productSnapshot.length; i++) {
+        firestore
+            .collection(cartCollection)
+            .doc(productSnapshot[i].id)
+            .delete();
+      }
     }
   }
 
-  getPayementMethod(index) {
+  getPaymentMethod(index) {
     if (index == 0) {
-      this.cod = false;
+      cod = false;
     } else {
-      this.cod = true;
+      cod = true;
     }
   }
 }

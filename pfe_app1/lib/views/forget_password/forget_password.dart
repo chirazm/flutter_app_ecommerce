@@ -34,11 +34,11 @@ class ForgetPassword extends StatelessWidget {
             () => Column(
               children: [
                 customTextField(
-                    hint: emailForgot,
-                    title: email,
-                    isPass: false,
-                    controller: controller.emailController,
-                    validator: (value) {}),
+                  hint: emailForgot,
+                  title: email,
+                  isPass: false,
+                  controller: controller.emailController,
+                ),
                 5.heightBox,
                 controller.isloading.value
                     ? const CircularProgressIndicator(

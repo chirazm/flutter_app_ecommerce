@@ -2,7 +2,7 @@ import 'package:pfe_app/consts/consts.dart';
 
 const socialIconList = [
   //icFacebookLogo,
- // icGoogleLogo,
+  // icGoogleLogo,
   //icTwitterLogo,
   icPhoneLogo,
 ];
@@ -59,5 +59,5 @@ const profileButtonsIcon = [
   icMessages,
 ];
 
-const paymentMethodImg = [imgPaypal, imgStripe, imgCod];
-const paymentMethods = [paypal, stripe, cod];
+const paymentMethodImg = [imgCod];
+const paymentMethods = [cod];

@@ -51,51 +51,24 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         title: name,
                         controller: nameController,
                         isPass: false,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your name';
-                          }
-                          return null;
-                        },
                       ),
                       customTextField(
                         hint: emailHint,
                         title: email,
                         controller: emailController,
                         isPass: false,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your email';
-                          }
-                          return null;
-                        },
                       ),
                       customTextField(
                         hint: passwordHint,
                         title: password,
                         controller: passwordController,
                         isPass: true,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter a password';
-                          }
-                          return null;
-                        },
                       ),
                       customTextField(
                         hint: passwordHint,
                         title: retypePassword,
                         controller: passwordRetypeController,
                         isPass: true,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please retype your password';
-                          }
-                          if (value != passwordController.text) {
-                            return 'Passwords do not match';
-                          }
-                          return null;
-                        },
                       ),
                       Row(
                         children: [

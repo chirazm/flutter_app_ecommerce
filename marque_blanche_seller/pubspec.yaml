@@ -50,6 +50,7 @@ dependencies:
   easy_loader: ^2.0.0
   flutter_easyloading: ^3.0.5
   file_picker: ^5.3.0
+  chips_choice: ^3.0.0
 
 dev_dependencies:
   flutter_test:

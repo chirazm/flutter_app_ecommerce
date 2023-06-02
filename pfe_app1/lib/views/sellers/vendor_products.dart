@@ -19,7 +19,17 @@ class VendorProductsPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: lightGrey,
       appBar: AppBar(
+        backgroundColor: redColor,
         title: Text('Vendor Products'),
+        leading: IconButton(
+          onPressed: () {
+            Get.back();
+          },
+          icon: const Icon(
+            Icons.arrow_back,
+            color: whiteColor,
+          ),
+        ),
       ),
       body: Container(
         // Fetch and display the products of the selected vendor

@@ -1,4 +1,5 @@
 import 'package:chips_choice/chips_choice.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -72,6 +73,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
     var controller = Get.put(OrderController());
     CollectionReference orders =
         FirebaseFirestore.instance.collection('orders');
+    final userId = FirebaseAuth.instance.currentUser?.uid;
 
     return Scaffold(
       backgroundColor: whiteColor,
@@ -80,6 +82,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
       ),
       body: StreamBuilder(
         stream: orders
+            .where('order_by', isEqualTo: userId)
             .where('order_confirmed', isEqualTo: confirmed)
             .where('order_delivered', isEqualTo: delivered)
             .where('order_on_delivery', isEqualTo: onDelivery)
@@ -100,12 +103,9 @@ class _OrdersScreenState extends State<OrdersScreen> {
                   width: MediaQuery.of(context).size.width,
                   child: ChipsChoice<int>.single(
                     choiceStyle: C2ChipStyle.filled(
-                      //margin: EdgeInsets.all(1),
-
                       foregroundSpacing: 20,
                       borderWidth: 20,
                       color: const Color.fromARGB(255, 160, 160, 160),
-                      //borderStyle: BorderStyle.solid,
                       borderRadius: BorderRadius.circular(25),
                       foregroundStyle: const TextStyle(fontSize: 16),
                       selectedStyle: const C2ChipStyle(

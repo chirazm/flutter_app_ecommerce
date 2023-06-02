@@ -1,9 +1,8 @@
 import 'package:admin_panel_pfe/screens/login/Login_screen.dart';
 import 'package:admin_panel_pfe/screens/category/categories_screen.dart';
 import 'package:admin_panel_pfe/screens/dashboard/dashbord_screen.dart';
-import 'package:admin_panel_pfe/screens/products_screen.dart';
+import 'package:admin_panel_pfe/screens/customer/customer_screen.dart';
 import 'package:admin_panel_pfe/screens/banner/banners_screen.dart';
-import 'package:admin_panel_pfe/screens/setting/settings_screen.dart';
 import 'package:admin_panel_pfe/screens/vendor/vendors_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -14,7 +13,6 @@ import 'package:flutter_admin_scaffold/admin_scaffold.dart';
 import '../../consts/colors.dart';
 
 class HomeScreen extends StatefulWidget {
-
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
@@ -66,6 +64,13 @@ class _HomeScreenState extends State<HomeScreen> {
           });
         });
         break;
+      case CustomersScreen.routeName:
+        setState(() {
+          setState(() {
+            _selectedItem = CustomersScreen();
+          });
+        });
+        break;
       case CategoriesScreen.routeName:
         setState(() {
           setState(() {
@@ -81,13 +86,6 @@ class _HomeScreenState extends State<HomeScreen> {
           });
         });
         break;
-      // case SettingsScreen.routeName:
-      //   setState(() {
-      //     setState(() {
-      //       _selectedItem = SettingsScreen();
-      //     });
-      //   });
-      //   break;
     }
   }
 
@@ -103,7 +101,7 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: Colors.grey[100],
         appBar: AppBar(
           backgroundColor: appbarColor,
-          title: Text('Marque blanche Dashboard'),
+          title: Text('Shop App'),
           actions: [
             IconButton(
                 onPressed: () {
@@ -127,8 +125,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 route: DashboardScreen.routeName),
             AdminMenuItem(
                 title: 'Vendors',
-                icon: CupertinoIcons.person_3,
+                icon: CupertinoIcons.person_3_fill,
                 route: VendorsScreen.routeName),
+            AdminMenuItem(
+                title: 'Customers',
+                icon: CupertinoIcons.person_2_fill,
+                route: CustomersScreen.routeName),
             AdminMenuItem(
                 title: 'Categories',
                 icon: Icons.category,
@@ -137,14 +139,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 title: 'Upload Banners',
                 icon: CupertinoIcons.photo,
                 route: UploadBanner.routeName),
-            // AdminMenuItem(
-            //     title: 'Settings',
-            //     icon: Icons.exit_to_app_outlined,
-            //     route: SettingsScreen.routeName),
-            // AdminMenuItem(
-            //     title: 'Exit',
-            //     icon: Icons.exit_to_app_outlined,
-            //     route: ExitScreen.routeName),
           ],
 
           selectedRoute: '',

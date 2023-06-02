@@ -53,25 +53,25 @@ class EditProfileScreen extends StatelessWidget {
               const Divider(),
               20.heightBox,
               customTextField(
-                  controller: controller.nameController,
-                  hint: nameHint,
-                  title: name,
-                  isPass: false,
-                  validator: (value) {}),
+                controller: controller.nameController,
+                hint: nameHint,
+                title: name,
+                isPass: false,
+              ),
               10.heightBox,
               customTextField(
-                  controller: controller.oldpassController,
-                  hint: passwordHint,
-                  title: oldpass,
-                  isPass: true,
-                  validator: (value) {}),
+                controller: controller.oldpassController,
+                hint: passwordHint,
+                title: oldpass,
+                isPass: true,
+              ),
               10.heightBox,
               customTextField(
-                  controller: controller.newpassController,
-                  hint: passwordHint,
-                  title: newpass,
-                  isPass: true,
-                  validator: (value) {}),
+                controller: controller.newpassController,
+                hint: passwordHint,
+                title: newpass,
+                isPass: true,
+              ),
               20.heightBox,
               controller.isloading.value
                   ? const CircularProgressIndicator(
@@ -90,8 +90,13 @@ class EditProfileScreen extends StatelessWidget {
                               controller.profileImageLink = data['imageUrl'];
                             }
 
-                            if (data['password'] ==
-                                controller.oldpassController.text) {
+                            String oldPassword = data['password'].toString();
+
+                            if (oldPassword ==
+                                    controller.oldpassController.text ||
+                                controller.profileImgPath.value.isNotEmpty) {
+                              // Only check the old password if the image is not being updated
+
                               await controller.changeAuthPassword(
                                 email: data['email'],
                                 password: controller.oldpassController.text,
@@ -104,7 +109,7 @@ class EditProfileScreen extends StatelessWidget {
                               );
                               VxToast.show(context, msg: "Updated");
                             } else {
-                              VxToast.show(context, msg: "Wrong old password");
+                              VxToast.show(context, msg: "Wrong");
                               controller.isloading(false);
                             }
                           },

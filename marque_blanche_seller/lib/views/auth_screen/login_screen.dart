@@ -65,6 +65,7 @@ class LoginScreen extends StatelessWidget {
                     ),
                     TextFormField(
                       controller: controller.passwordController,
+                      obscureText: true,
                       decoration: const InputDecoration(
                           filled: true,
                           fillColor: textfieldGrey,

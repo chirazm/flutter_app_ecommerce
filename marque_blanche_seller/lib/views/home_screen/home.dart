@@ -1,7 +1,8 @@
 import 'package:get/get.dart';
 import 'package:marque_blanche_seller/const/const.dart';
 import 'package:marque_blanche_seller/controllers/home_controller.dart';
-import 'package:marque_blanche_seller/views/coupon_screen/CouponScreen.dart';
+import 'package:marque_blanche_seller/views/flash_sale_screen/fashSale_Screen.dart';
+import 'package:marque_blanche_seller/views/flash_sale_screen/flash_sale_add.dart';
 import 'package:marque_blanche_seller/views/home_screen/home_screen.dart';
 import 'package:marque_blanche_seller/views/orders_screen/orders_screen.dart';
 import 'package:marque_blanche_seller/views/products_screen/products_screen.dart';
@@ -35,25 +36,25 @@ class Home extends StatelessWidget {
           ),
           label: orders),
       BottomNavigationBarItem(
-          icon: Image.asset(
-            icCoupons,
-            color: darkGrey,
-            width: 24,
-          ),
-          label: coupons),
-      const BottomNavigationBarItem(
           icon: Icon(
-            Icons.settings,
+            Icons.timer_rounded,
             size: 28,
           ),
-          label: settings,),
+          label: sales),
+      const BottomNavigationBarItem(
+        icon: Icon(
+          Icons.settings,
+          size: 28,
+        ),
+        label: settings,
+      ),
     ];
 
     var navScreens = [
       const HomeScreen(),
       const ProductsScreen(),
       const OrdersScreen(),
-      const CouponScreen(),
+      FlashSaleProductsScreen(),
       const ProfileScreen()
     ];
     return Scaffold(

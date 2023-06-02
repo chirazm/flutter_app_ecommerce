@@ -1,13 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:marque_blanche_seller/const/colors.dart';
-import 'package:marque_blanche_seller/const/const.dart';
-import 'package:marque_blanche_seller/services/store_services.dart';
-import 'package:marque_blanche_seller/views/messages_screen/components/chat_bubble.dart';
-
-import '../../controllers/chat_controller.dart';
-import '../widgets/loading_indicator.dart';
+import 'package:pfe_app/consts/consts.dart';
+import 'package:pfe_app/controllers/chats_controller.dart';
+import 'package:pfe_app/services/firestore_services.dart';
+import 'package:pfe_app/views/chat_screen/components/sender_bubble.dart';
+import 'package:pfe_app/widget_common/loading_indicator.dart';
 
 class ChatScreen extends StatelessWidget {
   const ChatScreen({super.key});
@@ -16,9 +14,13 @@ class ChatScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var controller = Get.put(ChatsController());
     return Scaffold(
-      backgroundColor: white,
+      backgroundColor: whiteColor,
       appBar: AppBar(
-        title: "${controller.friendName}".text.color(green).make(),
+        title: "${controller.friendName}"
+            .text
+            .fontFamily(semibold)
+            .color(darkFontGrey)
+            .make(),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -31,7 +33,7 @@ class ChatScreen extends StatelessWidget {
                     )
                   : Expanded(
                       child: StreamBuilder(
-                      stream: StoreServices.getChatMessages(
+                      stream: FirestoreServices.getChatMessages(
                           controller.chatDocId.toString()),
                       builder: (BuildContext context,
                           AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -41,7 +43,10 @@ class ChatScreen extends StatelessWidget {
                           );
                         } else if (snapshot.data!.docs.isEmpty) {
                           return Center(
-                            child: "Send a message...".text.color(green).make(),
+                            child: "Send a message..."
+                                .text
+                                .color(darkFontGrey)
+                                .make(),
                           );
                         } else {
                           return ListView(
@@ -52,7 +57,7 @@ class ChatScreen extends StatelessWidget {
                                   alignment: data['uid'] == currentUser!.uid
                                       ? Alignment.centerRight
                                       : Alignment.centerLeft,
-                                  child: chatBubble(data));
+                                  child: senderBubble(data));
                             }).toList(),
                           );
                         }
@@ -83,7 +88,7 @@ class ChatScreen extends StatelessWidget {
                     },
                     icon: const Icon(
                       Icons.send,
-                      color: purpleColor,
+                      color: redColor,
                     ))
               ],
             )

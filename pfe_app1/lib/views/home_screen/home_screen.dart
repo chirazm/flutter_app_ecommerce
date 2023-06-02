@@ -11,6 +11,8 @@ import 'package:pfe_app/views/home_screen/components/home_buttons.dart';
 import 'package:pfe_app/views/home_screen/search_screen.dart';
 import 'package:pfe_app/views/sellers/list_sellers.dart';
 import 'package:pfe_app/widget_common/loading_indicator.dart';
+import '../../controllers/auth_controller.dart';
+import '../auth_screen/login_screen.dart';
 import 'components/count_down_Timer.dart';
 import '../../consts/lists.dart';
 import '../flash_sale_screen/flash_sale.dart';
@@ -78,6 +80,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
           ),
+
           10.heightBox,
 
           //swipers brands

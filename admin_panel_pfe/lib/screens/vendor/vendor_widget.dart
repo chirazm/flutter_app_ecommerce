@@ -13,7 +13,10 @@ class VendorWidget extends StatefulWidget {
 }
 
 class _VendorWidgetState extends State<VendorWidget> {
-  FirebaseServices _services = FirebaseServices();
+  List<DocumentSnapshot> filteredVendors = [];
+  QuerySnapshot? customersSnapshot;
+  var searchController = TextEditingController();
+
   int tag = 0;
 
   List<String> options = [
@@ -37,6 +40,22 @@ class _VendorWidgetState extends State<VendorWidget> {
       setState(() {
         active = null;
       });
+    }
+  }
+
+  void _searchVendors(String query) {
+    filteredVendors.clear(); // Clear the previous filtered customers
+
+    if (query.isEmpty) {
+      filteredVendors.addAll(customersSnapshot!.docs);
+    } else {
+      for (var vendor in customersSnapshot!.docs) {
+        String vendorName =
+            (vendor.data() as dynamic)['shop_name'].toString().toLowerCase();
+        if (vendorName.contains(query.toLowerCase())) {
+          filteredVendors.add(vendor);
+        }
+      }
     }
   }
 
@@ -68,6 +87,30 @@ class _VendorWidgetState extends State<VendorWidget> {
         ),
         Divider(
           thickness: 5,
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16),
+          child: TextField(
+            controller: searchController,
+            decoration: InputDecoration(
+              hintText: 'Search by name...',
+              prefixIcon: Icon(Icons.search),
+              suffixIcon: IconButton(
+                icon: Icon(Icons.clear),
+                onPressed: () {
+                  searchController.clear();
+                  setState(() {
+                    filteredVendors.clear();
+                  });
+                },
+              ),
+            ),
+            onChanged: (value) {
+              setState(() {
+                _searchVendors(value);
+              });
+            },
+          ),
         ),
         StreamBuilder(
           stream: _services.vendors
@@ -118,7 +161,6 @@ class _VendorWidgetState extends State<VendorWidget> {
                   DataColumn(
                     label: Text('View Details'),
                   ),
-                
                 ],
                 rows: _vendorsDetailsRows(snapshot.data, _services),
               ),
@@ -179,8 +221,6 @@ class _VendorWidgetState extends State<VendorWidget> {
                   });
             },
             icon: Icon(Icons.info_outline))),
-
-         
       ]);
     }).toList();
     return newList;

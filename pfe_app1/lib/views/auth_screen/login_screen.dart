@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pfe_app/consts/consts.dart';
-import 'package:pfe_app/consts/lists.dart';
 import 'package:pfe_app/controllers/auth_controller.dart';
-import 'package:pfe_app/views/auth_screen/phone_auth_screen.dart';
 import 'package:pfe_app/views/auth_screen/signup_screen.dart';
 import 'package:pfe_app/views/forget_password/forget_password.dart';
 import 'package:pfe_app/views/home_screen/home.dart';
@@ -38,23 +36,13 @@ class LoginScreen extends StatelessWidget {
                     title: email,
                     isPass: false,
                     controller: controller.emailController,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your email';
-                      }
-                      return null;
-                    }),
+                    ),
                 customTextField(
                     hint: passwordHint,
                     title: password,
                     isPass: true,
                     controller: controller.passwordController,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter a password';
-                      }
-                      return null;
-                    }),
+                    ),
                 Align(
                   alignment: Alignment.centerRight,
                   child: TextButton(

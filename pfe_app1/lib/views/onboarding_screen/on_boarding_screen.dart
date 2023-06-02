@@ -136,26 +136,26 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                   ],
                 ),
               ),
-              OnBoardPage(
-                boardColumn: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Text(
-                      'Safe & Secure\nPayments',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: whiteColor,
-                          fontSize: 32),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    SizedBox(
-                        height: 300, width: 300, child: Image.asset(onboard5)),
-                  ],
-                ),
-              ),
+              // OnBoardPage(
+              //   boardColumn: Column(
+              //     mainAxisSize: MainAxisSize.min,
+              //     children: [
+              //       const Text(
+              //         'Safe & Secure\nPayments',
+              //         textAlign: TextAlign.center,
+              //         style: TextStyle(
+              //             fontWeight: FontWeight.bold,
+              //             color: whiteColor,
+              //             fontSize: 32),
+              //       ),
+              //       const SizedBox(
+              //         height: 20,
+              //       ),
+              //       SizedBox(
+              //           height: 300, width: 300, child: Image.asset(onboard5)),
+              //     ],
+              //   ),
+              // ),
             ],
           ),
           Align(
@@ -164,13 +164,13 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 DotsIndicator(
-                  dotsCount: 5,
+                  dotsCount: 4,
                   position: scrollerPosition,
                   decorator: const DotsDecorator(
                     activeColor: whiteColor,
                   ),
                 ),
-                scrollerPosition == 5
+                scrollerPosition == 3
                     ? Padding(
                         padding: const EdgeInsets.only(left: 20, right: 20),
                         child: ElevatedButton(

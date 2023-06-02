@@ -46,15 +46,15 @@ class HomeScreen extends StatelessWidget {
                       ],
                     ),
                     10.heightBox,
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        dashboardButton(context,
-                            title: rating, count: "60", icon: icStar),
-                        dashboardButton(context,
-                            title: totalSales, count: "15", icon: icOrders),
-                      ],
-                    ),
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    //   children: [
+                    //     dashboardButton(context,
+                    //         title: rating, count: "60", icon: icStar),
+                    //     dashboardButton(context,
+                    //         title: totalSales, count: "15", icon: icOrders),
+                    //   ],
+                    // ),
                     10.heightBox,
                     const Divider(),
                     10.heightBox,

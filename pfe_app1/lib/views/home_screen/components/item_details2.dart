@@ -271,7 +271,7 @@ class ItemDetails2 extends StatelessWidget {
                   }
                 },
                 textColor: whiteColor,
-                title: "Add to cart",
+                title: "Add To Cart",
               ),
             ),
           ],

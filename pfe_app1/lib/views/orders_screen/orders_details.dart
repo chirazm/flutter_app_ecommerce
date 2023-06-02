@@ -51,22 +51,25 @@ class OrderDetails extends StatelessWidget {
               Column(
                 children: [
                   orderPlaceDetails(
-                      d1: data['order_code'],
-                      d2: data['shipping_method'],
-                      title1: "Order Code",
-                      title2: "Shipping Method"),
+                    d1: data['order_code'],
+                    d2: data['shipping_method'],
+                    title1: "Order Code",
+                    title2: "Shipping Method",
+                  ),
                   orderPlaceDetails(
-                      d1: intl.DateFormat("h:mma")
-                          .add_yMd()
-                          .format((data['order_date'].toDate())),
-                      d2: data['payment_method'],
-                      title1: "Order Date",
-                      title2: "Payment Method"),
+                    d1: intl.DateFormat("h:mma")
+                        .add_yMd()
+                        .format((data['order_date'].toDate())),
+                    d2: data['payment_method'],
+                    title1: "Order Date",
+                    title2: "Payment Method",
+                  ),
                   orderPlaceDetails(
-                      d1: "Unpaid",
-                      d2: "Order placed",
-                      title1: "Payment Status",
-                      title2: "Delivery Status"),
+                    d1: "Unpaid",
+                    d2: "Order placed",
+                    title1: "Payment Status",
+                    title2: "Delivery Status",
+                  ),
                   Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 16.0, vertical: 8),

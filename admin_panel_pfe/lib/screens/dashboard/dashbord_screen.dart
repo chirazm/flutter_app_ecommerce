@@ -14,8 +14,8 @@ class DashboardScreen extends StatelessWidget {
       return Padding(
         padding: const EdgeInsets.all(18.0),
         child: Container(
-          height: 120,
-          width: 220,
+          height: 140,
+          width: 240,
           decoration: BoxDecoration(
             border: Border.all(color: appbarColor),
             borderRadius: BorderRadius.circular(10),
@@ -93,7 +93,7 @@ class DashboardScreen extends StatelessWidget {
 
                       if (snapshot.hasData) {
                         return analyticWidget(
-                          title: 'Total User',
+                          title: 'Total Customer',
                           value: snapshot.data!.size.toString(),
                           icon: Icon(
                             CupertinoIcons.person_3_fill,

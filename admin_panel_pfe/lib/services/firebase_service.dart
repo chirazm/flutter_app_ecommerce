@@ -167,4 +167,46 @@ class FirebaseServices {
       },
     );
   }
+
+  Future<void> deleteCustomerFromFirebase(String customerId) async {
+    await FirebaseFirestore.instance
+        .collection('user')
+        .doc(customerId)
+        .delete();
+  }
+
+  Future<void> confirmDeleteDialogCustomer(
+      {title, message, context, id}) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text(message),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: const Text('Delete'),
+              onPressed: () {
+                deleteCustomerFromFirebase(id);
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 }
