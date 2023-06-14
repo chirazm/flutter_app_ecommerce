@@ -18,15 +18,14 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
-  //CouponController couponController = Get.find<CouponController>();
-
   int deliveryFree = 7;
 
   @override
   Widget build(BuildContext context) {
     var controller = Get.put(CartController());
     bool cartIsEmpty = true;
-    var payable = controller.totalP.value + deliveryFree;
+    var payable = controller.totalP.value +
+        (controller.totalP.value > 99.00 ? 0 : deliveryFree);
     return Scaffold(
         backgroundColor: lightGrey,
         bottomNavigationBar: SizedBox(
@@ -44,12 +43,6 @@ class _CartScreenState extends State<CartScreen> {
         ),
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          // leading: IconButton(
-          //   onPressed: () {
-          //     Get.back();
-          //   },
-          //   icon: const Icon(Icons.arrow_back),
-          // ),
           title: "Shopping cart"
               .text
               .color(darkFontGrey)
@@ -65,15 +58,17 @@ class _CartScreenState extends State<CartScreen> {
               );
             } else if (snapshot.data!.docs.isEmpty) {
               cartIsEmpty = true;
-
               return Center(
                 child: "Cart is empty".text.color(darkFontGrey).make(),
               );
             } else {
               cartIsEmpty = false;
               var data = snapshot.data!.docs;
+
               controller.calculate(data);
               controller.productSnapshot = data;
+              payable = controller.totalP.value +
+                  (controller.totalP.value > 99.00 ? 0 : deliveryFree);
 
               return Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -83,19 +78,29 @@ class _CartScreenState extends State<CartScreen> {
                       child: ListView.builder(
                         itemCount: data.length,
                         itemBuilder: (BuildContext context, int index) {
+                          var product = data[index];
+
                           return ListTile(
-                            leading: GestureDetector(
+                            leading: Container(
+                              width: 65,
+                              height: 65,
                               child: Image.network(
                                 "${data[index]['img']}",
                                 width: 80,
                                 fit: BoxFit.cover,
-                              ),
+                              ).onTap(() {
+                                Get.to(() => ItemDetails(
+                                      title: "${data[index]['p_name']}",
+                                      data: data[index],
+                                    ));
+                              }),
                             ),
                             title: GestureDetector(
                               onTap: () {
                                 Get.to(() => ItemDetails(
-                                    title: "${data[index]['p_name']}",
-                                    data: data[index]));
+                                      title: "${data[index]['p_name']}",
+                                      data: data[index],
+                                    ));
                               },
                               child:
                                   "${data[index]['title']} (x${data[index]['qty']})"
@@ -123,10 +128,6 @@ class _CartScreenState extends State<CartScreen> {
                     const Divider(
                       color: Colors.grey,
                     ),
-
-                    // i want in this part add couponwidget
-                    //CouponWidgett(), // Add the CouponWidget here
-
                     Padding(
                       padding: const EdgeInsets.all(4.0),
                       child: SizedBox(
@@ -181,10 +182,11 @@ class _CartScreenState extends State<CartScreen> {
                                       ),
                                     ),
                                     Text(
-                                        "${deliveryFree.toStringAsFixed(3)} TND",
-                                        style: const TextStyle(
-                                            color: Color.fromARGB(
-                                                255, 70, 69, 69))),
+                                      "${(controller.totalP.value > 99.000 ? 0 : deliveryFree).toStringAsFixed(3)} TND",
+                                      style: const TextStyle(
+                                          color:
+                                              Color.fromARGB(255, 70, 69, 69)),
+                                    ),
                                   ],
                                 ),
                                 const Divider(

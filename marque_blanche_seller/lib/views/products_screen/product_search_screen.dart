@@ -1,13 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
-import 'package:marque_blanche_seller/const/const.dart';
 import 'package:marque_blanche_seller/services/store_services.dart';
-import 'package:marque_blanche_seller/views/orders_screen/order_details.dart';
 import 'package:marque_blanche_seller/views/products_screen/product_details.dart';
 
+import '../../const/const.dart';
+
 class ProductSearchScreen extends StatelessWidget {
-  const ProductSearchScreen({Key? key, this.title}) : super(key: key);
+  const ProductSearchScreen({Key? key, this.title, required this.currentUserId})
+      : super(key: key);
   final String? title;
+  final String currentUserId;
 
   @override
   Widget build(BuildContext context) {
@@ -19,35 +21,34 @@ class ProductSearchScreen extends StatelessWidget {
             Icons.arrow_back,
             color: darkGrey,
           ),
-          onPressed: (() {
+          onPressed: () {
             Get.back();
-          }),
+          },
         ),
         title: Text(
           title!,
-          style: TextStyle(color: darkGrey),
+          style: const TextStyle(color: darkGrey),
         ),
       ),
       body: StreamBuilder<QuerySnapshot>(
-        stream: StoreServices.searchProductsByName(title!),
+        stream:
+            StoreServices.searchProductsByNameForUser(title!, currentUserId),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
               child: CircularProgressIndicator(),
             );
           } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-            return Center(
-              child: Text("No product found."),
+            return const Center(
+              child: Text("No product found !"),
             );
           } else {
             var data = snapshot.data!.docs;
             var filtered = data
-                .where(
-                  (element) => element['p_name']
-                      .toString()
-                      .toLowerCase()
-                      .startsWith(title!.toLowerCase()),
-                )
+                .where((element) => element['p_name']
+                    .toString()
+                    .toLowerCase()
+                    .contains(title!.toLowerCase()))
                 .toList();
             return Padding(
               padding: const EdgeInsets.all(8.0),
@@ -64,7 +65,7 @@ class ProductSearchScreen extends StatelessWidget {
                   return GestureDetector(
                     onTap: () {
                       Get.to(() => ProductDetails(
-                            data: data[index],
+                            data: filtered[index],
                           ));
                     },
                     child: Column(

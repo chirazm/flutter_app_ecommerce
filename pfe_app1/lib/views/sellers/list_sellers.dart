@@ -69,7 +69,11 @@ class _SellerListState extends State<SellerList> {
                 Seller seller = sellers[index];
 
                 return ListTile(
-                  leading: Image.network(seller.image),
+                  leading: Container(
+                    width: 60,
+                    height: 60,
+                    child: Image.network(seller.image, fit: BoxFit.cover),
+                  ),
                   title: Text(
                     seller.name,
                     style: const TextStyle(

@@ -78,12 +78,14 @@ class AddProduct extends StatelessWidget {
                 ),
                 10.heightBox,
                 customTextField(
+                  type: TextInputType.number,
                   hint: "eg. 100TND",
                   label: "Price",
                   controller: controller.ppriceController,
                 ),
                 10.heightBox,
                 customTextField(
+                  type: TextInputType.number,
                   hint: "eg. 20",
                   label: "Quantity",
                   controller: controller.pquantityController,

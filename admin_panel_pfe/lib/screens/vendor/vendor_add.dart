@@ -1,6 +1,7 @@
 import 'package:admin_panel_pfe/consts/colors.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -14,6 +15,7 @@ class _AddVendorWidgetState extends State<AddVendorWidget> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final FirebaseStorage _storage = FirebaseStorage.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   dynamic _image;
 
@@ -29,6 +31,7 @@ class _AddVendorWidgetState extends State<AddVendorWidget> {
   bool _imageAdded = false;
 
   bool? accountStatus = false;
+
   _pickImage() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       allowMultiple: false,
@@ -49,6 +52,15 @@ class _AddVendorWidgetState extends State<AddVendorWidget> {
     TaskSnapshot snapshot = await uploadTask;
     String downloadUrl = await snapshot.ref.getDownloadURL();
     return downloadUrl;
+  }
+
+  Future<String> _registerUserWithEmailAndPassword(
+      String email, String password) async {
+    UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
+    return userCredential.user!.uid;
   }
 
   uploadVendor() async {
@@ -73,24 +85,30 @@ class _AddVendorWidgetState extends State<AddVendorWidget> {
         return;
       } else if (_formKey.currentState!.validate()) {
         String imageUrl = await _uploadVendorToStorage(_image);
-        await _firestore.collection('vendors').doc(fileName).set({
+
+        String userId =
+            await _registerUserWithEmailAndPassword(email, password);
+        String vendorId = userId;
+
+        await _firestore.collection('vendors').doc(vendorId).set({
           'imageUrl': imageUrl,
           'shop_name': shopName,
           'shop_desc': shopDesc,
-          'id': fileName,
+          'id': vendorId,
           'account_verified': accountStatus,
           'email': email,
           'password': password,
           'shop_address': shopAddress,
           'shop_mobile': shopMobile,
           'vendor_name': vendorName,
+          'user_id': userId,
         }).whenComplete(() {
           EasyLoading.dismiss();
           showDialog(
             context: context,
             builder: (ctx) => AlertDialog(
               title: Text("Alert "),
-              content: Text("Vendor added successfully!"),
+              content: Text("Vendor registered successfully."),
               actions: <Widget>[
                 TextButton(
                   onPressed: () {
@@ -101,21 +119,33 @@ class _AddVendorWidgetState extends State<AddVendorWidget> {
               ],
             ),
           ).then((_) {
-            Navigator.of(context).pop();
-          });
-          setState(() {
-            _image = null;
+            // Reset the form after successful registration
             _formKey.currentState!.reset();
+            setState(() {
+              _imageAdded = false;
+              _image = null;
+            });
           });
         });
-      } else {
-        print('Form validation failed');
       }
-    } catch (e) {
+    } catch (error) {
       EasyLoading.dismiss();
-      Text("Image is empty");
-    } finally {
-      EasyLoading.dismiss();
+      showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: Text("Error"),
+          content: Text("An error occurred while registering the vendor."),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(ctx).pop();
+              },
+              child: Text("Ok"),
+            ),
+          ],
+        ),
+      );
+      print(error.toString());
     }
   }
 
@@ -207,7 +237,7 @@ class _AddVendorWidgetState extends State<AddVendorWidget> {
                       if (_autovalidateMode != AutovalidateMode.disabled &&
                           (value == null ||
                               value.isEmpty ||
-                              value.length < 8)) {
+                              value.length < 3)) {
                         return 'Shop Name must be at least 8 characters';
                       } else {
                         return null;
@@ -243,8 +273,8 @@ class _AddVendorWidgetState extends State<AddVendorWidget> {
                       if (_autovalidateMode != AutovalidateMode.disabled &&
                           (value == null ||
                               value.isEmpty ||
-                              value.length < 8)) {
-                        return 'Vendor Name must be at least 8 characters';
+                              value.length < 3)) {
+                        return 'Vendor Name must be at least 3 characters';
                       } else {
                         return null;
                       }

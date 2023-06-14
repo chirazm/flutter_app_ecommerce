@@ -58,8 +58,32 @@ class _HomeScreenState extends State<HomeScreen> {
       child: SafeArea(
           child: Column(
         children: [
-          Container(
+          VxSwiper.builder(
+            scrollDirection: Axis.horizontal,
+            aspectRatio: 16 / 9,
             height: 60,
+            enlargeCenterPage: true,
+            autoPlay: true,
+            autoPlayAnimationDuration: const Duration(milliseconds: 500),
+            itemCount: 2,
+            itemBuilder: (BuildContext context, int index) {
+              return Align(
+                alignment: Alignment.center,
+                child: Text(
+                  index == 0
+                      ? 'Free Delivery On Orders > 99 TND'
+                      : 'Free Delivery On Orders > 99 TND',
+                  style: const TextStyle(
+                    fontSize: 16,
+                    color: Colors.green,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              );
+            },
+          ),
+          Container(
+            height: 50,
             alignment: Alignment.center,
             color: lightGrey,
             child: TextFormField(
@@ -158,16 +182,16 @@ class _HomeScreenState extends State<HomeScreen> {
                     scrollDirection: Axis.horizontal,
                     child: Row(
                       children: List.generate(
-                        3,
+                        2,
                         (index) => Column(
                           children: [
                             featuredButton(
                                 icon: featuredImages1[index],
-                                title: featuredTitles1[index]),
+                                category: featuredTitles1[index]),
                             10.heightBox,
                             featuredButton(
                                 icon: featuredImages2[index],
-                                title: featuredTitles2[index]),
+                                category: featuredTitles2[index]),
                           ],
                         ),
                       ).toList(),
@@ -191,67 +215,166 @@ class _HomeScreenState extends State<HomeScreen> {
                         SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
                           child: FutureBuilder(
-                              future: FirestoreServices.getfeaturedProducts(),
-                              builder: (BuildContext context,
-                                  AsyncSnapshot<QuerySnapshot> snapshot) {
-                                if (!snapshot.hasData) {
-                                  return loadingIndicator();
-                                } else if (snapshot.data!.docs.isEmpty) {
-                                  return "No fearured products"
-                                      .text
-                                      .white
-                                      .makeCentered();
-                                } else {
-                                  var featuredData = snapshot.data!.docs;
-                                  return Row(
-                                    children: List.generate(
-                                        featuredData.length,
-                                        (index) => Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Image.network(
-                                                  featuredData[index]['p_imgs']
-                                                      [0],
-                                                  width: 130,
-                                                  height: 120,
-                                                  fit: BoxFit.cover,
+                            future: FirestoreServices.getfeaturedProducts(),
+                            builder: (BuildContext context,
+                                AsyncSnapshot<QuerySnapshot> snapshot) {
+                              if (!snapshot.hasData) {
+                                return loadingIndicator();
+                              } else if (snapshot.data!.docs.isEmpty) {
+                                return "No featured products"
+                                    .text
+                                    .white
+                                    .makeCentered();
+                              } else {
+                                var featuredData = snapshot.data!.docs;
+                                return Row(
+                                  children: List.generate(featuredData.length,
+                                      (index) {
+                                    bool hasDiscount = featuredData[index]
+                                            ['discountedPrice'] !=
+                                        null;
+                                    double oldPrice = double.parse(
+                                        featuredData[index]['p_price']);
+                                    double discountedPrice = hasDiscount
+                                        ? double.parse(featuredData[index]
+                                            ['discountedPrice'])
+                                        : oldPrice;
+                                    bool isFlashSaleExpired = hasDiscount &&
+                                        featuredData[index]['endDate'] !=
+                                            null &&
+                                        DateTime.now().isAfter(
+                                            featuredData[index]['endDate']
+                                                .toDate());
+
+                                    if (featuredData[index]['endDate'] ==
+                                            null &&
+                                        featuredData[index]
+                                                ['discountedPrice'] ==
+                                            "0.0") {
+                                      return Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Image.network(
+                                            featuredData[index]['p_imgs'][0],
+                                            width: 130,
+                                            height: 120,
+                                            fit: BoxFit.cover,
+                                          ),
+                                          10.heightBox,
+                                          "${featuredData[index]['p_name']}"
+                                              .text
+                                              .fontFamily(semibold)
+                                              .color(darkFontGrey)
+                                              .make(),
+                                          10.heightBox,
+                                          Text(
+                                            '$oldPrice TND',
+                                            style: const TextStyle(
+                                              color: redColor,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 16,
+                                            ),
+                                          ),
+                                          10.heightBox,
+                                        ],
+                                      )
+                                          .box
+                                          .white
+                                          .margin(const EdgeInsets.symmetric(
+                                              horizontal: 4))
+                                          .roundedSM
+                                          .padding(const EdgeInsets.all(8))
+                                          .make()
+                                          .onTap(() {
+                                        Get.to(() => ItemDetails(
+                                              title:
+                                                  "${featuredData[index]['p_name']}",
+                                              data: featuredData[index],
+                                            ));
+                                      });
+                                    }
+
+                                    return Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Image.network(
+                                          featuredData[index]['p_imgs'][0],
+                                          width: 130,
+                                          height: 120,
+                                          fit: BoxFit.cover,
+                                        ),
+                                        10.heightBox,
+                                        "${featuredData[index]['p_name']}"
+                                            .text
+                                            .fontFamily(semibold)
+                                            .color(darkFontGrey)
+                                            .make(),
+                                        10.heightBox,
+                                        if (isFlashSaleExpired)
+                                          Text(
+                                            '$oldPrice TND',
+                                            style: const TextStyle(
+                                              color: redColor,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 16,
+                                            ),
+                                          )
+                                        else if (hasDiscount)
+                                          Row(
+                                            children: [
+                                              Text(
+                                                '$oldPrice TND',
+                                                style: const TextStyle(
+                                                  color: darkFontGrey,
+                                                  fontSize: 16,
+                                                  decoration: TextDecoration
+                                                      .lineThrough,
                                                 ),
-                                                10.heightBox,
-                                                "${featuredData[index]['p_name']}"
-                                                    .text
-                                                    .fontFamily(semibold)
-                                                    .color(darkFontGrey)
-                                                    .make(),
-                                                10.heightBox,
-                                                "${featuredData[index]['p_price']} TND"
-                                                    .text
-                                                    .color(redColor)
-                                                    .fontFamily(semibold)
-                                                    .size(16)
-                                                    .make(),
-                                                10.heightBox,
-                                              ],
-                                            )
-                                                .box
-                                                .white
-                                                .margin(
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: 4))
-                                                .roundedSM
-                                                .padding(
-                                                    const EdgeInsets.all(8))
-                                                .make()
-                                                .onTap(() {
-                                              Get.to(() => ItemDetails(
-                                                    title:
-                                                        "${featuredData[index]['p_name']}",
-                                                    data: featuredData[index],
-                                                  ));
-                                            })),
-                                  );
-                                }
-                              }),
+                                              ),
+                                              const SizedBox(width: 10),
+                                              Text(
+                                                '$discountedPrice TND',
+                                                style: const TextStyle(
+                                                  color: redColor,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 16,
+                                                ),
+                                              ),
+                                            ],
+                                          )
+                                        else
+                                          Text(
+                                            '$oldPrice TND',
+                                            style: const TextStyle(
+                                              color: redColor,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 16,
+                                            ),
+                                          ),
+                                        10.heightBox,
+                                      ],
+                                    )
+                                        .box
+                                        .white
+                                        .margin(const EdgeInsets.symmetric(
+                                            horizontal: 4))
+                                        .roundedSM
+                                        .padding(const EdgeInsets.all(8))
+                                        .make()
+                                        .onTap(() {
+                                      Get.to(() => ItemDetails(
+                                            title:
+                                                "${featuredData[index]['p_name']}",
+                                            data: featuredData[index],
+                                          ));
+                                    });
+                                  }),
+                                );
+                              }
+                            },
+                          ),
                         ),
                       ],
                     ),
@@ -277,50 +400,100 @@ class _HomeScreenState extends State<HomeScreen> {
                       } else {
                         var allproductsData = snapshot.data!.docs;
                         return GridView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: allproductsData.length,
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2,
-                                  mainAxisSpacing: 8,
-                                  crossAxisSpacing: 8,
-                                  mainAxisExtent: 280),
-                          itemBuilder: ((context, index) {
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Image.network(
-                                  allproductsData[index]['p_imgs'][0],
-                                  height: 200,
-                                  width: 200,
-                                  fit: BoxFit.cover,
-                                ),
-                                const Spacer(),
-                                "${allproductsData[index]['p_name']}"
-                                    .text
-                                    .fontFamily(semibold)
-                                    .color(darkFontGrey)
-                                    .make(),
-                                10.heightBox,
-                                "${allproductsData[index]['p_price']} TND"
-                                    .text
-                                    .color(redColor)
-                                    .fontFamily(semibold)
-                                    .size(16)
-                                    .make(),
-                                10.heightBox,
-                              ],
-                            )
-                                .box
-                                .white
-                                .margin(
-                                    const EdgeInsets.symmetric(horizontal: 4))
-                                .roundedSM
-                                .padding(const EdgeInsets.all(12))
-                                .make()
-                                .onTap(
-                              () {
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: allproductsData.length,
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              mainAxisSpacing: 8,
+                              crossAxisSpacing: 8,
+                              mainAxisExtent: 280,
+                            ),
+                            itemBuilder: (context, index) {
+                              bool hasDiscount = allproductsData[index]
+                                      ['discountedPrice'] !=
+                                  null;
+                              double oldPrice = double.parse(
+                                  allproductsData[index]['p_price']);
+                              double discountedPrice = hasDiscount
+                                  ? double.parse(
+                                      allproductsData[index]['discountedPrice'])
+                                  : oldPrice;
+                              bool isFlashSaleExpired = hasDiscount &&
+                                  allproductsData[index]['endDate'] != null &&
+                                  DateTime.now().isAfter(allproductsData[index]
+                                          ['endDate']
+                                      .toDate());
+
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Image.network(
+                                    allproductsData[index]['p_imgs'][0],
+                                    height: 200,
+                                    width: 200,
+                                    fit: BoxFit.cover,
+                                  ),
+                                  const Spacer(),
+                                  "${allproductsData[index]['p_name']}"
+                                      .text
+                                      .fontFamily(semibold)
+                                      .color(darkFontGrey)
+                                      .make(),
+                                  10.heightBox,
+                                  if (isFlashSaleExpired)
+                                    Text(
+                                      '$oldPrice TND',
+                                      style: const TextStyle(
+                                        color: redColor,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16,
+                                      ),
+                                    )
+                                  else if (hasDiscount &&
+                                      allproductsData[index]['endDate'] != null)
+                                    Row(
+                                      children: [
+                                        Text(
+                                          '$oldPrice TND',
+                                          style: const TextStyle(
+                                            color: darkFontGrey,
+                                            fontSize: 12,
+                                            decoration:
+                                                TextDecoration.lineThrough,
+                                          ),
+                                        ),
+                                        const SizedBox(width: 10),
+                                        Text(
+                                          '$discountedPrice TND',
+                                          style: const TextStyle(
+                                            color: redColor,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 14,
+                                          ),
+                                        ),
+                                      ],
+                                    )
+                                  else
+                                    Text(
+                                      '$oldPrice TND',
+                                      style: const TextStyle(
+                                        color: redColor,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                ],
+                              )
+                                  .box
+                                  .white
+                                  .margin(
+                                      const EdgeInsets.symmetric(horizontal: 4))
+                                  .roundedSM
+                                  .padding(const EdgeInsets.all(12))
+                                  .make()
+                                  .onTap(() {
                                 Get.to(
                                   () => ItemDetails(
                                     title:
@@ -328,10 +501,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                     data: allproductsData[index],
                                   ),
                                 );
-                              },
-                            );
-                          }),
-                        );
+                              });
+                            });
                       }
                     },
                   ),

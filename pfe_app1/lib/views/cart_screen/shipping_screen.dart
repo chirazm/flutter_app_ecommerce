@@ -26,18 +26,29 @@ class ShippingDetails extends StatelessWidget {
         height: 60,
         child: ourButton(
           onPress: () {
-            if (controller.addressController.text.isEmpty ||
-                controller.cityController.text.isEmpty ||
-                controller.stateController.text.isEmpty ||
-                controller.phoneController.text.isEmpty ||
-                controller.postalcodeController.text.isEmpty ||
-                controller.addressController.text.length < 8 ||
+            int emptyFieldsCount = 0;
+            if (controller.addressController.text.isEmpty) {
+              emptyFieldsCount++;
+            }
+            if (controller.cityController.text.isEmpty) {
+              emptyFieldsCount++;
+            }
+            if (controller.stateController.text.isEmpty) {
+              emptyFieldsCount++;
+            }
+            if (controller.phoneController.text.isEmpty) {
+              emptyFieldsCount++;
+            }
+            if (controller.postalcodeController.text.isEmpty) {
+              emptyFieldsCount++;
+            }
+
+            if (emptyFieldsCount >= 2) {
+              VxToast.show(context, msg: 'Please fill the form.');
+            } else if (controller.addressController.text.length < 8 ||
                 controller.phoneController.text.length != 8 ||
                 controller.postalcodeController.text.length != 4) {
               String errorMessage = '';
-              if (controller.addressController.text.isEmpty) {
-                errorMessage += 'Address must not be empty. ';
-              }
               if (controller.addressController.text.length < 8) {
                 errorMessage += 'Please enter a valid address. ';
               }

@@ -130,29 +130,33 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               onPress: () async {
                                 if (_formKey.currentState!.validate()) {
                                   if (isCheck == true) {
-                                    controller.isloading(true);
+                                    if (passwordController.text ==
+                                        passwordRetypeController.text) {
+                                      controller.isloading(true);
 
-                                    try {
-                                      await controller
-                                          .signupMethod(
-                                        context: context,
-                                        email: emailController.text,
-                                        password: passwordController.text,
-                                      )
-                                          .then((value) {
-                                        return controller.storeUserData(
+                                      try {
+                                        await controller
+                                            .signupMethod(
+                                          context: context,
                                           email: emailController.text,
                                           password: passwordController.text,
-                                          name: nameController.text,
-                                        );
-                                      }).then((value) {
-                                        VxToast.show(context, msg: loggedin);
-                                        Get.offAll(() => const Home());
-                                      });
-                                    } catch (e) {
-                                      auth.signOut();
-                                      VxToast.show(context, msg: e.toString());
-                                      controller.isloading(false);
+                                        )
+                                            .then((value) {
+                                          return controller.storeUserData(
+                                            email: emailController.text,
+                                            password: passwordController.text,
+                                            name: nameController.text,
+                                          );
+                                        }).then((value) {
+                                          VxToast.show(context, msg: loggedin);
+                                          Get.offAll(() => const Home());
+                                        });
+                                      } catch (e) {
+                                        controller.isloading(false);
+                                      }
+                                    } else {
+                                      VxToast.show(context,
+                                          msg: "Passwords do not match.");
                                     }
                                   } else {
                                     VxToast.show(context,

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:marque_blanche_seller/controllers/products_controller.dart';
 import 'package:marque_blanche_seller/services/store_services.dart';
@@ -21,6 +22,7 @@ class ProductsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var controller = Get.put(ProductsController());
+    String currentUserId = FirebaseAuth.instance.currentUser!.uid;
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
@@ -33,7 +35,10 @@ class ProductsScreen extends StatelessWidget {
       ),
       appBar: appbarWidget(products),
       body: StreamBuilder(
-        stream: StoreServices.getProducts(currentUser!.uid),
+        stream: FirebaseFirestore.instance
+            .collection('products')
+            .where('vendor_id', isEqualTo: currentUserId)
+            .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (!snapshot.hasData) {
             return loadingIndicator();
@@ -59,6 +64,7 @@ class ProductsScreen extends StatelessWidget {
                                   .searchController.text.isNotEmptyAndNotNull) {
                                 Get.to(() => ProductSearchScreen(
                                       title: controller.searchController.text,
+                                      currentUserId: currentUserId,
                                     ));
                               }
                             },

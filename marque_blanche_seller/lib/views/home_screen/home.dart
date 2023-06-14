@@ -55,7 +55,7 @@ class Home extends StatelessWidget {
       const ProductsScreen(),
       const OrdersScreen(),
       FlashSaleProductsScreen(),
-      const ProfileScreen()
+      ProfileScreen()
     ];
     return Scaffold(
       body: Column(

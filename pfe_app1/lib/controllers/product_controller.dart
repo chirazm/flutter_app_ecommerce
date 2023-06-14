@@ -8,8 +8,9 @@ class ProductController extends GetxController {
   var quantity = 0.obs;
   var subcat = [];
   var colorIndex = 0.obs;
-  var totalPrice = 0.obs;
+  RxInt totalPrice = RxInt(0);
   var isFav = false.obs;
+  RxString selectedSubcategory = RxString('');
 
   getSubCategories(title) async {
     subcat.clear();
@@ -39,12 +40,34 @@ class ProductController extends GetxController {
     }
   }
 
-  calculateTotalPrice(price) {
-    totalPrice.value = price * quantity.value;
+  void calculateTotalPrice(double price, double? discountedPrice,
+      double oldPrice, bool isFlashSaleExpired) {
+    if (discountedPrice != null &&
+        discountedPrice != 0.0 &&
+        !isFlashSaleExpired) {
+      totalPrice.value = (discountedPrice * quantity.value).toInt();
+    } else {
+      totalPrice.value = (oldPrice * quantity.value).toInt();
+    }
+
+    if (isFlashSaleExpired) {
+      discountedPrice = null;
+    }
+  }
+
+  void selectSubcategory(String subcategory) {
+    selectedSubcategory.value = subcategory;
   }
 
   addToCart(
-      {title, imageURL, sellername, color, qty, tprice, context, vendorID}) async {
+      {title,
+      imageURL,
+      sellername,
+      color,
+      qty,
+      tprice,
+      context,
+      vendorID}) async {
     await firestore.collection(cartCollection).doc().set({
       'title': title,
       'img': imageURL,
@@ -70,6 +93,10 @@ class ProductController extends GetxController {
     quantity.value = 0;
     colorIndex.value = 0;
     isFav.value = false;
+  }
+
+  resetQuantity() {
+    quantity.value = 0;
   }
 
   addToWishlist(docId, context) async {

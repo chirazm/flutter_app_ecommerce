@@ -35,6 +35,16 @@ class WishlistScreen extends StatelessWidget {
                       shrinkWrap: true,
                       itemCount: data.length,
                       itemBuilder: (BuildContext context, int index) {
+                        bool hasDiscount =
+                            data[index]['discountedPrice'] != null;
+                        double oldPrice = double.parse(data[index]['p_price']);
+                        double discountedPrice = hasDiscount
+                            ? double.parse(data[index]['discountedPrice'])
+                            : oldPrice;
+                        bool isFlashSaleExpired = hasDiscount &&
+                            data[index]['endDate'] != null &&
+                            DateTime.now()
+                                .isAfter(data[index]['endDate'].toDate());
                         return ListTile(
                           leading: Image.network(
                             "${data[index]['p_imgs'][0]}",
@@ -46,12 +56,50 @@ class WishlistScreen extends StatelessWidget {
                               .size(16)
                               .fontFamily(semibold)
                               .make(),
-                          subtitle: "${data[index]['p_price']}"
-                              .numCurrency
-                              .text
-                              .color(redColor)
-                              .fontFamily(semibold)
-                              .make(),
+                          subtitle: Row(
+                            children: [
+                              if (isFlashSaleExpired)
+                                Text(
+                                  '$oldPrice TND',
+                                  style: const TextStyle(
+                                    color: redColor,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                  ),
+                                )
+                              else if (hasDiscount)
+                                Row(
+                                  children: [
+                                    Text(
+                                      '$oldPrice TND',
+                                      style: const TextStyle(
+                                        color: darkFontGrey,
+                                        fontSize: 14,
+                                        decoration: TextDecoration.lineThrough,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 10),
+                                    Text(
+                                      '$discountedPrice TND',
+                                      style: const TextStyle(
+                                        color: redColor,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              if (!hasDiscount)
+                                Text(
+                                  '$oldPrice',
+                                  style: const TextStyle(
+                                    color: redColor,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                            ],
+                          ),
                           trailing: const Icon(
                             Icons.favorite,
                             color: redColor,

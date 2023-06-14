@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pfe_app/consts/consts.dart';
@@ -21,10 +22,11 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var controller = Get.put(ProfileController());
+    String currentUserId = FirebaseAuth.instance.currentUser!.uid;
     return bgWidget(
       child: Scaffold(
         body: StreamBuilder(
-          stream: FirestoreServices.getUser(currentUser!.uid),
+          stream: FirestoreServices.getUser(currentUserId),
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (!snapshot.hasData) {
@@ -39,6 +41,7 @@ class ProfileScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     //edit profile button
+
                     Padding(
                       padding: const EdgeInsets.all(5.0),
                       child: const Align(
@@ -54,6 +57,7 @@ class ProfileScreen extends StatelessWidget {
                     ),
 
                     //users details section
+
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
                       child: Row(
@@ -61,7 +65,7 @@ class ProfileScreen extends StatelessWidget {
                           data['imageUrl'] == ''
                               ? Image.asset(
                                   imgProfile,
-                                  width: 80,
+                                  width: 60,
                                   fit: BoxFit.cover,
                                 ).box.roundedFull.clip(Clip.antiAlias).make()
                               : Image.network(
@@ -98,7 +102,7 @@ class ProfileScreen extends StatelessWidget {
                         ],
                       ),
                     ),
-                    20.heightBox,
+                    10.heightBox,
 
                     FutureBuilder(
                       future: FirestoreServices.getCounts(),
@@ -123,19 +127,11 @@ class ProfileScreen extends StatelessWidget {
                         }
                       },
                     ),
-                    // Row(
-                    //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    //   children: [
-                    //     detailsCard(context.screenWidth / 3.3,
-                    //         data['cart_count'], "in your cart"),
-                    //     detailsCard(context.screenWidth / 3.3,
-                    //         data['wishlist_count'], "in your wishlist"),
-                    //     detailsCard(context.screenWidth / 3.3,
-                    //         data['order_count'], "your orders"),
-                    //   ],
-                    // ),
 
                     //buttons section
+                    const SizedBox(
+                      height: 15,
+                    ),
                     ListView.separated(
                             shrinkWrap: true,
                             itemCount: profileButtonList.length,

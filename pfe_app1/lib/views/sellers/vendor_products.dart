@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pfe_app/consts/consts.dart';
 import 'package:pfe_app/models/product_model.dart';
+import 'package:pfe_app/models/product_model2.dart';
 import 'package:pfe_app/services/firestore_services.dart';
 import 'package:pfe_app/views/category_screen/item_details.dart';
 import 'package:pfe_app/views/home_screen/home.dart';
@@ -33,11 +34,11 @@ class VendorProductsPage extends StatelessWidget {
       ),
       body: Container(
         // Fetch and display the products of the selected vendor
-        child: FutureBuilder<List<Product>>(
-          future: FirestoreServices.fetchVendorProducts(vendorId),
+        child: FutureBuilder<List<Product2>>(
+          future: FirestoreServices.fetchVendorProducts2(vendorId),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              List<Product> products = snapshot.data!;
+              List<Product2> products = snapshot.data!;
 
               return GridView.builder(
                 itemCount: products.length,
@@ -48,7 +49,16 @@ class VendorProductsPage extends StatelessWidget {
                   mainAxisExtent: 280,
                 ),
                 itemBuilder: (context, index) {
-                  Product product = products[index];
+                  Product2 product = products[index];
+                  bool hasDiscount = product.flashSalePrice != null;
+                  double oldPrice = double.parse(product.oldPrice);
+                  bool isFlashSaleExpired = hasDiscount &&
+                      product.endDate != null &&
+                      DateTime.now().isAfter(product.endDate!.toDate());
+
+                  double discountedPrice = hasDiscount
+                      ? double.parse(product.flashSalePrice)
+                      : oldPrice;
 
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -68,14 +78,46 @@ class VendorProductsPage extends StatelessWidget {
                         ),
                       ),
                       10.heightBox,
-                      Text(
-                        '${product.price} TND',
-                        style: const TextStyle(
-                          color: redColor,
-                          fontFamily: semibold,
-                          fontSize: 16,
+                      if (isFlashSaleExpired)
+                        Text(
+                          '$oldPrice TND',
+                          style: const TextStyle(
+                            color: redColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        )
+                      else if (hasDiscount && product.endDate != null)
+                        Row(
+                          children: [
+                            Text(
+                              '$oldPrice TND',
+                              style: const TextStyle(
+                                color: darkFontGrey,
+                                fontSize: 12,
+                                decoration: TextDecoration.lineThrough,
+                              ),
+                            ),
+                            const SizedBox(width: 10),
+                            Text(
+                              '$discountedPrice TND',
+                              style: const TextStyle(
+                                color: redColor,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                              ),
+                            ),
+                          ],
+                        )
+                      else
+                        Text(
+                          '$oldPrice TND',
+                          style: const TextStyle(
+                            color: redColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
                         ),
-                      ),
                       10.heightBox,
                     ],
                   )
@@ -89,8 +131,7 @@ class VendorProductsPage extends StatelessWidget {
                     () {
                       Get.to(
                         () => ItemDetails2(
-                          title: product.name,
-                          data: product,
+                          product2: product,
                         ),
                       );
                     },

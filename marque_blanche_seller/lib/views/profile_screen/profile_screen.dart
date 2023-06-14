@@ -13,11 +13,18 @@ import 'package:marque_blanche_seller/views/widgets/text_style.dart';
 import '../../const/const.dart';
 
 class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key});
+  const ProfileScreen({Key? key});
 
   @override
   Widget build(BuildContext context) {
     var controller = Get.put(ProfileController());
+    var currentUser = Get.find<AuthController>().user;
+
+    if (currentUser == null) {
+      // If the current user is not available, return a loading indicator or handle the case accordingly
+      return loadingIndicator(circleColor: white);
+    }
+
     return Scaffold(
       backgroundColor: purpleColor,
       appBar: AppBar(
@@ -25,80 +32,98 @@ class ProfileScreen extends StatelessWidget {
         title: boldText(text: settings, size: 16.0),
         actions: [
           IconButton(
-              onPressed: () {
-                Get.to(() => EditProfileScreen(
-                      username: controller.snapshotData['vendor_name'],
-                    ));
-              },
-              icon: const Icon(Icons.edit)),
+            onPressed: () {
+              Get.to(() => EditProfileScreen(
+                    username: controller.snapshotData['vendor_name'],
+                  ));
+            },
+            icon: const Icon(Icons.edit),
+          ),
           IconButton(
-              onPressed: () async {
-                await Get.find<AuthController>().signoutMethod(context);
-                Get.offAll(() => const LoginScreen());
-              },
-              icon: const Icon(Icons.logout)),
+            onPressed: () async {
+              await Get.find<AuthController>().signoutMethod(context);
+              Get.offAll(() => const LoginScreen());
+            },
+            icon: const Icon(Icons.logout),
+          ),
         ],
       ),
-      body: FutureBuilder(
-          future: StoreServices.getProfile(currentUser!.uid),
-          builder:
-              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-            if (!snapshot.hasData) {
-              return loadingIndicator(circleColor: white);
-            } else {
-              controller.snapshotData = snapshot.data!.docs[0];
+      body: FutureBuilder<DocumentSnapshot>(
+        future: StoreServices.getProfile(currentUser.uid),
+        builder:
+            (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return loadingIndicator(circleColor: white);
+          }
 
-              return Column(
-                children: [
-                  ListTile(
-                    leading: controller.snapshotData['imageUrl'] == ''
-                        ? Image.asset(imgProduct)
-                            .box
-                            .roundedFull
-                            .clip(Clip.antiAlias)
-                            .make()
-                        : Image.network(
-                            controller.snapshotData['imageUrl'],
-                            width: 100,
-                          ).box.roundedFull.clip(Clip.antiAlias).make(),
-                    title: boldText(
-                        text: "${controller.snapshotData['vendor_name']}"),
-                    subtitle:
-                        normalText(text: "${controller.snapshotData['email']}"),
-                  ),
-                  const Divider(),
-                  10.heightBox,
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      children: List.generate(
-                          2,
-                          (index) => ListTile(
-                                onTap: () {
-                                  switch (index) {
-                                    case 0:
-                                      Get.to(() => const ShopSettings());
-                                      break;
-                                    case 1:
-                                      Get.to(() => MessagesScreen());
-                                      break;
-                                    default:
-                                  }
-                                },
-                                leading: Icon(
-                                  profileButtonsIcons[index],
-                                  color: white,
-                                ),
-                                title: normalText(
-                                    text: profileButtonsTitles[index]),
-                              )),
+          if (!snapshot.hasData || !snapshot.data!.exists) {
+            // If the profile data for the current vendor does not exist, handle the case accordingly
+            return Center(
+              child: Text('Profile not found'),
+            );
+          }
+
+          var userData = snapshot.data!.data() as Map<String, dynamic>;
+
+          if (userData == null) {
+            // If the profile data is null, handle the case accordingly
+            return Center(
+              child: Text('Invalid profile data'),
+            );
+          }
+
+          return Column(
+            children: [
+              ListTile(
+                leading: userData['imageUrl'] == ''
+                    ? Image.asset(imgProduct)
+                        .box
+                        .roundedFull
+                        .clip(Clip.antiAlias)
+                        .make()
+                    : Image.network(
+                        userData['imageUrl'],
+                        width: 100,
+                      ).box.roundedFull.clip(Clip.antiAlias).make(),
+                title: boldText(
+                  text: "${userData['vendor_name']}",
+                ),
+                subtitle: normalText(text: "${userData['email']}"),
+              ),
+              const Divider(),
+              10.heightBox,
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: List.generate(
+                    2,
+                    (index) => ListTile(
+                      onTap: () {
+                        switch (index) {
+                          case 0:
+                            Get.to(() => const ShopSettings());
+                            break;
+                          case 1:
+                            Get.to(() => MessagesScreen());
+                            break;
+                          default:
+                        }
+                      },
+                      leading: Icon(
+                        profileButtonsIcons[index],
+                        color: white,
+                      ),
+                      title: normalText(
+                        text: profileButtonsTitles[index],
+                      ),
                     ),
-                  )
-                ],
-              );
-            }
-          }),
-      //
+                  ),
+                ),
+              )
+            ],
+          );
+        },
+      ),
     );
   }
 }

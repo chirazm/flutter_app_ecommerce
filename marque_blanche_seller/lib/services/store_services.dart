@@ -2,11 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:marque_blanche_seller/const/const.dart';
 
 class StoreServices {
-  static getProfile(uid) {
-    return firestore
-        .collection(vendorsCollection)
-        .where('id', isEqualTo: uid)
+  static Future<DocumentSnapshot> getProfile(String userId) async {
+    final DocumentSnapshot profileDoc = await FirebaseFirestore.instance
+        .collection('vendors')
+        .doc(userId)
         .get();
+
+    return profileDoc;
   }
 
   static getMessages(uid) {
@@ -27,9 +29,14 @@ class StoreServices {
     return firestore.collection(ordersCollection).snapshots();
   }
 
-  static Stream<QuerySnapshot> searchProductsByName(String productName) {
-    return firestore.collection(productsCollection).snapshots();
-  }
+  static Stream<QuerySnapshot> searchProductsByNameForUser(String productName, String currentUserId) {
+  return FirebaseFirestore.instance
+      .collection('products')
+      .where('vendor_id', isEqualTo: currentUserId)
+      .where('p_name', isGreaterThanOrEqualTo: productName)
+      .where('p_name', isLessThan: productName + 'z')
+      .snapshots();
+}
 
   static getProducts(uid) {
     return firestore
@@ -44,7 +51,8 @@ class StoreServices {
         .where('vendor_id', isEqualTo: uid)
         .snapshots();
   }
-    static getChatMessages(docId) {
+
+  static getChatMessages(docId) {
     return firestore
         .collection(chatsCollection)
         .doc(docId)
@@ -52,5 +60,4 @@ class StoreServices {
         .orderBy('created_on', descending: false)
         .snapshots();
   }
-
 }

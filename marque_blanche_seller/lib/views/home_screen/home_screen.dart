@@ -10,11 +10,15 @@ import 'package:marque_blanche_seller/views/widgets/text_style.dart';
 import '../../const/const.dart';
 import 'package:intl/intl.dart' as intl;
 
+import '../../controllers/auth_controller.dart';
+
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+  const HomeScreen({Key? key});
 
   @override
   Widget build(BuildContext context) {
+    var currentUser = Get.find<AuthController>().user;
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: appbarWidget(dashboard),
@@ -25,7 +29,7 @@ class HomeScreen extends StatelessWidget {
             return loadingIndicator();
           } else {
             var data = snapshot.data!.docs;
-            data.sortedBy((a, b) =>
+            data.sort((a, b) =>
                 b['p_wishlist'].length.compareTo(a['p_wishlist'].length));
 
             return SingleChildScrollView(
@@ -37,56 +41,59 @@ class HomeScreen extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        dashboardButton(context,
-                            title: products,
-                            count: "${data.length}",
-                            icon: icProducts),
-                        dashboardButton(context,
-                            title: orders, count: "15", icon: icOrders),
+                        dashboardButton(
+                          context,
+                          title: products,
+                          count: "${data.length}",
+                          icon: icProducts,
+                        ),
+                        dashboardButton(
+                          context,
+                          title: orders,
+                          count: getTotalOrders(currentUser.uid),
+                          icon: icOrders,
+                        ),
                       ],
                     ),
-                    10.heightBox,
-                    // Row(
-                    //   mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    //   children: [
-                    //     dashboardButton(context,
-                    //         title: rating, count: "60", icon: icStar),
-                    //     dashboardButton(context,
-                    //         title: totalSales, count: "15", icon: icOrders),
-                    //   ],
-                    // ),
-                    10.heightBox,
+                    const SizedBox(height: 10),
                     const Divider(),
-                    10.heightBox,
+                    const SizedBox(height: 10),
                     boldText(text: popular, color: Colors.black, size: 18.0),
-                    20.heightBox,
+                    const SizedBox(height: 20),
                     ListView(
                       physics: const BouncingScrollPhysics(),
                       shrinkWrap: true,
                       children: List.generate(
-                          data.length,
-                          (index) => data[index]['p_wishlist'].length == 0
-                              ? const SizedBox()
-                              : ListTile(
-                                  onTap: () {
-                                    Get.to(() => ProductDetails(
-                                          data: data[index],
-                                        ));
-                                  },
-                                  leading: Image.network(
-                                    data[index]['p_imgs'][0],
-                                    width: 100,
-                                    height: 100,
-                                    fit: BoxFit.cover,
-                                  ),
-                                  title: boldText(
-                                      text: "${data[index]['p_name']}",
-                                      color: fontGrey),
-                                  subtitle: normalText(
-                                      text: "${data[index]['p_price']} TND",
-                                      color: darkGrey),
-                                )),
-                    )
+                        data.length,
+                        (index) {
+                          if (data[index]['p_wishlist'].length == 0) {
+                            return const SizedBox();
+                          } else {
+                            return ListTile(
+                              onTap: () {
+                                Get.to(() => ProductDetails(
+                                      data: data[index],
+                                    ));
+                              },
+                              leading: Image.network(
+                                data[index]['p_imgs'][0],
+                                width: 100,
+                                height: 100,
+                                fit: BoxFit.cover,
+                              ),
+                              title: boldText(
+                                text: "${data[index]['p_name']}",
+                                color: fontGrey,
+                              ),
+                              subtitle: normalText(
+                                text: "${data[index]['p_price']} TND",
+                                color: darkGrey,
+                              ),
+                            );
+                          }
+                        },
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -95,5 +102,22 @@ class HomeScreen extends StatelessWidget {
         },
       ),
     );
+  }
+
+  String getTotalOrders(String vendorUid) {
+    int orderCount = 0;
+
+    FirebaseFirestore.instance
+        .collection('orders')
+        .where('vendorUid', isEqualTo: vendorUid)
+        .get()
+        .then((QuerySnapshot snapshot) {
+      orderCount = snapshot.size;
+    }).catchError((error) {
+      // Handle the error if any
+      print('Error getting orders: $error');
+    });
+
+    return orderCount.toString();
   }
 }

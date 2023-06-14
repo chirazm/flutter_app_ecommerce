@@ -7,6 +7,11 @@ import 'package:pfe_app/models/product_model.dart';
 import 'package:get/get.dart';
 import 'package:pfe_app/views/category_screen/item_details.dart';
 import 'package:pfe_app/views/home_screen/components/count_down_Timer.dart';
+import 'package:pfe_app/views/home_screen/components/item_details2.dart';
+import 'package:pfe_app/widget_common/our_button.dart';
+
+import '../../controllers/product_controller.dart';
+import '../../models/product_model2.dart';
 
 class FlashSaleScreen extends StatefulWidget {
   const FlashSaleScreen({Key? key}) : super(key: key);
@@ -16,24 +21,13 @@ class FlashSaleScreen extends StatefulWidget {
 }
 
 class _FlashSaleScreenState extends State<FlashSaleScreen> {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final List<String> _bannerImage = [];
-
-  void getBanners() {
-    _firestore.collection('banners').get().then((QuerySnapshot querySnapshot) {
-      querySnapshot.docs.forEach((doc) {
-        setState(() {
-          _bannerImage.add(doc['image']);
-        });
-      });
-    });
-  }
-
   @override
   void initState() {
     super.initState();
-    getBanners();
+    controller.resetQuantity();
   }
+
+  var controller = Get.put(ProductController());
 
   @override
   Widget build(BuildContext context) {
@@ -71,12 +65,15 @@ class _FlashSaleScreenState extends State<FlashSaleScreen> {
                 return Product(
                   id: doc.id,
                   name: data['p_name'],
-                  price: data['p_price'],
                   imageURL: data['p_imgs'][0],
                   endDate: data['endDate'] != null
                       ? (data['endDate'] as Timestamp).toDate()
                       : null,
-                  quantity: '',
+                  oldPrice: data['p_price'].toString(),
+                  flashSalePrice: data['discountedPrice'].toString(),
+                  seller: data['p_seller'],
+                  vendorId: data['vendor_id'],
+                  quantity: num.parse(data['p_quantity']),
                 );
               }).toList();
 
@@ -109,10 +106,10 @@ class _FlashSaleScreenState extends State<FlashSaleScreen> {
 
                   return GestureDetector(
                     onTap: () {
-                      Get.to(() => ItemDetails(
-                            title: product.name!,
-                            data: snapshot.data!.docs[index],
-                          ));
+                      // Get.to(() => ItemDetails(
+                      //       title: product.name,
+                      //       data: product,
+                      //     ));
                     },
                     child: Container(
                       margin: const EdgeInsets.symmetric(vertical: 10),
@@ -141,9 +138,106 @@ class _FlashSaleScreenState extends State<FlashSaleScreen> {
                             product.name!,
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
+                              fontSize: 17,
                             ),
                           ),
                           const SizedBox(height: 10),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                ' ${product.oldPrice} TND',
+                                style: const TextStyle(
+                                  decoration: TextDecoration.lineThrough,
+                                  fontSize: 16,
+                                ),
+                              ),
+                              const SizedBox(width: 10),
+                              Text(
+                                ' ${product.flashSalePrice} TND',
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: redColor,
+                                  fontSize: 17,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 10),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Row(
+                                children: [
+                                  Obx(
+                                    () => Row(
+                                      children: [
+                                        IconButton(
+                                          onPressed: () {
+                                            controller.decreaseQuantity();
+
+                                            controller.calculateTotalPrice(
+                                              double.parse(
+                                                  product.flashSalePrice),
+                                              double.parse(
+                                                  product.flashSalePrice),
+                                              double.parse(product.oldPrice),
+                                              offerExpired,
+                                            );
+                                          },
+                                          icon: const Icon(Icons.remove),
+                                        ),
+                                        controller.quantity.value.text
+                                            .size(16)
+                                            .color(darkFontGrey)
+                                            .fontFamily(bold)
+                                            .make(),
+                                        IconButton(
+                                          onPressed: () {
+                                            controller.increaseQuantity(
+                                                product.quantity);
+
+                                            controller.calculateTotalPrice(
+                                              double.parse(
+                                                  product.flashSalePrice),
+                                              double.parse(
+                                                  product.flashSalePrice),
+                                              double.parse(product.oldPrice),
+                                              offerExpired,
+                                            );
+                                          },
+                                          icon: const Icon(Icons.add),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ).box.make(),
+                              IconButton(
+                                icon: const Icon(
+                                  Icons.add_shopping_cart_outlined,
+                                  color: darkFontGrey,
+                                ),
+                                onPressed: () {
+                                  if (controller.quantity.value > 0) {
+                                    controller.addToCart(
+                                      context: context,
+                                      vendorID: product.vendorId,
+                                      imageURL: product.imageURL,
+                                      title: product.name,
+                                      sellername: product.seller,
+                                      qty: controller.quantity.value,
+                                      tprice: controller.totalPrice.value,
+                                    );
+                                    VxToast.show(context, msg: "Added to cart");
+                                  } else {
+                                    VxToast.show(context,
+                                        msg: "Minimum 1 product is required");
+                                  }
+                                },
+                              ),
+                            ],
+                          ),
                           offerExpired
                               ? Container(
                                   padding: const EdgeInsets.all(8),
@@ -159,16 +253,18 @@ class _FlashSaleScreenState extends State<FlashSaleScreen> {
                               : CountdownTimer(
                                   duration: remainingTime,
                                 ),
-                          const SizedBox(height: 20),
+                          const SizedBox(height: 10),
                         ],
                       ),
                     ),
                   );
                 },
               );
-            } else {
-              return const CircularProgressIndicator();
             }
+
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
           },
         ),
       ),

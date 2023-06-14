@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -13,27 +11,25 @@ import '../../services/firestore_services.dart';
 import '../../widget_common/loading_indicator.dart';
 
 class CategoryScreen extends StatelessWidget {
-  const CategoryScreen({super.key});
+  const CategoryScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    //late dynamic categorySnapshot;
     var controller = Get.put(ProductController());
     return bgWidget(
-        child: Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: categories.text.fontFamily(bold).white.make(),
-      ),
-      body: FutureBuilder(
+      child: Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          title: categories.text.fontFamily(bold).white.make(),
+        ),
+        body: FutureBuilder<QuerySnapshot>(
           future: FirestoreServices.getCategories(),
-          builder:
-              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-            if (!snapshot.hasData) {
-              return Center(
-                child: loadingIndicator(),
-              );
-            } else if (snapshot.data!.docs.isEmpty) {
+          builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(child: loadingIndicator());
+            } else if (snapshot.hasError) {
+              return Center(child: Text('Error: ${snapshot.error}'));
+            } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
               return Center(
                 child: "Categories is empty".text.color(darkFontGrey).make(),
               );
@@ -45,25 +41,29 @@ class CategoryScreen extends StatelessWidget {
                   shrinkWrap: true,
                   itemCount: data.length,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3,
-                      mainAxisSpacing: 8,
-                      crossAxisSpacing: 8,
-                      mainAxisExtent: 200),
+                    crossAxisCount: 3,
+                    mainAxisSpacing: 8,
+                    crossAxisSpacing: 8,
+                    mainAxisExtent: 200,
+                  ),
                   itemBuilder: (BuildContext context, int index) {
+                    var category = data[index];
                     return Column(
                       children: [
                         Image.network(
-                          "${data[index]['image']}",
+                          category['image'],
                           height: 120,
                           width: 200,
                           fit: BoxFit.cover,
                         ),
                         10.heightBox,
-                        "${data[index]['name']}"
-                            .text
-                            .color(Colors.black)
-                            .align(TextAlign.center)
-                            .make(),
+                        Text(
+                          category['name'],
+                          style: TextStyle(
+                            color: Colors.black,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
                       ],
                     )
                         .box
@@ -73,17 +73,19 @@ class CategoryScreen extends StatelessWidget {
                         .outerShadowSm
                         .make()
                         .onTap(() {
-                      controller.getSubCategories(categoriesList[index]);
+                      controller.getSubCategories(category['name']);
                       Get.to(() => CategoryDetails(
-                            title: "${data[index]['name']}",
-                            data: data[index],
-                          ));
+                        title: category['name'],
+                        data: category,
+                      ));
                     });
                   },
                 ),
               );
             }
-          }),
-    ));
+          },
+        ),
+      ),
+    );
   }
 }

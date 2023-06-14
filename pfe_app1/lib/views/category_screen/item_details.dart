@@ -5,6 +5,7 @@ import 'package:pfe_app/consts/consts.dart';
 import 'package:pfe_app/consts/lists.dart';
 import 'package:pfe_app/controllers/product_controller.dart';
 import 'package:pfe_app/views/cart_screen/cart_screen.dart';
+import 'package:pfe_app/views/category_screen/seller.dart';
 import 'package:pfe_app/views/chat_screen/chat_screen.dart';
 import 'package:pfe_app/widget_common/our_button.dart';
 
@@ -20,6 +21,14 @@ class ItemDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var controller = Get.put(ProductController());
+    bool hasDiscount = data['discountedPrice'] != null;
+    double oldPrice = double.parse(data['p_price']);
+    double discountedPrice =
+        hasDiscount ? double.parse(data['discountedPrice']) : oldPrice;
+    bool isFlashSaleExpired = hasDiscount &&
+        data['endDate'] != null &&
+        DateTime.now().isAfter(data['endDate'].toDate());
+
     return WillPopScope(
       onWillPop: () async {
         controller.resetValues();
@@ -29,13 +38,14 @@ class ItemDetails extends StatelessWidget {
         backgroundColor: lightGrey,
         appBar: AppBar(
           leading: IconButton(
-              onPressed: () {
-                controller.resetValues();
-                Get.back();
-              },
-              icon: const Icon(
-                Icons.arrow_back,
-              )),
+            onPressed: () {
+              controller.resetValues();
+              Get.back();
+            },
+            icon: const Icon(
+              Icons.arrow_back,
+            ),
+          ),
           title: title!.text.color(darkFontGrey).fontFamily(bold).make(),
           actions: [
             IconButton(
@@ -96,27 +106,47 @@ class ItemDetails extends StatelessWidget {
                           .make(),
                       10.heightBox,
 
-                      //rating
-                      VxRating(
-                        isSelectable: false,
-                        value: double.parse(data['p_rating']),
-                        onRatingUpdate: (value) {},
-                        normalColor: textfieldGrey,
-                        selectionColor: golden,
-                        count: 5,
-                        size: 25,
-                        maxRating: 5,
-                      ),
-
-                      //price
                       10.heightBox,
-                      "${data["p_price"]}"
-                          .numCurrency
-                          .text
-                          .color(redColor)
-                          .fontFamily(bold)
-                          .size(18)
-                          .make(),
+                      if (isFlashSaleExpired)
+                        Text(
+                          '$oldPrice TND',
+                          style: const TextStyle(
+                            color: redColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        )
+                      else if (hasDiscount && data['endDate'] != null)
+                        Row(
+                          children: [
+                            Text(
+                              '$oldPrice TND',
+                              style: const TextStyle(
+                                color: darkFontGrey,
+                                fontSize: 12,
+                                decoration: TextDecoration.lineThrough,
+                              ),
+                            ),
+                            const SizedBox(width: 10),
+                            Text(
+                              '$discountedPrice TND',
+                              style: const TextStyle(
+                                color: redColor,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                              ),
+                            ),
+                          ],
+                        )
+                      else
+                        Text(
+                          '$oldPrice TND',
+                          style: const TextStyle(
+                            color: redColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
 
                       //seller section
                       10.heightBox,
@@ -143,18 +173,22 @@ class ItemDetails extends StatelessWidget {
                               ],
                             ),
                           ),
-                          const CircleAvatar(
-                            backgroundColor: Colors.white,
-                            child: Icon(
-                              Icons.message_rounded,
-                              color: darkFontGrey,
+                          GestureDetector(
+                            onTap: () {
+                              Get.to(
+                                () => SellerContactScreen(
+                                  sellerId: data['vendor_id'],
+                                ),
+                              );
+                            },
+                            child: const CircleAvatar(
+                              backgroundColor: Colors.white,
+                              child: Icon(
+                                Icons.message_rounded,
+                                color: darkFontGrey,
+                              ),
                             ),
-                          ).onTap(() {
-                            Get.to(
-                              () => const ChatScreen(),
-                              arguments: [data['p_seller'], data['vendor_id']],
-                            );
-                          }),
+                          ),
                         ],
                       )
                           .box
@@ -167,44 +201,6 @@ class ItemDetails extends StatelessWidget {
                       Obx(
                         () => Column(
                           children: [
-                            // Row(
-                            //children: [
-                            // SizedBox(
-                            //   width: 100,
-                            //   child:
-                            //       "Color: ".text.color(textfieldGrey).make(),
-                            // ),
-                            // Row(
-                            //   children: List.generate(
-                            //     data["p_colors"].length,
-                            //     (index) => Stack(
-                            //       alignment: Alignment.center,
-                            //       children: [
-                            //         VxBox()
-                            //             .size(40, 40)
-                            //             .roundedFull
-                            //             .color(Color(data["p_colors"][index])
-                            //                 .withOpacity(1.0))
-                            //             .margin(const EdgeInsets.symmetric(
-                            //                 horizontal: 4))
-                            //             .make()
-                            //             .onTap(() {
-                            //           controller.changeColorIndex(index);
-                            //         }),
-                            //         Visibility(
-                            //             visible: index ==
-                            //                 controller.colorIndex.value,
-                            //             child: const Icon(
-                            //               Icons.done,
-                            //               color: Colors.white,
-                            //             )),
-                            //       ],
-                            //     ),
-                            //   ),
-                            // ),
-                            //],
-                            // ).box.padding(const EdgeInsets.all(8)).make(),
-
                             //quantity row
                             Row(
                               children: [
@@ -224,8 +220,15 @@ class ItemDetails extends StatelessWidget {
                                       IconButton(
                                           onPressed: () {
                                             controller.decreaseQuantity();
+
                                             controller.calculateTotalPrice(
-                                                int.parse(data['p_price']));
+                                              hasDiscount
+                                                  ? discountedPrice
+                                                  : oldPrice,
+                                              discountedPrice,
+                                              oldPrice,
+                                              isFlashSaleExpired,
+                                            );
                                           },
                                           icon: const Icon(Icons.remove)),
                                       controller.quantity.value.text
@@ -238,7 +241,13 @@ class ItemDetails extends StatelessWidget {
                                             controller.increaseQuantity(
                                                 int.parse(data['p_quantity']));
                                             controller.calculateTotalPrice(
-                                                int.parse(data['p_price']));
+                                              hasDiscount
+                                                  ? discountedPrice
+                                                  : oldPrice,
+                                              discountedPrice,
+                                              oldPrice,
+                                              isFlashSaleExpired,
+                                            );
                                           },
                                           icon: const Icon(Icons.add)),
                                       10.widthBox,

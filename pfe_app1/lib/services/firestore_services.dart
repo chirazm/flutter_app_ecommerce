@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:pfe_app/consts/consts.dart';
 import 'package:pfe_app/models/product_model.dart';
+import 'package:pfe_app/models/product_model2.dart';
 import 'package:pfe_app/models/seller_model.dart';
 import 'package:pfe_app/models/vendor_model.dart';
 import 'package:pfe_app/views/cart_screen/coupn.dart';
@@ -100,9 +102,11 @@ class FirestoreServices {
   }
 
   static getWishlists() {
+    String currentUserId = FirebaseAuth.instance.currentUser!.uid;
+
     return firestore
         .collection(productsCollection)
-        .where('p_wishlist', arrayContains: currentUser!.uid)
+        .where('p_wishlist', arrayContains: currentUserId)
         .snapshots();
   }
 
@@ -119,24 +123,26 @@ class FirestoreServices {
 
 //get count of wishlist, orders and cart
   static getCounts() async {
+    String currentUserId = FirebaseAuth.instance.currentUser!.uid;
+
     var res = await Future.wait([
       firestore
           .collection(cartCollection)
-          .where('added_by', isEqualTo: currentUser!.uid)
+          .where('added_by', isEqualTo: currentUserId)
           .get()
           .then((value) {
         return value.docs.length;
       }),
       firestore
           .collection(productsCollection)
-          .where('p_wishlist', arrayContains: currentUser!.uid)
+          .where('p_wishlist', arrayContains: currentUserId)
           .get()
           .then((value) {
         return value.docs.length;
       }),
       firestore
           .collection(ordersCollection)
-          .where('order_by', isEqualTo: currentUser!.uid)
+          .where('order_by', isEqualTo: currentUserId)
           .get()
           .then((value) {
         return value.docs.length;
@@ -197,8 +203,32 @@ class FirestoreServices {
       Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
       return Product(
         id: doc.id,
+        flashSalePrice: data['discountedPrice'],
         name: data['p_name'],
-        price: data['p_price'],
+        oldPrice: data['p_price'],
+        imageURL: data['p_imgs'][0],
+        desc: data['p_desc'],
+        seller: data['p_seller'],
+        vendorId: data['vendor_id'],
+        quantity: data['p_quantity'],
+        img: data['p_imgs'][0],
+      );
+    }).toList();
+  }
+
+  static Future<List<Product2>> fetchVendorProducts2(String vendorId) async {
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection('products')
+        .where('vendor_id', isEqualTo: vendorId)
+        .get();
+
+    return querySnapshot.docs.map((doc) {
+      Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+      return Product2(
+        id: doc.id,
+        flashSalePrice: data['discountedPrice'],
+        name: data['p_name'],
+        oldPrice: data['p_price'],
         imageURL: data['p_imgs'][0],
         desc: data['p_desc'],
         seller: data['p_seller'],

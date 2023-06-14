@@ -13,12 +13,18 @@ class FlashSaleProductsScreen extends StatefulWidget {
 }
 
 class _FlashSaleProductsScreenState extends State<FlashSaleProductsScreen> {
+  final String currentVendorId =
+      'YOUR_VENDOR_ID'; // Replace with the actual vendor ID
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appbarWidget(flashSales),
       body: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance.collection('products').snapshots(),
+        stream: FirebaseFirestore.instance
+            .collection('products')
+            .where('vendorId', isEqualTo: currentVendorId)
+            .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return Center(
@@ -40,15 +46,17 @@ class _FlashSaleProductsScreenState extends State<FlashSaleProductsScreen> {
             Map<String, dynamic>? data =
                 product.data() as Map<String, dynamic>?;
             if (data != null && data.containsKey('endDate')) {
-              Timestamp endDateTimestamp = data['endDate'] as Timestamp;
-              DateTime endDate = endDateTimestamp.toDate();
-              DateTime now = DateTime.now();
-              DateTime twoDaysAfterEndDate =
-                  endDate.add(const Duration(days: 2));
-              bool isExpired = now.isAfter(twoDaysAfterEndDate);
+              Timestamp? endDateTimestamp = data['endDate'] as Timestamp?;
+              if (endDateTimestamp != null) {
+                DateTime endDate = endDateTimestamp.toDate();
+                DateTime now = DateTime.now();
+                DateTime twoDaysAfterEndDate =
+                    endDate.add(const Duration(days: 2));
+                bool isExpired = now.isAfter(twoDaysAfterEndDate);
 
-              if (!isExpired) {
-                filteredProducts.add(product);
+                if (!isExpired) {
+                  filteredProducts.add(product);
+                }
               }
             }
           });
@@ -60,50 +68,54 @@ class _FlashSaleProductsScreenState extends State<FlashSaleProductsScreen> {
               Map<String, dynamic>? data =
                   product.data() as Map<String, dynamic>?;
               if (data != null && data.containsKey('endDate')) {
-                Timestamp endDateTimestamp = data['endDate'] as Timestamp;
+                Timestamp? endDateTimestamp = data['endDate'] as Timestamp?;
                 String discountPrice = data['discountedPrice'] as String;
-                DateTime endDate = endDateTimestamp.toDate();
+                if (endDateTimestamp != null) {
+                  DateTime endDate = endDateTimestamp.toDate();
 
-                return ListTile(
-                  onTap: () {
-                    navigateToProductDetails(data);
-                  },
-                  leading: GestureDetector(
+                  return ListTile(
                     onTap: () {
                       navigateToProductDetails(data);
                     },
-                    child: Image.network(data['p_imgs'][0]),
-                  ),
-                  title: SizedBox(
-                    height: 25,
-                    child: Text(
-                      data['p_name'],
-                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    leading: GestureDetector(
+                      onTap: () {
+                        navigateToProductDetails(data);
+                      },
+                      child: Image.network(data['p_imgs'][0]),
                     ),
-                  ),
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Discount Price: $discountPrice',
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.red,
+                    title: SizedBox(
+                      height: 25,
+                      child: Text(
+                        data['p_name'],
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Discount Price: $discountPrice',
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.red,
+                          ),
                         ),
-                      ),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      Text(
-                        'End Date: ${DateFormat('dd/MM/yyyy HH:mm').format(endDate)}',
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.green,
+                        const SizedBox(
+                          height: 5,
                         ),
-                      ),
-                    ],
-                  ),
-                );
+                        Text(
+                          'End Date: ${DateFormat('dd/MM/yyyy HH:mm').format(endDate)}',
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.green,
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                } else {
+                  return const SizedBox.shrink();
+                }
               } else {
                 return const SizedBox.shrink();
               }

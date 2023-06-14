@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -88,6 +89,8 @@ class ProductsController extends GetxController {
   uploadProduct(context) async {
     var store = firestore.collection(productsCollection).doc();
     String productId = store.id;
+    String currentUserId = FirebaseAuth
+        .instance.currentUser!.uid; // Retrieve the current user's ID
     await store.set({
       'id': productId,
       'is_featured': false,
@@ -105,9 +108,10 @@ class ProductsController extends GetxController {
       'p_quantity': pquantityController.text,
       'p_seller': Get.find<HomeController>().username,
       'p_rating': "5.0",
-      'vendor_id': currentUser!.uid,
+      'vendor_id': currentUserId, // Assign the current user's ID
       'featured_id': '',
-      'discountedPrice': pdiscountController.text,
+      'discountedPrice': '0.0',
+      'endDate': null,
     });
     isloading(false);
     VxToast.show(context, msg: "Product uploaded");

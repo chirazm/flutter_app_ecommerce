@@ -8,11 +8,11 @@ import '../const/const.dart';
 
 class AuthController extends GetxController {
   var isloading = false.obs;
- 
+
   var emailController = TextEditingController();
   var passwordController = TextEditingController();
+  User? get user => FirebaseAuth.instance.currentUser;
 
- 
   //login method
   Future<void> loginMethod({required BuildContext context}) async {
     try {
@@ -33,27 +33,23 @@ class AuthController extends GetxController {
           final bool accountVerified = vendorDoc['account_verified'];
 
           if (accountVerified) {
-            // Account is active, proceed to home screen
             Get.offAll(() => const Home());
           } else {
-            // Account is inactive, display error message
             // ignore: use_build_context_synchronously
             VxToast.show(context,
                 msg:
                     'Your account is desactivated. Please contact the administration.');
 
-            // Clear email and password fields
             emailController.clear();
             passwordController.clear();
           }
         } else {
-          // Vendor document does not exist
           // ignore: use_build_context_synchronously
           VxToast.show(context, msg: 'Vendor not found.');
         }
       }
     } on FirebaseAuthException catch (e) {
-      VxToast.show(context, msg: e.toString());
+      VxToast.show(context, msg: 'vvv');
     }
   }
 
