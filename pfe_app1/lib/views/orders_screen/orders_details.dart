@@ -96,7 +96,7 @@ class OrderDetails extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               "Total Amount".text.fontFamily(semibold).make(),
-                              "${data['total_amount']}"
+                              "${data['total_amount']} TND"
                                   .text
                                   .color(redColor)
                                   .fontFamily(bold)
@@ -127,17 +127,9 @@ class OrderDetails extends StatelessWidget {
                     children: [
                       orderPlaceDetails(
                           title1: data['orders'][index]['title'],
-                          title2: data['orders'][index]['tprice'],
+                          title2: "${data['orders'][index]['tprice']} TND",
                           d1: "${data['orders'][index]['qty']}x",
                           d2: "Refundable"),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: Container(
-                          width: 30,
-                          height: 20,
-                          color: Color(data['orders'][index]['color']),
-                        ),
-                      ),
                       Divider(),
                     ],
                   );

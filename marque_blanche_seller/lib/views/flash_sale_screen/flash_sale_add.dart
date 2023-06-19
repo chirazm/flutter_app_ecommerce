@@ -56,7 +56,7 @@ class _FlashSaleAddProductState extends State<FlashSaleAddProduct> {
           text: "Flash Sale Product",
           color: fontGrey,
           size: 18.0,
-          FontWeight: FontWeight.bold,
+          fontWeight: FontWeight.bold,
         ),
       ),
       body: Padding(

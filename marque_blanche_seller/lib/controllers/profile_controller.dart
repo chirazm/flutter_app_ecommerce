@@ -15,7 +15,10 @@ class ProfileController extends GetxController {
   var profileImgPath = ''.obs;
   var profileImageLink = '';
   var isloading = false.obs;
-
+  var shopName = ''.obs;
+  var shopAddress = ''.obs;
+  var shopMobile = ''.obs;
+  var shopDesc = ''.obs;
   //textfield
   var nameController = TextEditingController();
   var oldpassController = TextEditingController();
@@ -55,6 +58,24 @@ class ProfileController extends GetxController {
     isloading(false);
   }
 
+  Future<void> fetchShopData() async {
+    String currentUserId = FirebaseAuth.instance.currentUser!.uid;
+
+    try {
+      var shopData = await FirebaseFirestore.instance
+          .collection('vendors')
+          .doc(currentUserId)
+          .get();
+
+      shopNameController.text = shopData['shop_name'];
+      shopAddressController.text = shopData['shop_address'];
+      shopMobileController.text = shopData['shop_mobile'];
+      shopDescController.text = shopData['shop_desc'];
+    } catch (error) {
+      print('Error fetching shop data: $error');
+    }
+  }
+
   changeAuthPassword({email, password, newpassword}) async {
     final cred = EmailAuthProvider.credential(email: email, password: password);
     await currentUser!.reauthenticateWithCredential(cred).then((value) {
@@ -63,35 +84,26 @@ class ProfileController extends GetxController {
       print(error.toString());
     });
   }
-  // void fetchShopData() async {
-  //   try {
-  //     // Fetch shop data from the database
-  //     var shopData = await FirebaseFirestore.fetchShopData();
 
-  //     // Populate the text fields with the retrieved data
-  //     shopNameController.text = shopData['shopname'];
-  //     shopAddressController.text = shopData['shopaddress'];
-  //     shopMobileController.text = shopData['shopmobile'];
-  //     shopWebsiteController.text = shopData['shopwebsite'];
-  //     shopDescController.text = shopData['shopdesc'];
-  //   } catch (error) {
-  //     // Handle error during data retrieval
-  //     print('Error fetching shop data: $error');
-  //   }
-  // }
+  updateShop({shopname, shopaddress, shopmobile, shopdesc}) async {
+    String currentUserId = FirebaseAuth.instance.currentUser!.uid;
 
-  updateShop({shopname, shopaddress, shopmobile, shopwebsite, shopdesc}) async {
-    var store = firestore.collection(vendorsCollection).doc(currentUser!.uid);
-    await store.set(
-      {
-        'shop_name': shopname,
-        'shop_address': shopaddress,
-        'shop_mobile': shopmobile,
-        'shop_website': shopwebsite,
-        'shop_desc': shopdesc,
-      },
-      SetOptions(merge: true),
-    );
-    isloading(false);
+    var store = FirebaseFirestore.instance
+        .collection(vendorsCollection)
+        .doc(currentUserId);
+    await store.update({
+      'shop_name': shopname,
+      'shop_address': shopaddress,
+      'shop_mobile': shopmobile,
+      'shop_desc': shopdesc,
+    }).then((value) {
+      shopName.value = shopname;
+      shopAddress.value = shopaddress;
+      shopMobile.value = shopmobile;
+      shopDesc.value = shopdesc;
+      isloading(false);
+    }).catchError((error) {
+      print('Error updating shop data: $error');
+    });
   }
 }

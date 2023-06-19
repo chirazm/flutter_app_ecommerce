@@ -195,9 +195,13 @@ class _VendorWidgetState extends State<VendorWidget> {
           ),
         ),
         DataCell(
-          Image.network(
-            (document.data() as dynamic)['imageUrl'],
-            width: 100,
+          Container(
+            width: 65,
+            height: 65,
+            child: Image.network(
+              (document.data() as dynamic)['imageUrl'],
+              width: 100,
+            ),
           ),
         ),
         DataCell(

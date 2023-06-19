@@ -8,7 +8,7 @@ class Product {
   final String? desc;
   final String? seller;
   final String? vendorId;
-  final num? quantity;
+  final num quantity;
   final String? img;
 
   Product({

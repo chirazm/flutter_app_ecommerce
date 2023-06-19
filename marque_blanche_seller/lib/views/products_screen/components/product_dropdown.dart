@@ -12,7 +12,7 @@ Widget productDropdown(
             text: "$hint",
             color: black,
             size: 15.0,
-            FontWeight: FontWeight.w500),
+            fontWeight: FontWeight.w500),
         isExpanded: true,
         value: dropvalue.value == '' ? null : dropvalue.value,
         items: list.map((e) {

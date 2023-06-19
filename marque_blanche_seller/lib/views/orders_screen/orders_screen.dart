@@ -88,6 +88,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
               .where('order_delivered', isEqualTo: delivered)
               .where('order_on_delivery', isEqualTo: onDelivery)
               .where('order_placed', isEqualTo: pending)
+              .orderBy('order_date', descending: true)
               .snapshots(),
           builder: (BuildContext context,
               AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
@@ -181,7 +182,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                           text:
                                               "${data[index]['order_by_name']}",
                                           color: purpleColor,
-                                          FontWeight: FontWeight.bold,
+                                          fontWeight: FontWeight.bold,
                                           size: 17.0,
                                         ),
                                       ],
@@ -202,7 +203,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                                     .add_yMEd()
                                                     .format(time),
                                                 color: fontGrey,
-                                                FontWeight: FontWeight.w500,
+                                                fontWeight: FontWeight.w500,
                                               ),
                                             ],
                                           ),
@@ -220,7 +221,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                                   text:
                                                       " ${data[index]['payment_method']}",
                                                   color: red,
-                                                  FontWeight: FontWeight.w500,
+                                                  fontWeight: FontWeight.w500,
                                                 ),
                                               ],
                                             ),

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:marque_blanche_seller/views/widgets/appbar_widget.dart';
@@ -13,8 +14,7 @@ class FlashSaleProductsScreen extends StatefulWidget {
 }
 
 class _FlashSaleProductsScreenState extends State<FlashSaleProductsScreen> {
-  final String currentVendorId =
-      'YOUR_VENDOR_ID'; // Replace with the actual vendor ID
+  String currentUserId = FirebaseAuth.instance.currentUser!.uid;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +23,8 @@ class _FlashSaleProductsScreenState extends State<FlashSaleProductsScreen> {
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance
             .collection('products')
-            .where('vendorId', isEqualTo: currentVendorId)
+            .where('vendor_id', isEqualTo: currentUserId)
+            .orderBy('endDate', descending: false)
             .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.hasError) {

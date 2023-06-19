@@ -87,6 +87,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
             .where('order_delivered', isEqualTo: delivered)
             .where('order_on_delivery', isEqualTo: onDelivery)
             .where('order_placed', isEqualTo: pending)
+            .orderBy('order_date', descending: true)
             .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (!snapshot.hasData) {

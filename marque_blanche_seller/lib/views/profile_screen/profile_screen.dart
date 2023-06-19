@@ -96,16 +96,14 @@ class ProfileScreen extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
                   children: List.generate(
-                    2,
+                    1,
                     (index) => ListTile(
                       onTap: () {
                         switch (index) {
                           case 0:
                             Get.to(() => const ShopSettings());
                             break;
-                          case 1:
-                            Get.to(() => MessagesScreen());
-                            break;
+
                           default:
                         }
                       },

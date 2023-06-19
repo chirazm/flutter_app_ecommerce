@@ -63,7 +63,7 @@ class ProductController extends GetxController {
       {title,
       imageURL,
       sellername,
-      color,
+    
       qty,
       tprice,
       context,
@@ -72,7 +72,7 @@ class ProductController extends GetxController {
       'title': title,
       'img': imageURL,
       'sellername': sellername,
-      //'color': color,
+      
       'qty': qty,
       'vendor_id': vendorID,
       'tprice': tprice,

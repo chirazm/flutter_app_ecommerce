@@ -87,16 +87,20 @@ class ProductsScreen extends StatelessWidget {
                                     data: data[index],
                                   ));
                             },
-                            leading: Image.network(
-                              data[index]['p_imgs'][0],
-                              width: 100,
-                              height: 100,
-                              fit: BoxFit.cover,
+                            leading: Container(
+                              height: 64,
+                              width: 64,
+                              child: Image.network(
+                                data[index]['p_imgs'][0],
+                                width: 100,
+                                height: 100,
+                                fit: BoxFit.cover,
+                              ),
                             ),
                             title: boldText(
                               text: "${data[index]['p_name']}",
                               color: darkGrey,
-                              FontWeight: FontWeight.bold,
+                              fontWeight: FontWeight.bold,
                               size: 18.0,
                             ),
                             subtitle: Row(
@@ -106,12 +110,12 @@ class ProductsScreen extends StatelessWidget {
                                     boldText(
                                       text: "Qty : ",
                                       color: red,
-                                      FontWeight: FontWeight.bold,
+                                      fontWeight: FontWeight.bold,
                                     ),
                                     boldText(
                                       text: "${data[index]['p_quantity']}",
                                       color: darkGrey,
-                                      FontWeight: FontWeight.w500,
+                                      fontWeight: FontWeight.w500,
                                     ),
                                   ],
                                 ),

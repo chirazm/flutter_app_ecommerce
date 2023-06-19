@@ -11,11 +11,11 @@ AppBar appbarWidget(title) {
         text: title,
         color: Colors.black,
         size: 18.0,
-        FontWeight: FontWeight.bold),
+        fontWeight: FontWeight.bold),
     actions: [
       Center(
         child: boldText1(
-          FontWeight: FontWeight.bold,
+          fontWeight: FontWeight.bold,
           text: intl.DateFormat('EEE, MMM d, ' 'yy').format(DateTime.now()),
           color: purpleColor,
         ),

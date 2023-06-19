@@ -5,11 +5,11 @@ Widget normalText({text, color = Colors.white, size = 14.0, }) {
 }
 
 Widget boldText(
-    {text, color = Colors.white, size = 16.0, FontWeight = FontWeight.normal, }) {
-  return "$text".text.color(color).size(size).fontWeight(FontWeight).make();
+    {text, color = Colors.white, size = 16.0, fontWeight = FontWeight.normal, }) {
+  return "$text".text.color(color).size(size).fontWeight(fontWeight).make();
 }
 
 Widget boldText1(
-    {text, color = Colors.white, size = 16.0, FontWeight = FontWeight.bold}) {
-  return "$text".text.color(color).size(size).fontWeight(FontWeight).make();
+    {text, color = Colors.white, size = 16.0, fontWeight = FontWeight.bold}) {
+  return "$text".text.color(color).size(size).fontWeight(fontWeight).make();
 }

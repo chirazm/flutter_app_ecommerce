@@ -19,22 +19,8 @@ class _CustomerWidgetState extends State<CustomerWidget> {
   List<DocumentSnapshot> filteredCustomers = [];
   QuerySnapshot? customersSnapshot;
 
-  List<String> options = [
-    'All Customers',
-    'Active Customers',
-    'Inactive Customers',
-  ];
-  bool? active;
   void filter(int val) {
     setState(() {
-      tag = val;
-      if (val == 1) {
-        active = true;
-      } else if (val == 2) {
-        active = false;
-      } else {
-        active = null;
-      }
       _searchCustomers(searchController.text);
     });
   }
@@ -103,24 +89,6 @@ class _CustomerWidgetState extends State<CustomerWidget> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        ChipsChoice<int>.single(
-          value: tag,
-          onChanged: (val) => filter(val),
-          choiceItems: C2Choice.listFrom<int, String>(
-            source: options,
-            value: (i, v) => i,
-            label: (i, v) => v,
-          ),
-          choiceCheckmark: true,
-          choiceStyle: C2ChipStyle.filled(
-            selectedStyle: const C2ChipStyle(
-              backgroundColor: Color.fromARGB(115, 110, 107, 107),
-            ),
-          ),
-        ),
-        Divider(
-          thickness: 5,
-        ),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 16),
           child: TextField(
@@ -146,9 +114,8 @@ class _CustomerWidgetState extends State<CustomerWidget> {
           ),
         ),
         StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-          stream: _services.users
-              .where('account_verified', isEqualTo: active)
-              .snapshots() as Stream<QuerySnapshot<Map<String, dynamic>>>?,
+          stream: _services.users.snapshots()
+              as Stream<QuerySnapshot<Map<String, dynamic>>>?,
           builder: (
             BuildContext context,
             AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot,

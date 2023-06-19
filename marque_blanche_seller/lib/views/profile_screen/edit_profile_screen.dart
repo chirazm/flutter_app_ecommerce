@@ -118,7 +118,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               customTextField(
                   label: name,
                   hint: "eg. Chiraz Meddeb",
-                  controller: controller.nameController),
+                  controller: controller.nameController,  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter name';
+                    }
+                    return null;
+                  },),
               30.heightBox,
               Align(
                 alignment: Alignment.centerLeft,
@@ -128,12 +133,22 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               customTextField(
                   label: password,
                   hint: passwordHint,
-                  controller: controller.oldpassController),
+                  controller: controller.oldpassController,  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter password';
+                    }
+                    return null;
+                  },),
               10.heightBox,
               customTextField(
                   label: confirmPass,
                   hint: passwordHint,
-                  controller: controller.newpassController),
+                  controller: controller.newpassController,  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please re-enter password';
+                    }
+                    return null;
+                  },),
             ],
           ),
         ),

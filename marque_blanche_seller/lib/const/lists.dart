@@ -8,5 +8,5 @@ const popupMenuIcons = [
   Icons.timer
 ];
 
-const profileButtonsTitles = [shopSettings, messages];
-const profileButtonsIcons = [Icons.settings, Icons.chat];
+const profileButtonsTitles = [shopSettings];
+const profileButtonsIcons = [Icons.settings];

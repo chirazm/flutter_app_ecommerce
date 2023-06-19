@@ -217,14 +217,6 @@ class _OrderDetailsState extends State<OrderDetails> {
                             title2: "${controller.orders[index]['tprice']} TND",
                             d1: "${controller.orders[index]['qty']}x",
                             d2: "Refundable"),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          child: Container(
-                            width: 30,
-                            height: 20,
-                            color: Color(controller.orders[index]['color']),
-                          ),
-                        ),
                         const Divider(),
                       ],
                     );
