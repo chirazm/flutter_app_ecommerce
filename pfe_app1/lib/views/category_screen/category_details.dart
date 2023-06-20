@@ -33,11 +33,12 @@ class _CategoryDetailsState extends State<CategoryDetails> {
   void initState() {
     super.initState();
     switchCategory(widget.title);
-    controller.selectSubcategory(controller.subcat[0]);
+    controller
+        .selectSubcategory(''); // Set selectedSubcategory to null initially
   }
 
-  void switchCategory(String title) {
-    if (controller.subcat.contains(title)) {
+  void switchCategory(String? title) {
+    if (title != null && controller.subcat.contains(title)) {
       productMethod = FirestoreServices.getSubCategoryProducts(title);
     } else {
       productMethod = FirestoreServices.getProducts(title);

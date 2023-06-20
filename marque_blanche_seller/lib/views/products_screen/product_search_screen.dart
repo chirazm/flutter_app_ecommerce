@@ -34,21 +34,21 @@ class ProductSearchScreen extends StatelessWidget {
         stream:
             StoreServices.searchProductsByNameForUser(title!, currentUserId),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
+          if (!snapshot.hasData) {
             return Center(
               child: CircularProgressIndicator(),
             );
-          } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-            return const Center(
-              child: Text("No product found !"),
-            );
+          } else if (snapshot.data!.docs.isEmpty) {
+            return "No products found.".text.makeCentered();
           } else {
             var data = snapshot.data!.docs;
             var filtered = data
-                .where((element) => element['p_name']
-                    .toString()
-                    .toLowerCase()
-                    .contains(title!.toLowerCase()))
+                .where(
+                  (element) => element['p_name']
+                      .toString()
+                      .toLowerCase()
+                      .contains(title!.toLowerCase()),
+                )
                 .toList();
             return Padding(
               padding: const EdgeInsets.all(8.0),

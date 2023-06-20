@@ -31,14 +31,17 @@ class ProfileScreen extends StatelessWidget {
         automaticallyImplyLeading: false,
         title: boldText(text: settings, size: 16.0),
         actions: [
-          IconButton(
-            onPressed: () {
-              Get.to(() => EditProfileScreen(
-                    username: controller.snapshotData['vendor_name'],
-                  ));
-            },
-            icon: const Icon(Icons.edit),
-          ),
+          // IconButton(
+          //   onPressed: () {
+          //     Get.to(() => EditProfileScreen(
+          //           username: (controller.snapshotData.data()
+          //               as dynamic)!['vendor_name'],
+          //           snapshotData:
+          //               controller.snapshotData.data() as Map<String, dynamic>?,
+          //         ));
+          //   },
+          //   icon: const Icon(Icons.edit),
+          // ),
           IconButton(
             onPressed: () async {
               await Get.find<AuthController>().signoutMethod(context);
@@ -57,7 +60,6 @@ class ProfileScreen extends StatelessWidget {
           }
 
           if (!snapshot.hasData || !snapshot.data!.exists) {
-            // If the profile data for the current vendor does not exist, handle the case accordingly
             return Center(
               child: Text('Profile not found'),
             );
@@ -66,7 +68,6 @@ class ProfileScreen extends StatelessWidget {
           var userData = snapshot.data!.data() as Map<String, dynamic>;
 
           if (userData == null) {
-            // If the profile data is null, handle the case accordingly
             return Center(
               child: Text('Invalid profile data'),
             );

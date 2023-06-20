@@ -19,6 +19,7 @@ class ProfileController extends GetxController {
   var shopAddress = ''.obs;
   var shopMobile = ''.obs;
   var shopDesc = ''.obs;
+
   //textfield
   var nameController = TextEditingController();
   var oldpassController = TextEditingController();
@@ -30,6 +31,16 @@ class ProfileController extends GetxController {
   var shopMobileController = TextEditingController();
   var shopWebsiteController = TextEditingController();
   var shopDescController = TextEditingController();
+  late Rx<Map<String, dynamic>> snapshotDataa;
+
+  void setSnapshotData(Map<String, dynamic> data) {
+    snapshotData = data.obs as QueryDocumentSnapshot<Object?>;
+  }
+
+  void getDataFromSnapshot(QueryDocumentSnapshot<Object?> snapshot) {
+    final data = snapshot.data() as Map<String, dynamic>;
+    setSnapshotData(data);
+  }
 
   changeImage(context) async {
     try {

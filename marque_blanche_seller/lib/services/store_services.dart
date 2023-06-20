@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:marque_blanche_seller/const/const.dart';
 
 class StoreServices {
+
   static Future<DocumentSnapshot> getProfile(String userId) async {
     final DocumentSnapshot profileDoc = await FirebaseFirestore.instance
         .collection('vendors')
@@ -29,14 +30,13 @@ class StoreServices {
     return firestore.collection(ordersCollection).snapshots();
   }
 
-  static Stream<QuerySnapshot> searchProductsByNameForUser(String productName, String currentUserId) {
-  return FirebaseFirestore.instance
-      .collection('products')
-      .where('vendor_id', isEqualTo: currentUserId)
-      .where('p_name', isGreaterThanOrEqualTo: productName)
-      .where('p_name', isLessThan: productName + 'z')
-      .snapshots();
-}
+  static Stream<QuerySnapshot> searchProductsByNameForUser(
+      String productName, String currentUserId) {
+    return FirebaseFirestore.instance
+        .collection('products')
+        .where('vendor_id', isEqualTo: currentUserId)
+        .snapshots();
+  }
 
   static getProducts(uid) {
     return firestore

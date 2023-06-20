@@ -9,8 +9,10 @@ import 'package:marque_blanche_seller/views/widgets/loading_indicator.dart';
 import '../widgets/text_style.dart';
 
 class EditProfileScreen extends StatefulWidget {
-  final String? username;
-  const EditProfileScreen({super.key, this.username});
+   final String? username;
+  final Map<String, dynamic>? snapshotData;
+
+  const EditProfileScreen({Key? key, this.username, this.snapshotData}) : super(key: key);
 
   @override
   State<EditProfileScreen> createState() => _EditProfileScreenState();
@@ -116,14 +118,16 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 color: white,
               ),
               customTextField(
-                  label: name,
-                  hint: "eg. Chiraz Meddeb",
-                  controller: controller.nameController,  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter name';
-                    }
-                    return null;
-                  },),
+                label: name,
+                hint: "eg. Chiraz Meddeb",
+                controller: controller.nameController,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter name';
+                  }
+                  return null;
+                },
+              ),
               30.heightBox,
               Align(
                 alignment: Alignment.centerLeft,
@@ -131,24 +135,28 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               ),
               10.heightBox,
               customTextField(
-                  label: password,
-                  hint: passwordHint,
-                  controller: controller.oldpassController,  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter password';
-                    }
-                    return null;
-                  },),
+                label: password,
+                hint: passwordHint,
+                controller: controller.oldpassController,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter password';
+                  }
+                  return null;
+                },
+              ),
               10.heightBox,
               customTextField(
-                  label: confirmPass,
-                  hint: passwordHint,
-                  controller: controller.newpassController,  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please re-enter password';
-                    }
-                    return null;
-                  },),
+                label: confirmPass,
+                hint: passwordHint,
+                controller: controller.newpassController,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please re-enter password';
+                  }
+                  return null;
+                },
+              ),
             ],
           ),
         ),

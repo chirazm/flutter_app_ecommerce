@@ -17,6 +17,14 @@ class OrderSearchScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: white,
       appBar: AppBar(
+        leading: IconButton(
+            onPressed: () {
+              Get.back();
+            },
+            icon: const Icon(
+              Icons.arrow_back,
+              color: darkGrey,
+            )),
         title: Text(
           title!,
           style: TextStyle(color: darkGrey),
@@ -45,13 +53,7 @@ class OrderSearchScreen extends StatelessWidget {
                 .toList();
             return Padding(
               padding: const EdgeInsets.all(8.0),
-              child: GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 8,
-                  crossAxisSpacing: 8,
-                  mainAxisExtent: 300,
-                ),
+              child: ListView.builder(
                 itemCount: filtered.length,
                 itemBuilder: (BuildContext context, int index) {
                   var order = filtered[index];

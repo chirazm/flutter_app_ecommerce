@@ -43,6 +43,40 @@ class _OrderDetailsState extends State<OrderDetails> {
                 color: darkGrey,
               )),
           title: boldText(text: "Order details", color: fontGrey, size: 16.0),
+          actions: [
+            IconButton(
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: Text("Confirmation"),
+                      content:
+                          Text("Are you sure you want to delete this order?"),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: Text("Cancel"),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            controller.deleteOrder(widget.data);
+                          },
+                          child: Text("Delete"),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
+              icon: Icon(
+                Icons.delete,
+                color: Colors.red,
+              ),
+            ),
+          ],
         ),
         bottomNavigationBar: Visibility(
           visible: !controller.confirmed.value,
