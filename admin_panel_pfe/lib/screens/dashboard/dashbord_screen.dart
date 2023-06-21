@@ -1,69 +1,49 @@
-import 'package:admin_panel_pfe/consts/colors.dart';
-import 'package:admin_panel_pfe/services/firebase_service.dart';
+import 'package:admin_panel_pfe/controllers/dashboard_controller.dart';
+import 'package:admin_panel_pfe/screens/dashboard/dashboard_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:charts_flutter_new/flutter.dart' as charts;
+
+import '../../services/firebase_service.dart';
 
 class DashboardScreen extends StatelessWidget {
   static const String routeName = "\DashboardScreen";
+
   @override
   Widget build(BuildContext context) {
     FirebaseServices _services = FirebaseServices();
-    Widget analyticWidget(
-        {required String title, required String value, required Icon icon}) {
-      return Padding(
-        padding: const EdgeInsets.all(18.0),
-        child: Container(
-          height: 140,
-          width: 240,
-          decoration: BoxDecoration(
-            border: Border.all(color: appbarColor),
-            borderRadius: BorderRadius.circular(10),
-            color: Color.fromARGB(255, 252, 184, 210),
+    Widget _buildLegendItem(String text, Color color) {
+      return Row(
+        children: [
+          Container(
+            width: 16,
+            height: 16,
+            color: color,
           ),
-          child: Padding(
-            padding: const EdgeInsets.all(18.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    icon,
-                    SizedBox(
-                      width: 5,
-                    ),
-                    Text(
-                      title,
-                      style: TextStyle(
-                          fontSize: 20,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 13,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      value,
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
-                    ),
-                    Icon(Icons.show_chart)
-                  ],
-                )
-              ],
-            ),
+          const SizedBox(width: 4),
+          Text(
+            text,
+            style: const TextStyle(fontSize: 12),
           ),
-        ),
+        ],
+      );
+    }
+
+    Widget _buildLegend() {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildLegendItem('Featured Product', Colors.indigo),
+          SizedBox(height: 10),
+          _buildLegendItem('Other Products', Colors.deepOrange),
+        ],
       );
     }
 
     return SingleChildScrollView(
       child: Container(
+        child: Container(
           alignment: Alignment.topLeft,
           padding: const EdgeInsets.all(8),
           child: Column(
@@ -79,122 +59,123 @@ class DashboardScreen extends StatelessWidget {
               Divider(
                 thickness: 5,
               ),
-              Wrap(
-                spacing: 20,
-                runSpacing: 20,
-                children: [
-                  StreamBuilder<QuerySnapshot>(
-                    stream: _services.users.snapshots(),
-                    builder: (BuildContext context,
-                        AsyncSnapshot<QuerySnapshot> snapshot) {
-                      if (snapshot.hasError) {
-                        return Center(child: Text('Something went wrong'));
-                      }
+              SizedBox(
+                height: 20,
+              ),
+              StreamBuilder<QuerySnapshot>(
+                stream: _services.users.snapshots(),
+                builder: (BuildContext context,
+                    AsyncSnapshot<QuerySnapshot> customersSnapshot) {
+                  if (customersSnapshot.hasError) {
+                    return Center(child: Text('Something went wrong'));
+                  }
 
-                      if (snapshot.hasData) {
-                        return analyticWidget(
-                          title: 'Total Customer',
-                          value: snapshot.data!.size.toString(),
-                          icon: Icon(
-                            CupertinoIcons.person_3_fill,
-                            size: 35,
-                          ),
-                        );
-                      }
-                      return SizedBox();
-                    },
-                  ),
-                  StreamBuilder<QuerySnapshot>(
+                  if (!customersSnapshot.hasData ||
+                      customersSnapshot.data == null) {
+                    return Center(child: CircularProgressIndicator());
+                  }
+
+                  int totalCustomers = getTotalCustomers(customersSnapshot);
+
+                  return StreamBuilder<QuerySnapshot>(
                     stream: _services.vendors.snapshots(),
                     builder: (BuildContext context,
-                        AsyncSnapshot<QuerySnapshot> snapshot) {
-                      if (snapshot.hasError) {
+                        AsyncSnapshot<QuerySnapshot> vendorsSnapshot) {
+                      if (vendorsSnapshot.hasError) {
                         return Center(child: Text('Something went wrong'));
                       }
 
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Center(
-                          child: CircularProgressIndicator(
-                            color: Colors.cyan,
-                          ),
-                        );
-                      }
-                      if (snapshot.hasData) {
-                        return analyticWidget(
-                            title: 'Total Vendor',
-                            value: snapshot.data!.size.toString(),
-                            icon: Icon(
-                              CupertinoIcons.person_3_fill,
-                              size: 35,
-                            ));
-                      }
-                      return SizedBox();
-                    },
-                  ),
-                  StreamBuilder<QuerySnapshot>(
-                    stream: _services.category.snapshots(),
-                    builder: (BuildContext context,
-                        AsyncSnapshot<QuerySnapshot> snapshot) {
-                      if (snapshot.hasError) {
-                        return Center(child: Text('Something went wrong'));
+                      if (!vendorsSnapshot.hasData ||
+                          vendorsSnapshot.data == null) {
+                        return Center(child: CircularProgressIndicator());
                       }
 
-                      if (snapshot.hasData) {
-                        return analyticWidget(
-                          title: 'Total Category',
-                          value: snapshot.data!.size.toString(),
-                          icon: Icon(
-                            Icons.category,
-                          ),
-                        );
-                      }
-                      return SizedBox();
-                    },
-                  ),
-                  StreamBuilder<QuerySnapshot>(
-                    stream: _services.orders.snapshots(),
-                    builder: (BuildContext context,
-                        AsyncSnapshot<QuerySnapshot> snapshot) {
-                      if (snapshot.hasError) {
-                        return Center(child: Text('Something went wrong'));
-                      }
+                      int totalVendors = getTotalVendors(vendorsSnapshot);
 
-                      if (snapshot.hasData) {
-                        return analyticWidget(
-                          title: 'Total Order',
-                          value: snapshot.data!.size.toString(),
-                          icon: Icon(
-                            Icons.shopping_cart,
-                          ),
-                        );
-                      }
-                      return SizedBox();
-                    },
-                  ),
-                  StreamBuilder<QuerySnapshot>(
-                    stream: _services.products.snapshots(),
-                    builder: (BuildContext context,
-                        AsyncSnapshot<QuerySnapshot> snapshot) {
-                      if (snapshot.hasError) {
-                        return Center(child: Text('Something went wrong'));
-                      }
+                      return StreamBuilder<QuerySnapshot>(
+                        stream: _services.products.snapshots(),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<QuerySnapshot> productsSnapshot) {
+                          if (productsSnapshot.hasError) {
+                            return Center(child: Text('Something went wrong'));
+                          }
 
-                      if (snapshot.hasData) {
-                        return analyticWidget(
-                          icon: Icon(
-                            Icons.shop,
-                          ),
-                          title: 'Total Product',
-                          value: snapshot.data!.size.toString(),
-                        );
-                      }
-                      return SizedBox();
+                          if (!productsSnapshot.hasData ||
+                              productsSnapshot.data == null) {
+                            return Center();
+                          }
+
+                          int totalProducts =
+                              getTotalProducts(productsSnapshot);
+                          int featuredProducts =
+                              getTotalFeaturedProducts(productsSnapshot);
+
+                          return StreamBuilder<QuerySnapshot>(
+                            stream: _services.orders.snapshots(),
+                            builder: (BuildContext context,
+                                AsyncSnapshot<QuerySnapshot> ordersSnapshot) {
+                              if (ordersSnapshot.hasError) {
+                                return Center(
+                                    child: Text('Something went wrong'));
+                              }
+
+                              if (!ordersSnapshot.hasData ||
+                                  ordersSnapshot.data == null) {
+                                return Center();
+                              }
+
+                              int totalOrders = getTotalOrders(ordersSnapshot);
+
+                              return Column(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      generateBarChart(
+                                          totalCustomers, totalVendors),
+                                      generateBarChart2(
+                                          totalProducts, totalOrders),
+                                    ],
+                                  ),
+                                  SizedBox(height: 60),
+                                  Align(
+                                    alignment: Alignment.center,
+                                    child: FractionallySizedBox(
+                                      widthFactor:
+                                          0.8, // Adjust this value to change the width of the row
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          generatePieChart(
+                                              totalProducts, featuredProducts),
+                                          _buildLegend(),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        },
+                      );
                     },
-                  ),
-                ],
+                  );
+                },
               ),
             ],
-          )),
+          ),
+        ),
+      ),
     );
   }
+}
+
+class CustomerData {
+  final String title;
+  final int count;
+
+  CustomerData({required this.title, required this.count});
 }
